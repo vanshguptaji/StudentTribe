@@ -14,20 +14,24 @@ export default function BrandsScreen() {
         <div className="text-[#b8001f] text-lg font-medium drop-shadow mb-4">Student Tribe</div>
       </div>
       <div className="mt-4 flex justify-center">
-        <div className="flex rounded-full overflow-hidden shadow-lg">
+          <div className="text-white font-black text-6xl leading-none drop-shadow-lg tracking-tight">
+        <div className="text-white text-lg font-medium drop-shadow mb-4">
+        <div className="mx-auto mt-8 w-[400px] max-w-[90vw] bg-[#2d000a] rounded-full flex overflow-hidden shadow-lg text-xl font-bold">
           <button
-            className={`px-8 py-2 font-semibold focus:outline-none transition-colors duration-300 ${!isBrands ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white' : 'bg-[#232326] text-gray-400'}`}
+            className={`flex-1 py-4 text-center rounded-l-full transition-colors duration-300 ${!isBrands ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white' : 'text-gray-300 bg-transparent'}`}
             onClick={() => navigate('/')}
           >
             Students
           </button>
           <button
-            className={`px-8 py-2 font-semibold focus:outline-none transition-colors duration-300 ${isBrands ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white' : 'bg-[#232326] text-gray-400'}`}
+            className={`flex-1 py-4 text-center rounded-r-full transition-colors duration-300 ${isBrands ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white' : 'text-gray-300 bg-transparent'}`}
             onClick={() => navigate('/brands')}
           >
             Brands
           </button>
-        </div>
+          </div>
+          </div>
+          </div>
       </div>
       <div className="mt-8 text-center">
         <h1 className="text-4xl font-extrabold text-[#2d1c1c] mb-2">Partner with the next generation!</h1>
