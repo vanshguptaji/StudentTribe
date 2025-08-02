@@ -1,6 +1,7 @@
 
 import React from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
+// import Footer from './components/Footer';
 
 const randomPhotos = [
   'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=facearea&w=400&q=80',
@@ -46,32 +47,55 @@ const MainScreen = () => {
   const location = useLocation();
   const isBrands = location.pathname === '/brands';
   return (
-    <div className="relative w-screen h-screen flex flex-col items-center justify-center">
-      {randomPhotos.map((src, i) => (
-        <img key={i} src={src} alt="bg" style={getRandomStyle()} className="select-none" />
-      ))}
-      <div className="mb-8 mt-6 text-center z-10">
-        <div className="text-white font-black text-6xl leading-none drop-shadow-lg tracking-tight">st.</div>
-        <div className="text-white text-lg font-medium drop-shadow mb-4">Student Tribe</div>
-        <div className="mx-auto mt-8 w-[400px] max-w-[90vw] bg-[#2d000a] rounded-full flex overflow-hidden shadow-lg text-xl font-bold">
-          <button
-            className={`flex-1 py-4 text-center rounded-l-full transition-colors duration-300 ${!isBrands ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white' : 'text-gray-300 bg-transparent'}`}
-            onClick={() => navigate('/')}
-          >
-            Students
-          </button>
-          <button
-            className={`flex-1 py-4 text-center rounded-r-full transition-colors duration-300 ${isBrands ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white' : 'text-gray-300 bg-transparent'}`}
-            onClick={() => navigate('/brands')}
-          >
-            Brands
-          </button>
+    <>
+      <div className="relative w-screen h-screen flex items-center justify-center bg-[#b8001f] overflow-hidden">
+        {/* Background images container */}
+        <div className="absolute inset-0 pointer-events-none z-0">
+          {randomPhotos.map((src, i) => (
+            <img
+              key={i}
+              src={src}
+              alt="bg"
+              style={{
+                ...getRandomStyle(),
+                // Restrict background images to not overlap center content
+                top: `calc(${Math.random() * 70 + 10}%)`,
+                left: `calc(${Math.random() * 70 + 15}%)`,
+                maxWidth: '120px',
+                maxHeight: '120px',
+                minWidth: '60px',
+                minHeight: '60px',
+              }}
+              className="select-none"
+            />
+          ))}
+        </div>
+        {/* Main content */}
+        <div className="relative z-10 flex flex-col items-center w-full px-4">
+          <div className="mb-8 text-center">
+            <div className="text-white font-black text-6xl leading-none drop-shadow-lg tracking-tight">st.</div>
+            <div className="text-white text-lg font-medium drop-shadow mb-4">Student Tribe</div>
+            <div className="mx-auto mt-8 w-[400px] max-w-[90vw] bg-[#2d000a] rounded-full flex overflow-hidden shadow-lg text-xl font-bold">
+              <button
+                className={`flex-1 py-4 text-center rounded-l-full transition-colors duration-300 ${!isBrands ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white' : 'text-gray-300 bg-transparent'}`}
+                onClick={() => navigate('/')}
+              >
+                Students
+              </button>
+              <button
+                className={`flex-1 py-4 text-center rounded-r-full transition-colors duration-300 ${isBrands ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white' : 'text-gray-300 bg-transparent'}`}
+                onClick={() => navigate('/brands')}
+              >
+                Brands
+              </button>
+            </div>
+          </div>
+          <div className="text-white text-4xl md:text-5xl font-extrabold text-center mt-8 drop-shadow-lg max-w-3xl">
+            Be a part of India’s largest<br />and fastest growing student<br />community.
+          </div>
         </div>
       </div>
-      <div className="text-white text-4xl md:text-5xl font-extrabold text-center mt-8 z-10 drop-shadow-lg">
-        Be a part of India’s largest<br />and fastest growing student<br />community.
-      </div>
-    </div>
+    </>
   );
 };
 
