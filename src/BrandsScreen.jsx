@@ -1,17 +1,50 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { gsap } from 'gsap';
 // import Footer from './components/Footer';
 
 export default function BrandsScreen() {
   const [activeTab, setActiveTab] = useState('students');
   const [isVisible, setIsVisible] = useState(false);
+  const containerRef = useRef(null);
+  const imagesRef = useRef([]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(true);
+      
+      // GSAP animation for images appearing from bottom
+      if (imagesRef.current.length > 0) {
+        // Set initial position - all images start from extreme bottom of viewport
+        gsap.set(imagesRef.current, {
+          y: window.innerHeight + 200, // Start from below viewport
+          opacity: 0,
+          scale: 0.8
+        });
+
+        // Animate images to their final positions with staggered timing
+        gsap.to(imagesRef.current, {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 1.2,
+          ease: "power3.out",
+          stagger: {
+            amount: 1.5, // Total time for all animations
+            from: "random" // Random order for more dynamic effect
+          }
+        });
+      }
     }, 300);
     return () => clearTimeout(timer);
   }, []);
+
+  // Function to add image refs
+  const addToRefs = (el) => {
+    if (el && !imagesRef.current.includes(el)) {
+      imagesRef.current.push(el);
+    }
+  };
 
   return (
     <div className="min-h-screen w-screen bg-gradient-to-br from-[#fff6f6] to-[#FFF8F8] overflow-hidden relative">
@@ -61,15 +94,14 @@ export default function BrandsScreen() {
         </div>
 
         {/* Image Grid Layout */}
-        <div className="relative max-w-6xl mx-auto">
+        <div className="relative max-w-6xl mx-auto" ref={containerRef}>
           {/* Main Photo Grid - 4 columns on large screens, 2x2 grid on smaller screens */}
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
             {/* Column 1 - First image tall, second image below */}
             <div className="flex flex-col gap-6">
-              <div className={`transition-all duration-1000 ease-out delay-100 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}>
+              <div>
                 <img 
+                  ref={addToRefs}
                   src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                   alt="Team Meeting"
                   className="w-full h-80 mt-10 object-cover rounded-3xl shadow-xl"
@@ -79,10 +111,9 @@ export default function BrandsScreen() {
                   }}
                 />
               </div>
-              <div className={`transition-all duration-1000 ease-out delay-500 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}>
+              <div>
                 <img 
+                  ref={addToRefs}
                   src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                   alt="Team Collaboration"
                   className="w-full h-28 object-cover rounded-3xl shadow-xl"
@@ -95,10 +126,9 @@ export default function BrandsScreen() {
             </div>
             
             {/* Column 2 - Just one tall image */}
-            <div className={`transition-all duration-1000 ease-out delay-200 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}>
+            <div>
               <img 
+                ref={addToRefs}
                 src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 alt="Professional Woman"
                 className="w-full h-5/6 object-cover rounded-3xl shadow-xl mt-18"
@@ -109,10 +139,9 @@ export default function BrandsScreen() {
               />
             </div>
 
-            <div className={`transition-all duration-1000 ease-out delay-200 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}>
+            <div>
               <img 
+                ref={addToRefs}
                 src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 alt="Professional Woman"
                 className="w-full h-76 object-cover rounded-3xl shadow-xl mt-28"
@@ -124,10 +153,9 @@ export default function BrandsScreen() {
             </div>
             
             {/* Column 3 - Just one tall image */}
-            <div className={`transition-all duration-1000 ease-out delay-300 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}>
+            <div>
               <img 
+                ref={addToRefs}
                 src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 alt="Tech Team"
                 className="w-full h-5/6 object-cover rounded-3xl shadow-xl mt-18"
@@ -140,10 +168,9 @@ export default function BrandsScreen() {
             
             {/* Column 4 - First image tall, second image below */}
             <div className="flex flex-col gap-6">
-              <div className={`transition-all duration-1000 ease-out delay-400 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}>
+              <div>
                 <img 
+                  ref={addToRefs}
                   src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                   alt="University Campus"
                   className="w-full h-80 object-cover rounded-3xl shadow-xl mt-10"
@@ -153,10 +180,9 @@ export default function BrandsScreen() {
                 }}
                 />
               </div>
-              <div className={`transition-all duration-1000 ease-out delay-600 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}>
+              <div>
                 <img 
+                  ref={addToRefs}
                   src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                   alt="Business Meeting"
                   className="w-full h-28 object-cover rounded-3xl shadow-xl"
@@ -169,7 +195,10 @@ export default function BrandsScreen() {
           <div className={`text-center transition-all duration-1000 delay-700 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}>
-            <button className="absolute bottom-10 left-1/2 transform -translate-x-1/2 px-10 py-3 rounded-full bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white font-bold text-lg shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+            <button 
+              ref={addToRefs}
+              className="absolute bottom-10 left-2/5 transform -translate-x-1/2 px-10 py-3 rounded-full bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white font-bold text-lg shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+            >
               Explore Now →
             </button>
           </div>
