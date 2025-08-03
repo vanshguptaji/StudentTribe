@@ -6,6 +6,7 @@ import BrandsScreen from './BrandsScreen';
 import StudentApp from './StudentApp';
 import BottomNavbar from './components/BottomNavbar';
 import Footer from './components/Footer';
+import STEvents from './STEvents';
 
 
 
@@ -19,6 +20,7 @@ function App() {
             <Route path="/" element={<MainScreen />} />
             <Route path="/brands" element={<BrandsScreen />} />
             <Route path="/app" element={<StudentApp />} />
+            <Route path="/st-events" element={<STEvents />} />
           </Routes>
         </div>
         <Footer />

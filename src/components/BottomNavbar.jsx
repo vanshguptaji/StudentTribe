@@ -8,10 +8,11 @@ const BottomNavbar = () => {
   const navItems = [
     { id: 'ST School', label: 'ST School', path: '/' },
     { id: 'ST App', label: 'ST App', path: '/app' },
-    { id: 'ST Events', label: 'ST Events', path: '/brands' },
+    { id: 'ST Brands', label: 'ST Brands', path: '/brands' },
     { id: 'ST Beast', label: 'ST Beast', path: '/beast' },
     { id: 'ST Care', label: 'ST Care', path: '/care' },
-    { id: 'Who We Are', label: 'Who We Are', path: '/about' }
+    { id: 'Who We Are', label: 'Who We Are', path: '/about' },
+    { id: 'ST Events', label: 'ST Events', path: '/st-events' }
   ];
 
   const handleTabClick = (item) => {
@@ -22,13 +23,24 @@ const BottomNavbar = () => {
 
   // Determine active tab based on current route
   const getActiveTab = () => {
-    if (location.pathname === '/') return 'ST School';
-    if (location.pathname === '/app') return 'ST App';
-    if (location.pathname === '/brands') return 'ST Events';
-    if (location.pathname === '/beast') return 'ST Beast';
-    if (location.pathname === '/care') return 'ST Care';
-    if (location.pathname === '/about') return 'Who We Are';
-    return '';
+    switch (location.pathname) {
+      case '/':
+        return 'ST School';
+      case '/app':
+        return 'ST App';
+      case '/brands':
+        return 'ST Brands';
+      case '/st-events':
+        return 'ST Events';
+      case '/beast':
+        return 'ST Beast';
+      case '/care':
+        return 'ST Care';
+      case '/about':
+        return 'Who We Are';
+      default:
+        return '';
+    }
   };
   const activeTab = getActiveTab();
 
