@@ -7,6 +7,8 @@ import StudentApp from './StudentApp';
 import BottomNavbar from './components/BottomNavbar';
 import Footer from './components/Footer';
 import STEvents from './STEvents';
+import StBeast from './STbeast';
+import STCare from './STCare';
 
 
 
@@ -21,6 +23,8 @@ function App() {
             <Route path="/brands" element={<BrandsScreen />} />
             <Route path="/app" element={<StudentApp />} />
             <Route path="/st-events" element={<STEvents />} />
+            <Route path="/beast" element={<StBeast />} />
+            <Route path="/care" element={<STCare />} />
           </Routes>
         </div>
         <Footer />
