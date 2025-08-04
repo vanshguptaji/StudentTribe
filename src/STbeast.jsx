@@ -219,14 +219,14 @@ const StBeast = () => {
                     : isEdge 
                     ? "scale(1.45)" 
                     : "scale(1.0)",
-                  opacity: isEdge ? 0.6 : 1,
+                  opacity:1,
                   transition: "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
                 }}
                 onClick={() => goToSlide(product.originalIndex)}
               >
                 <div
                   className={`overflow-hidden
-                  ${isCenter ? "w-64 h-80" : "w-80 h-96"}
+                  ${isCenter ? "w-84 h-68" : "w-80 h-96"}
                 `}
                   style={{
                     transition: "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
@@ -353,10 +353,10 @@ const StBeast = () => {
       </div>
 
       {/* Footer Text */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white text-center">
-        <p className="text-sm opacity-70 p-8">
-          Swipe or click to explore more styles
-        </p>
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white text-center mt-8">
+            <p className="text-sm opacity-70 p-8">
+              Swipe or click to explore more styles
+            </p>
       </div>
     </div>
   );
