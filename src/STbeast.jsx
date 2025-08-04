@@ -213,11 +213,11 @@ const StBeast = () => {
                 `}
                 style={{
                   transform: isCenter 
-                    ? "scale(1.25)" 
+                    ? "scale(0.9)" 
                     : isAdjacent 
                     ? "scale(1.0)" 
                     : isEdge 
-                    ? "scale(0.75)" 
+                    ? "scale(1.45)" 
                     : "scale(1.0)",
                   opacity: isEdge ? 0.6 : 1,
                   transition: "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
@@ -225,9 +225,8 @@ const StBeast = () => {
                 onClick={() => goToSlide(product.originalIndex)}
               >
                 <div
-                  className={`
-                  rounded-2xl shadow-2xl overflow-hidden hover:shadow-3xl
-                  ${isCenter ? "w-80 h-96" : "w-64 h-80"}
+                  className={`overflow-hidden
+                  ${isCenter ? "w-64 h-80" : "w-80 h-96"}
                 `}
                   style={{
                     transition: "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
@@ -252,7 +251,19 @@ const StBeast = () => {
                             ? "perspective(1000px) rotateY(-35deg) scale(0.92)"
                             : "perspective(1000px) rotateY(0deg) scale(1)",
                         transformOrigin: "center center",
-                        transition: "transform 2.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                        transition: "transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), clip-path 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                        clipPath:
+                          isCenter
+                            ? "polygon(0 0, 100% 0, 99% 92%, 1% 90%)"
+                            : product.position === -2
+                            ? "polygon(0 7%, 100% 14%, 100% 88%, 0 93%)"
+                            : product.position === -1
+                            ? "polygon(0 7%, 100% 14%, 100% 88%, 0 93%)"
+                            : product.position === 1
+                            ? "polygon(0 19%, 100% 5%, 100% 94%, 0 80%)"
+                            : product.position === 2
+                            ? "polygon(0 19%, 100% 5%, 100% 94%, 0 80%)"
+                            : "polygon(15% 0%, 85% 0%, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0% 85%, 0% 15%)",
                       }}
                     />
                     {isCenter && (
