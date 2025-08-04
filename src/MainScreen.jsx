@@ -1,7 +1,7 @@
 
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
-// import Footer from './components/Footer';
+import gsap from 'gsap';
 
 const randomPhotos = [
   'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=facearea&w=400&q=80',
@@ -46,11 +46,84 @@ const MainScreen = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isBrands = location.pathname === '/brands';
+  const logoRef = useRef(null);
+  const backgroundRef = useRef(null);
+  const buttonsRef = useRef(null);
+  const descriptionRef = useRef(null);
+  const descriptionLettersRef = useRef([]);
+
+  useEffect(() => {
+    if (logoRef.current) {
+      // Initially hide all other elements
+      gsap.set([backgroundRef.current, buttonsRef.current, descriptionRef.current], {
+        opacity: 0
+      });
+
+      // Set logo initial state - large and centered
+      gsap.set(logoRef.current, {
+        scale: 2.5,
+        x: 0,
+        y: 0,
+        opacity: 1
+      });
+
+      // Create timeline for sequence
+      const tl = gsap.timeline();
+
+      // Step 1: Show logo for a moment
+      tl
+      // .to(logoRef.current, {
+      //   duration: 0.8,
+      //   scale: 1.8,
+      //   ease: "power2.inOut"
+      // })
+      // Step 2: Move logo to final position and scale down
+      .to(logoRef.current, {
+        duration: 1.2,
+        scale: 1,
+        ease: "power3.out"
+      }, "+=0.3")
+      // Step 3: Fade in other elements
+      .to(backgroundRef.current, {
+        duration: 0.8,
+        opacity: 1,
+        ease: "power2.out"
+      }, "-=0.6")
+      .to(buttonsRef.current, {
+        duration: 0.6,
+        opacity: 1,
+        ease: "power2.out"
+      }, "-=0.4")
+      .to(descriptionRef.current, {
+        duration: 0.6,
+        opacity: 1,
+        ease: "power2.out"
+      }, "-=0.3")
+      // Step 4: Animate each letter of the description
+      .add(() => {
+        if (descriptionLettersRef.current && descriptionLettersRef.current.length > 0) {
+          gsap.set(descriptionLettersRef.current, {
+            opacity: 0,
+            rotateX: 90,
+            transformOrigin: 'left bottom',
+            display: 'inline-block',
+          });
+          gsap.to(descriptionLettersRef.current, {
+            opacity: 1,
+            rotateX: 0,
+            duration: 0.5,
+            ease: 'back.out(1.7)',
+            stagger: 0.035,
+          });
+        }
+      });
+    }
+  }, []);
   return (
     <>
       <div className="relative w-screen h-screen flex items-center justify-center bg-[#b8001f] overflow-hidden">
         {/* Background images container */}
-        <div className="absolute inset-0 pointer-events-none z-0">
+        <div ref={backgroundRef} className="absolute inset-0 pointer-events-none z-0">
           {randomPhotos.map((src, i) => (
             <img
               key={i}
@@ -73,9 +146,11 @@ const MainScreen = () => {
         {/* Main content */}
         <div className="relative z-10 flex flex-col items-center w-full px-4">
           <div className="mb-8 text-center">
-            <div className="text-white font-black text-6xl leading-none drop-shadow-lg tracking-tight">st.</div>
-            <div className="text-white text-lg font-medium drop-shadow mb-4">Student Tribe</div>
-            <div className="mx-auto mt-8 w-[400px] max-w-[90vw] bg-[#2d000a] rounded-full flex overflow-hidden shadow-lg text-xl font-bold">
+            <div ref={logoRef} className="logo-container">
+              <div className="text-white font-black text-6xl leading-none drop-shadow-lg tracking-tight">st.</div>
+              <div className="text-white text-lg font-medium drop-shadow mb-4">Student Tribe</div>
+            </div>
+            <div ref={buttonsRef} className="mx-auto mt-8 w-[400px] max-w-[90vw] bg-[#2d000a] rounded-full flex overflow-hidden shadow-lg text-xl font-bold">
               <button
                 className={`flex-1 py-4 text-center rounded-l-full transition-colors duration-300 ${!isBrands ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white' : 'text-gray-300 bg-transparent'}`}
                 onClick={() => navigate('/')}
@@ -90,8 +165,36 @@ const MainScreen = () => {
               </button>
             </div>
           </div>
-          <div className="text-white text-4xl md:text-5xl font-extrabold text-center mt-8 drop-shadow-lg max-w-3xl">
-            Be a part of India’s largest<br />and fastest growing student<br />community.
+          <div ref={descriptionRef} className="text-white text-4xl md:text-5xl font-extrabold text-center mt-8 drop-shadow-lg max-w-3xl">
+            {(() => {
+              // The text to animate, with <br /> preserved
+              const lines = [
+                "Be a part of India’s largest",
+                "and fastest growing student",
+                "community."
+              ];
+              let letterIndex = 0;
+              return lines.map((line, i) => (
+                <React.Fragment key={i}>
+                  {Array.from(line).map((char, j) => {
+                    if (char === ' ') {
+                      letterIndex++;
+                      return ' ';
+                    }
+                    return (
+                      <span
+                        key={j}
+                        ref={el => descriptionLettersRef.current[letterIndex++] = el}
+                        style={{ display: 'inline-block' }}
+                      >
+                        {char}
+                      </span>
+                    );
+                  })}
+                  {i < lines.length - 1 && <br />}
+                </React.Fragment>
+              ));
+            })()}
           </div>
         </div>
       </div>
