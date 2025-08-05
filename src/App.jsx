@@ -11,6 +11,7 @@ import StBeast from './pages/STbeast';
 import STCare from './pages/STCare';
 import SplashSplash2 from './pages/SplashSplash2';
 import CurvedCarousel from './pages/ImageSlider';
+import WhoweAre from './pages/WhoweAre';
 
 
 
@@ -53,6 +54,7 @@ function App() {
             <Route path="/st-events" element={<STEvents />} />
             <Route path="/beast" element={<StBeast />} />
             <Route path="/care" element={<STCare />} />
+            <Route path="/about" element={<WhoweAre />} />
           </Routes>
         </div>
         <Footer />

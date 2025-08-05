@@ -141,20 +141,13 @@ const CurvedCarousel = ({ products }) => {
                   
                   {/* Product Info Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                  <div className="absolute bottom-6 left-6 right-6 text-white">
-                    <h3 className="text-xl font-bold mb-2">{product.title}</h3>
-                    <p className="text-sm opacity-90 mb-4">{product.description}</p>
-                    <button className="bg-white text-black px-6 py-2 rounded-full font-semibold text-sm hover:bg-opacity-90 transition-all">
-                      Shop Now
-                    </button>
-                  </div>
                 </div>
                 
                 {/* Reflection effect */}
                 <div 
                   className="absolute top-full left-0 w-full h-24 mt-4"
                   style={{
-                    transform: 'rotateX(180deg)',
+                    transform: 'rotateX(0deg)',
                     transformOrigin: 'top',
                     opacity: 0.3,
                     maskImage: 'linear-gradient(to bottom, white 0%, transparent 100%)',

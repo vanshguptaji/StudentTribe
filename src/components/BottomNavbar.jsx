@@ -8,7 +8,6 @@ const BottomNavbar = () => {
   const navItems = [
     { id: 'ST School', label: 'ST School', path: '/' },
     { id: 'ST App', label: 'ST App', path: '/app' },
-    { id: 'ST Brands', label: 'ST Brands', path: '/brands' },
     { id: 'ST Beast', label: 'ST Beast', path: '/beast' },
     { id: 'ST Care', label: 'ST Care', path: '/care' },
     { id: 'Who We Are', label: 'Who We Are', path: '/about' },
@@ -28,8 +27,6 @@ const BottomNavbar = () => {
         return 'ST School';
       case '/app':
         return 'ST App';
-      case '/brands':
-        return 'ST Brands';
       case '/st-events':
         return 'ST Events';
       case '/beast':
@@ -47,12 +44,12 @@ const BottomNavbar = () => {
   return (
     <div className="fixed flex justify-center items-center bottom-0 left-0 right-0 z-50">
       <div className="max-w-5xl bg-black/90 backdrop-blur-sm rounded-full mx-4 mb-4 overflow-hidden shadow-2xl p-4">
-        <div className="flex justify-between items-center px-2 py-3">
+        <div className="flex justify-between gap-2 items-center px-2">
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => handleTabClick(item)}
-              className={`px-4 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
+              className={`px-4 py-3 rounded-full text-lg font-semibold transition-all duration-300 ${
                 activeTab === item.id
                   ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white shadow-lg scale-105 backdrop-blur-md'
                   : 'text-gray-300 hover:text-white hover:bg-white/10'

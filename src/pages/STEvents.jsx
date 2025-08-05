@@ -1,9 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { gsap } from 'gsap';
 
 export default function STEvents() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [activeTab, setActiveTab] = useState('Students');
+  
+  // Refs for GSAP animations
+  const mainSliderRef = useRef(null);
+  const bottomSliderRef = useRef(null);
+  const textContentRef = useRef(null);
+  const buttonsRef = useRef(null);
 
   // Sample images for the slider - using placeholder images that represent the content
   const sliderImages = [
@@ -34,6 +41,43 @@ export default function STEvents() {
     }
   }, [currentSlide, sliderImages.length]);
 
+  // GSAP Animation Timeline
+  useEffect(() => {
+    const tl = gsap.timeline();
+    
+    // Set initial positions
+    gsap.set(mainSliderRef.current, { x: -window.innerWidth, opacity: 0 });
+    gsap.set(bottomSliderRef.current, { x: window.innerWidth, opacity: 0 });
+    gsap.set(textContentRef.current, { y: -100, opacity: 0 });
+    gsap.set(buttonsRef.current, { y: -50, opacity: 0 });
+    
+    // Animate all elements simultaneously
+    tl.to(mainSliderRef.current, { 
+      x: 0, 
+      opacity: 1, 
+      duration: 1.2, 
+      ease: "power3.out" 
+    }, 0)
+    .to(bottomSliderRef.current, { 
+      x: 0, 
+      opacity: 1, 
+      duration: 1.2, 
+      ease: "power3.out" 
+    }, 0)
+    .to(textContentRef.current, { 
+      y: 0, 
+      opacity: 1, 
+      duration: 1, 
+      ease: "power2.out" 
+    }, 0)
+    .to(buttonsRef.current, { 
+      y: 0, 
+      opacity: 1, 
+      duration: 1, 
+      ease: "power2.out" 
+    }, 0.2);
+  }, []);
+
   const nextSlide = () => {
     setCurrentSlide((prev) => prev + 1);
   };
@@ -56,9 +100,13 @@ export default function STEvents() {
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header with Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-red-600 rounded-full mb-4">
-            <span className="text-white font-bold text-2xl">st.</span>
-            <div className="text-white text-xs mt-1">Student Tribe</div>
+          <div className="logo-container">
+            <div className="text-red-600 font-black text-6xl leading-none drop-shadow-lg tracking-tight">
+              st.
+            </div>
+            <div className="text-gray-800 text-lg font-medium drop-shadow mb-4">
+              Student Tribe
+            </div>
           </div>
         </div>
 
@@ -89,14 +137,19 @@ export default function STEvents() {
         </div>
 
         {/* Main Heading */}
-        <div className="text-center mb-12">
+        <div ref={textContentRef} className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
             Say Goodbye to FOMO. Step Into the Action.
           </h1>
+          {/* Description Text */}
+          <p className="text-lg text-gray-800 max-w-2xl mx-auto leading-relaxed">
+            Vibrant cultural fests, insightful workshops, creative jams — discover
+            experiences that are unforgettable and student-powered.
+          </p>
         </div>
 
         {/* Image Slider */}
-        <div className="relative mb-8">
+        <div ref={mainSliderRef} className="relative mb-8">
           <div className="flex justify-center space-x-4 overflow-hidden">
             <div 
               className="flex space-x-4 transition-transform duration-500 ease-in-out"
@@ -149,16 +202,8 @@ export default function STEvents() {
           </button>
         </div>
 
-        {/* Description Text */}
-        <div className="text-center mb-12">
-          <p className="text-lg text-gray-800 max-w-2xl mx-auto leading-relaxed">
-            Vibrant cultural fests, insightful workshops, creative jams — discover
-            experiences that are unforgettable and student-powered.
-          </p>
-        </div>
-
         {/* Action Buttons */}
-        <div className="flex justify-center space-x-6">
+        <div ref={buttonsRef} className="flex justify-center space-x-6">
           <button className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-full font-medium transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl">
             <span>Register now</span>
             <ChevronRight className="w-5 h-5" />
@@ -170,7 +215,7 @@ export default function STEvents() {
         </div>
 
         {/* Bottom Image Row */}
-        <div className="mt-16 flex justify-center space-x-4 overflow-hidden">
+        <div ref={bottomSliderRef} className="mt-16 flex justify-center space-x-4 overflow-hidden">
           {sliderImages.slice(0, 5).map((image, index) => (
             <div key={`bottom-${index}`} className="relative">
               <img
