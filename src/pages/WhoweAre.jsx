@@ -3,14 +3,21 @@ import { gsap } from 'gsap';
 
 function WhoweAre() {
   const [activeTab, setActiveTab] = useState('Students');
+  const [displayNumber, setDisplayNumber] = useState('0');
+  const [typewriterText1, setTypewriterText1] = useState('');
+  const [typewriterText2, setTypewriterText2] = useState('');
+  const [typewriterText3, setTypewriterText3] = useState('');
   
   // Refs for GSAP animations
   const logoRef = useRef(null);
   const tabsRef = useRef(null);
   const zeroRef = useRef(null);
   const textContentRef = useRef(null);
-  const navigationRef = useRef(null);
   const sideTextRef = useRef(null);
+  const numberRef = useRef({ value: 0 });
+  const typewriter1Ref = useRef(null);
+  const typewriter2Ref = useRef(null);
+  const typewriter3Ref = useRef(null);
 
   // Sample images for the zero shape
   const zeroImages = [
@@ -32,10 +39,22 @@ function WhoweAre() {
     gsap.set([logoRef.current, tabsRef.current], { y: -50, opacity: 0 });
     gsap.set(zeroRef.current, { scale: 0, opacity: 0 });
     gsap.set(textContentRef.current, { y: 50, opacity: 0 });
-    gsap.set(navigationRef.current, { y: 50, opacity: 0 });
     gsap.set(sideTextRef.current, { opacity: 0 });
+    gsap.set([typewriter1Ref.current, typewriter2Ref.current, typewriter3Ref.current], { opacity: 0 });
     
-    // Animate all elements
+    // Typewriter function
+    const typeWriter = (text, setter, duration = 1) => {
+      return {
+        duration: duration,
+        onUpdate: function() {
+          const progress = this.progress();
+          const currentLength = Math.floor(progress * text.length);
+          setter(text.substring(0, currentLength));
+        }
+      };
+    };
+
+    // Animate all elements in sequence
     tl.to([logoRef.current, tabsRef.current], { 
       y: 0, 
       opacity: 1, 
@@ -43,29 +62,59 @@ function WhoweAre() {
       ease: "power2.out",
       stagger: 0.1
     }, 0)
+    .to(sideTextRef.current, { 
+      opacity: 1, 
+      duration: 0.6, 
+      ease: "power2.out" 
+    }, 0.5)
+    // Show typewriter containers
+    .to([typewriter1Ref.current, typewriter2Ref.current, typewriter3Ref.current], {
+      opacity: 1,
+      duration: 0.3
+    }, 1)
+    // First typewriter: "We Tuned"
+    .to({}, {
+      ...typeWriter("We Tuned", setTypewriterText1, 1.5),
+      ease: "none"
+    }, 1.2)
+    // Show and animate the number
     .to(zeroRef.current, { 
       scale: 1, 
       opacity: 1, 
       duration: 1.2, 
       ease: "back.out(1.7)" 
-    }, 0.3)
+    }, 2.8)
+    // Number counting animation from 0 to 25000
+    .to(numberRef.current, {
+      value: 25000,
+      duration: 2,
+      ease: "power2.out",
+      onUpdate: () => {
+        const currentValue = Math.floor(numberRef.current.value);
+        if (currentValue >= 1000) {
+          setDisplayNumber(`${Math.floor(currentValue / 1000)}k`);
+        } else {
+          setDisplayNumber(currentValue.toString());
+        }
+      }
+    }, 3.2)
+    // Second typewriter: "Students,"
+    .to({}, {
+      ...typeWriter("Students,", setTypewriterText2, 1),
+      ease: "none"
+    }, 5.5)
+    // Third typewriter: "and still counting"
+    .to({}, {
+      ...typeWriter("and still counting ...", setTypewriterText3, 1.5),
+      ease: "none"
+    }, 6.8)
+    // Finally show the description text
     .to(textContentRef.current, { 
       y: 0, 
       opacity: 1, 
       duration: 0.8, 
       ease: "power2.out" 
-    }, 0.6)
-    .to(navigationRef.current, { 
-      y: 0, 
-      opacity: 1, 
-      duration: 0.8, 
-      ease: "power2.out" 
-    }, 0.8)
-    .to(sideTextRef.current, { 
-      opacity: 1, 
-      duration: 0.6, 
-      ease: "power2.out" 
-    }, 1);
+    }, 8.5);
   }, []);
 
   return (
@@ -89,56 +138,27 @@ function WhoweAre() {
           </div>
         </div>
 
-        {/* Navigation Tabs */}
-        <div ref={tabsRef} className="flex justify-center mb-12">
-          <div className="bg-black bg-opacity-50 rounded-full p-1 flex backdrop-blur-sm">
-            <button
-              onClick={() => setActiveTab('Students')}
-              className={`px-8 py-3 rounded-full font-medium transition-all duration-300 ${
-                activeTab === 'Students'
-                  ? 'bg-red-600 text-white'
-                  : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              Students
-            </button>
-            <button
-              onClick={() => setActiveTab('Brands')}
-              className={`px-8 py-3 rounded-full font-medium transition-all duration-300 ${
-                activeTab === 'Brands'
-                  ? 'bg-red-600 text-white'
-                  : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              Brands
-            </button>
-          </div>
-        </div>
-
         {/* Main Content Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Side - Text Content */}
-          <div ref={textContentRef} className="text-white space-y-6">
-            <div className="text-xl leading-relaxed">
-              We are India's largest and fastest growing student community, 
-              connecting thousands of students across the nation through 
-              innovative platforms and experiences.
-            </div>
+        <div className="flex flex-col items-center justify-center text-center space-y-8">
+          {/* Typewriter Text Above Number */}
+          <div ref={typewriter1Ref} className="text-white text-4xl md:text-6xl font-bold tracking-wide">
+            {typewriterText1}
+            <span className="animate-pulse text-red-400">|</span>
           </div>
 
-          {/* Right Side - Large Zero with Images */}
+          {/* Large Number with Images */}
           <div ref={zeroRef} className="flex justify-center">
             <div className="relative">
-              {/* Large Zero Background */}
+              {/* Large Number Background */}
               <div 
-                className="text-[40rem] font-black text-transparent bg-clip-text bg-center bg-contain leading-none"
+                className="text-[25rem] md:text-[20rem] font-black text-transparent bg-clip-text bg-center bg-contain leading-none"
                 style={{ 
                   backgroundImage: `url(${zeroImages[0]})`,
                   WebkitBackgroundClip: 'text',
                   backgroundClip: 'text'
                 }}
               >
-                0
+                {displayNumber}
               </div>
               
               {/* Image Grid Overlay */}
@@ -146,16 +166,40 @@ function WhoweAre() {
                 <div className="grid grid-cols-4 gap-2 w-48 h-64">
                   {zeroImages.map((image, index) => (
                     <div key={index} className="relative">
-                      <img
-                        src={image}
-                        alt={`Student ${index + 1}`}
-                        className="w-full h-16 rounded-lg object-cover opacity-80 hover:opacity-100 transition-opacity duration-300"
-                      />
-                      <div className="absolute inset-0 bg-red-600 bg-opacity-20 rounded-lg"></div>
                     </div>
                   ))}
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Typewriter Text Below Number */}
+          <div className="flex flex-col items-center space-y-2">
+            <div className="flex items-center space-x-2">
+              <div ref={typewriter2Ref} className="text-white text-3xl md:text-5xl font-bold">
+                {typewriterText2}
+                {typewriterText2 && typewriterText2.length > 0 && !typewriterText3 && (
+                  <span className="animate-pulse text-red-400">|</span>
+                )}
+              </div>
+              <div ref={typewriter3Ref} className="text-red-300 text-2xl md:text-4xl font-medium">
+                {typewriterText3}
+                {typewriterText3 && typewriterText3.length > 0 && (
+                  <span className="animate-pulse text-red-400">|</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Text Content Below */}
+          <div ref={textContentRef} className="text-white space-y-6 max-w-3xl">
+            <div className="text-xl leading-relaxed">
+              We are India's largest and fastest growing student community, 
+              connecting <span className="text-red-300 font-bold">25,000+</span> students across the nation through 
+              innovative platforms and experiences.
+            </div>
+            <div className="text-lg text-red-200">
+              Join thousands of students who are already part of our vibrant ecosystem.
             </div>
           </div>
         </div>
