@@ -10,6 +10,7 @@ import STEvents from './STEvents';
 import StBeast from './STbeast';
 import STCare from './STCare';
 import SplashSplash2 from './SplashSplash2';
+import CurvedCarousel from './ImageSlider';
 
 
 

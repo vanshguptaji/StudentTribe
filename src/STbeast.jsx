@@ -1,9 +1,190 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+
+const CurvedCarousel = ({ products }) => {
+  const containerRef = useRef(null);
+  const [rotation, setRotation] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [startRotation, setStartRotation] = useState(0);
+
+  const radius = 1200; // Radius of the cylinder
+  const angleStep = (2 * Math.PI) / products.length; // Angle between each image
+
+  // Mouse drag functionality
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.clientX);
+    setStartRotation(rotation);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const deltaX = e.clientX - startX;
+    const newRotation = startRotation + (deltaX * 0.5); // Adjust sensitivity
+    setRotation(newRotation);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  // Touch support
+  const handleTouchStart = (e) => {
+    setIsDragging(true);
+    setStartX(e.touches[0].clientX);
+    setStartRotation(rotation);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const deltaX = e.touches[0].clientX - startX;
+    const newRotation = startRotation + (deltaX * 0.5);
+    setRotation(newRotation);
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
+  useEffect(() => {
+    const handleGlobalMouseUp = () => setIsDragging(false);
+    window.addEventListener('mouseup', handleGlobalMouseUp);
+    window.addEventListener('touchend', handleGlobalMouseUp);
+    
+    return () => {
+      window.removeEventListener('mouseup', handleGlobalMouseUp);
+      window.removeEventListener('touchend', handleGlobalMouseUp);
+    };
+  }, []);
+
+  return (
+    <div 
+      className="relative w-full h-[500px] flex items-center justify-center cursor-grab active:cursor-grabbing"
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      <div 
+        className="relative"
+        style={{
+          width: '1400px',
+          height: '500px',
+          perspective: '1200px',
+          perspectiveOrigin: 'center center',
+        }}
+      >
+        <div
+          className="absolute inset-0"
+          style={{
+            transformStyle: 'preserve-3d',
+            transform: `rotateY(${rotation}deg)`,
+            transition: isDragging ? 'none' : 'transform 0.3s ease-out',
+          }}
+        >
+          {products.map((product, index) => {
+            const angle = index * angleStep;
+            const x = Math.sin(angle) * radius;
+            const z = Math.cos(angle) * radius;
+            const rotateY = angle * (180 / Math.PI);
+            
+            // Calculate visibility based on angle
+            const normalizedAngle = ((rotateY - rotation) % 360 + 360) % 360;
+            // Hide images when they're in front (between 270 and 90 degrees)
+            // Show images only when they're on the back side (between 90 and 270 degrees)
+            const isVisible = normalizedAngle >= 0 && normalizedAngle <= 360;
+            const opacity = isVisible ? 1 : 0;
+            
+            return (
+              <div
+                key={index}
+                className="absolute"
+                style={{
+                  width: '700px',
+                  height: '500px',
+                  left: '50%',
+                  top: '50%',
+                  transform: `
+                    translateX(-50%) 
+                    translateY(-50%) 
+                    translateX(${x}px) 
+                    translateZ(${z}px) 
+                    rotateY(${rotateY}deg)
+                  `,
+                  transformStyle: 'preserve-3d',
+                  opacity: opacity,
+                  transition: isDragging ? 'opacity 0.3s' : 'opacity 0.3s, transform 0.3s ease-out',
+                }}
+              >
+                <div className="w-full h-full rounded-lg overflow-hidden shadow-2xl bg-gray-800">
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    className="w-full h-full object-cover select-none"
+                    draggable="false"
+                    style={{
+                      userSelect: 'none',
+                      backfaceVisibility: 'hidden',
+                    }}
+                  />
+                  
+                  {/* Product Info Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  <div className="absolute bottom-6 left-6 right-6 text-white">
+                    <h3 className="text-xl font-bold mb-2">{product.title}</h3>
+                    <p className="text-sm opacity-90 mb-4">{product.description}</p>
+                    <button className="bg-white text-black px-6 py-2 rounded-full font-semibold text-sm hover:bg-opacity-90 transition-all">
+                      Shop Now
+                    </button>
+                  </div>
+                </div>
+                
+                {/* Reflection effect */}
+                <div 
+                  className="absolute top-full left-0 w-full h-24 mt-4"
+                  style={{
+                    transform: 'rotateX(180deg)',
+                    transformOrigin: 'top',
+                    opacity: 0.3,
+                    maskImage: 'linear-gradient(to bottom, white 0%, transparent 100%)',
+                    WebkitMaskImage: 'linear-gradient(to bottom, white 0%, transparent 100%)',
+                  }}
+                >
+                  <img
+                    src={product.image}
+                    alt=""
+                    className="w-full h-full object-cover"
+                    style={{
+                      filter: 'blur(3px)',
+                    }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      
+      {/* Instructions */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/60 text-sm">
+        Drag to rotate the carousel
+      </div>
+    </div>
+  );
+};
 
 const StBeast = () => {
-  const [currentIndex, setCurrentIndex] = useState(2); // Start with middle item active
-
   // Sample product data - replace with your actual images
   const products = [
     {
@@ -41,37 +222,43 @@ const StBeast = () => {
         "https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=500&fit=crop",
       title: "Crop Top",
       description: "Stylish casual crop top",
+    },{
+      id: 6,
+      image:
+        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop",
+      title: "Oversized Hoodie",
+      description: "Comfortable cotton blend hoodie",
+    },
+    {
+      id: 7,
+      image:
+        "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=500&fit=crop",
+      title: "Vintage Tee",
+      description: "Classic vintage style t-shirt",
+    },
+    {
+      id: 8,
+      image:
+        "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=500&fit=crop",
+      title: "Royal Blue Sweatshirt",
+      description:
+        "Unisex oversized t-shirt in bold royal blue with puff print detailing.",
+    },
+    {
+      id: 9,
+      image:
+        "https://images.unsplash.com/photo-1562157873-818bc0726f68?w=400&h=500&fit=crop",
+      title: "Casual Shirt",
+      description: "Premium cotton casual wear",
+    },
+    {
+      id: 10,
+      image:
+        "https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=500&fit=crop",
+      title: "Crop Top",
+      description: "Stylish casual crop top",
     },
   ];
-
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === products.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? products.length - 1 : prevIndex - 1
-    );
-  };
-
-  const goToSlide = (index) => {
-    setCurrentIndex(index);
-  };
-
-  const getVisibleProducts = () => {
-    const visible = [];
-    for (let i = -2; i <= 2; i++) {
-      const index = (currentIndex + i + products.length) % products.length;
-      visible.push({
-        ...products[index],
-        position: i,
-        originalIndex: index,
-      });
-    }
-    return visible;
-  };
 
   return (
     <div className="min-h-screen bg-[#b8001f] relative overflow-hidden">
@@ -146,217 +333,19 @@ const StBeast = () => {
         </div>
       </div>
 
-      {/* Main Slider Container */}
-      <div className="relative z-10 flex items-center justify-center min-h-[600px]">
-        <button
-          onClick={prevSlide}
-          className="absolute left-8 z-20 p-3 bg-black bg-opacity-20 rounded-full backdrop-blur-sm border border-black border-opacity-30 hover:bg-opacity-30 transition-all flex items-center justify-center cursor-pointer"
-        >
-          {/* Kotha Saruku SVG badge */}
-          <svg
-            width="48"
-            height="48"
-            viewBox="0 0 48 48"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="mr-2"
-          >
-            <path
-              d="M8.5 24.5L3 18L12 16L10 7L19 10L24 3L29 10L38 7L36 16L45 18L39.5 24.5L45 31L36 33L38 42L29 39L24 45L19 39L10 42L12 33L3 31L8.5 24.5Z"
-              stroke="white"
-              strokeWidth="2"
-              fill="none"
-            />
-            <text
-              x="50%"
-              y="40%"
-              textAnchor="middle"
-              fill="white"
-              fontSize="7"
-              fontWeight="bold"
-              fontFamily="Inter, sans-serif"
-              dominantBaseline="middle"
-            >
-              Kotha
-            </text>
-            <text
-              x="50%"
-              y="55%"
-              textAnchor="middle"
-              fill="white"
-              fontSize="7"
-              fontWeight="bold"
-              fontFamily="Inter, sans-serif"
-              dominantBaseline="middle"
-            >
-              Saruku
-            </text>
-          </svg>
-          <ChevronLeft className="w-6 h-6 text-white" />
-        </button>
-
-        <div className="flex items-center justify-center space-x-4 w-full max-w-6xl px-16">
-          {getVisibleProducts().map((product, index) => {
-            const isCenter = product.position === 0;
-            const isAdjacent = Math.abs(product.position) === 1;
-            const isEdge = Math.abs(product.position) === 2;
-
-            return (
-              <div
-                key={`${product.id}-${product.position}`}
-                className={`
-                  relative cursor-pointer
-                  ${isCenter ? "z-30" : ""}
-                  ${isAdjacent ? "z-20" : ""}
-                  ${isEdge ? "z-10" : ""}
-                  ${!isCenter && !isAdjacent && !isEdge ? "hidden" : ""}
-                `}
-                style={{
-                  transform: isCenter 
-                    ? "scale(0.9)" 
-                    : isAdjacent 
-                    ? "scale(1.0)" 
-                    : isEdge 
-                    ? "scale(1.45)" 
-                    : "scale(1.0)",
-                  opacity:1,
-                  transition: "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-                }}
-                onClick={() => goToSlide(product.originalIndex)}
-              >
-                <div
-                  className={`overflow-hidden
-                  ${isCenter ? "w-84 h-68" : "w-80 h-96"}
-                `}
-                  style={{
-                    transition: "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-                  }}
-                >
-                  <div className="relative h-auto overflow-hidden">
-                    <img
-                      src={product.image}
-                      alt={product.title}
-                      className="w-full h-full object-cover hover:scale-105"
-                      style={{
-                        transform:
-                          isCenter
-                            ? "perspective(1000px) rotateY(0deg) scale(1)"
-                            : product.position === -2
-                            ? "perspective(1000px) rotateY(35deg) scale(1)"
-                            : product.position === -1
-                            ? "perspective(1000px) rotateY(28deg) scale(0.98)"
-                            : product.position === 1
-                            ? "perspective(1000px) rotateY(-18deg) scale(0.98)"
-                            : product.position === 2
-                            ? "perspective(1000px) rotateY(-35deg) scale(0.92)"
-                            : "perspective(1000px) rotateY(0deg) scale(1)",
-                        transformOrigin: "center center",
-                        transition: "transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), clip-path 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-                        clipPath:
-                          isCenter
-                            ? "polygon(0 0, 100% 0, 99% 92%, 1% 90%)"
-                            : product.position === -2
-                            ? "polygon(0 7%, 100% 14%, 100% 88%, 0 93%)"
-                            : product.position === -1
-                            ? "polygon(0 7%, 100% 14%, 100% 88%, 0 93%)"
-                            : product.position === 1
-                            ? "polygon(0 19%, 100% 5%, 100% 94%, 0 80%)"
-                            : product.position === 2
-                            ? "polygon(0 19%, 100% 5%, 100% 94%, 0 80%)"
-                            : "polygon(15% 0%, 85% 0%, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0% 85%, 0% 15%)",
-                      }}
-                    />
-                    {isCenter && (
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-30"></div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Decorative elements for center item */}
-                {isCenter && (
-                  <>
-                    <div className="absolute -top-4 -right-4 w-8 h-8 border-2 border-white border-dashed rounded-full animate-pulse"></div>
-                    <div className="absolute -bottom-6 -left-6 text-white text-xs font-bold bg-[#b8001f] px-3 py-1 rounded-full transform rotate-12">
-                      rang sarku
-                    </div>
-                  </>
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        <button
-          onClick={nextSlide}
-          className="absolute right-8 z-20 p-3 bg-black bg-opacity-20 rounded-full backdrop-blur-sm border border-black border-opacity-30 hover:bg-opacity-30 transition-all flex items-center justify-center cursor-pointer"
-        >
-          <ChevronRight className="w-6 h-6 text-white" />
-          {/* Kotha Saruku SVG badge */}
-          <svg
-            width="48"
-            height="48"
-            viewBox="0 0 48 48"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="ml-2"
-          >
-            <path
-              d="M8.5 24.5L3 18L12 16L10 7L19 10L24 3L29 10L38 7L36 16L45 18L39.5 24.5L45 31L36 33L38 42L29 39L24 45L19 39L10 42L12 33L3 31L8.5 24.5Z"
-              stroke="white"
-              strokeWidth="2"
-              fill="none"
-            />
-            <text
-              x="50%"
-              y="40%"
-              textAnchor="middle"
-              fill="white"
-              fontSize="7"
-              fontWeight="bold"
-              fontFamily="Inter, sans-serif"
-              dominantBaseline="middle"
-            >
-              Kotha
-            </text>
-            <text
-              x="50%"
-              y="55%"
-              textAnchor="middle"
-              fill="white"
-              fontSize="7"
-              fontWeight="bold"
-              fontFamily="Inter, sans-serif"
-              dominantBaseline="middle"
-            >
-              Saruku
-            </text>
-          </svg>
-        </button>
+      {/* Title Section */}
+      <div className="text-center text-white mb-16">
+        <h1 className="text-4xl font-bold mb-4">Beast Mode - Wear What Roars</h1>
+        <p className="text-lg opacity-80">
+          From oversized fits that scream confidence to punchlines that rep
+          <br />
+          your vibe — this drop is all about you.
+        </p>
       </div>
 
-      {/* Bottom Navigation Dots */}
-      <div className="relative z-10 flex justify-center space-x-3 pb-12">
-        {products.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`
-              w-3 h-3 rounded-full transition-all duration-300
-              ${
-                index === currentIndex
-                  ? "bg-white scale-125"
-                  : "bg-white bg-opacity-50 hover:bg-opacity-75"
-              }
-            `}
-          />
-        ))}
-      </div>
-
-      {/* Footer Text */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white text-center mt-8">
-            <p className="text-sm opacity-70 p-8">
-              Swipe or click to explore more styles
-            </p>
+      {/* 3D Curved Carousel */}
+      <div className="relative flex items-center justify-center min-h-[500px] px-8">
+        <CurvedCarousel products={products} />
       </div>
     </div>
   );
