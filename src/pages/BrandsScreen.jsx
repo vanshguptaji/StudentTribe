@@ -12,32 +12,6 @@ export default function BrandsScreen() {
   const imagesRef = useRef([]);
 
   useEffect(() => {
-    const runAnimation = () => {
-      setIsVisible(true);
-      
-      // Animate images when section comes into view
-      if (imagesRef.current.length > 0) {
-        // Reset images first
-        gsap.set(imagesRef.current, {
-          y: window.innerHeight + 200,
-          opacity: 0,
-          scale: 0.8
-        });
-
-        gsap.to(imagesRef.current, {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          duration: 1.2,
-          ease: "power3.out",
-          stagger: {
-            amount: 1.5,
-            from: "random"
-          }
-        });
-      }
-    };
-
     if (containerRef.current) {
       // Set initial state for images
       gsap.set(imagesRef.current, {
@@ -46,25 +20,32 @@ export default function BrandsScreen() {
         scale: 0.8
       });
 
-      // Create scroll trigger for brands screen
-      ScrollTrigger.create({
-        trigger: containerRef.current,
-        start: "top 80%",
-        onEnter: runAnimation
+      // Create scroll-triggered timeline
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1,
+          invalidateOnRefresh: true,
+          onUpdate: () => setIsVisible(true)
+        }
       });
 
-      // Listen for manual animation triggers
-      const handleAnimationTrigger = (event) => {
-        if (event.detail?.sectionName === 'brands') {
-          runAnimation();
+      tl.to(imagesRef.current, {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        duration: 1.2,
+        ease: "power3.out",
+        stagger: {
+          amount: 1.5,
+          from: "random"
         }
-      };
-
-      window.addEventListener('triggerSectionAnimation', handleAnimationTrigger);
+      });
 
       return () => {
         ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-        window.removeEventListener('triggerSectionAnimation', handleAnimationTrigger);
       };
     }
   }, []);

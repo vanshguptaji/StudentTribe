@@ -236,6 +236,11 @@ const CurvedCarousel = ({ products }) => {
 };
 
 const StBeast = () => {
+  const containerRef = useRef(null);
+  const headerRef = useRef(null);
+  const titleRef = useRef(null);
+  const carouselRef = useRef(null);
+
   // Sample product data - replace with your actual images
   const products = [
     {
@@ -311,8 +316,51 @@ const StBeast = () => {
     },
   ];
 
+  useEffect(() => {
+    if (containerRef.current) {
+      // Set initial states
+      gsap.set(headerRef.current, { y: -50, opacity: 0 });
+      gsap.set(titleRef.current, { y: 50, opacity: 0 });
+      gsap.set(carouselRef.current, { scale: 0.8, opacity: 0 });
+
+      // Create scroll-triggered timeline
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1,
+          invalidateOnRefresh: true
+        }
+      });
+
+      tl.to(headerRef.current, {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: "power2.out"
+      })
+      .to(titleRef.current, {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: "power2.out"
+      }, 0.2)
+      .to(carouselRef.current, {
+        scale: 1,
+        opacity: 1,
+        duration: 1,
+        ease: "power2.out"
+      }, 0.4);
+
+      return () => {
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      };
+    }
+  }, []);
+
   return (
-    <div className="min-h-screen bg-[#b8001f] relative overflow-hidden">
+    <div ref={containerRef} className="min-h-screen bg-[#b8001f] relative overflow-hidden" id="beast-section">
       {/* Background Pattern and Top Dashed Texts */}
       <div className="absolute inset-0 opacity-10">
         {/* Decorative dashed boxes */}
@@ -353,7 +401,7 @@ const StBeast = () => {
       </div>
 
       {/* Header - Styled like MainScreen */}
-      <div className="relative z-10 pt-12 pb-8">
+      <div ref={headerRef} className="relative z-10 pt-12 pb-8">
         <div className="text-center">
           <div
             className="text-white font-black text-6xl leading-none drop-shadow-lg tracking-tight"
@@ -385,7 +433,7 @@ const StBeast = () => {
       </div>
 
       {/* Title Section */}
-      <div className="text-center text-white mb-16">
+      <div ref={titleRef} className="text-center text-white mb-16">
         <h1 className="text-4xl font-bold mb-4">Beast Mode - Wear What Roars</h1>
         <p className="text-lg opacity-80">
           From oversized fits that scream confidence to punchlines that rep
@@ -395,7 +443,7 @@ const StBeast = () => {
       </div>
 
       {/* 3D Curved Carousel */}
-      <div className="relative flex items-center justify-center min-h-[500px] px-8">
+      <div ref={carouselRef} className="relative flex items-center justify-center min-h-[500px] px-8">
         <CurvedCarousel products={products} />
       </div>
     </div>

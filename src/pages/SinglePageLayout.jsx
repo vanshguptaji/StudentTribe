@@ -25,15 +25,6 @@ const SinglePageLayout = () => {
   // Function to trigger section animation
   const triggerSectionAnimation = (sectionRef, sectionName) => {
     if (sectionRef.current) {
-      // Reset and trigger animation based on section type
-      gsap.set(sectionRef.current, { opacity: 0, y: 50 });
-      gsap.to(sectionRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        ease: "power2.out"
-      });
-
       // Trigger specific animations for each section
       const event = new CustomEvent('triggerSectionAnimation', { 
         detail: { sectionName } 
@@ -75,75 +66,19 @@ const SinglePageLayout = () => {
       }
     };
 
+    // Refresh ScrollTrigger on component mount and window resize
+    ScrollTrigger.refresh();
+
+    const handleResize = () => {
+      ScrollTrigger.refresh();
+    };
+
     window.addEventListener('navbarClick', handleNavbarClick);
+    window.addEventListener('resize', handleResize);
 
     return () => {
       window.removeEventListener('navbarClick', handleNavbarClick);
-    };
-  }, []);
-
-  useEffect(() => {
-    // Refresh ScrollTrigger on component mount
-    ScrollTrigger.refresh();
-
-    // Create scroll-triggered animations for each section
-    const sections = [
-      { ref: mainRef, component: "MainScreen" },
-      { ref: brandsRef, component: "BrandsScreen" },
-      { ref: appRef, component: "StudentApp" },
-      { ref: eventsRef, component: "STEvents" },
-      { ref: beastRef, component: "STbeast" },
-      { ref: careRef, component: "STCare" },
-      { ref: aboutRef, component: "WhoweAre" }
-    ];
-
-    sections.forEach((section, index) => {
-      if (section.ref.current) {
-        // Set initial state for each section
-        gsap.set(section.ref.current, {
-          opacity: 0,
-          y: 100
-        });
-
-        // Create scroll trigger for each section
-        ScrollTrigger.create({
-          trigger: section.ref.current,
-          start: "top 80%",
-          end: "bottom 20%",
-          onEnter: () => {
-            gsap.to(section.ref.current, {
-              opacity: 1,
-              y: 0,
-              duration: 1,
-              ease: "power2.out"
-            });
-          },
-          onLeave: () => {
-            gsap.to(section.ref.current, {
-              opacity: 0.3,
-              duration: 0.5
-            });
-          },
-          onEnterBack: () => {
-            gsap.to(section.ref.current, {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              ease: "power2.out"
-            });
-          },
-          onLeaveBack: () => {
-            gsap.to(section.ref.current, {
-              opacity: 0.3,
-              duration: 0.5
-            });
-          }
-        });
-      }
-    });
-
-    // Cleanup function
-    return () => {
+      window.removeEventListener('resize', handleResize);
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);

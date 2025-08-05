@@ -19,86 +19,115 @@ const STCare = () => {
   const overwhelmedParaRef = useRef(null);
 
   useEffect(() => {
-    const tl = gsap.timeline();
+    const runAnimation = () => {
+      const tl = gsap.timeline();
 
-    // Set initial states
-    gsap.set([leftImageRef.current, rightContentRef.current, rightImage1Ref.current, rightImage2Ref.current, buttonRef.current, bottomTextRef.current, overwhelmedParaRef.current], {
-      opacity: 0
-    });
-    
-    gsap.set(headingRef.current, {
-      x: 0,
-      y: 0,
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      zIndex: 50
-    });
-    
-    gsap.set(subheadingRef.current, {
-      x: 0,
-      y: 0,
-      position: 'absolute',
-      top: '55%',
-      left: '50%',
-      transform: 'translate(-50%, -40%)',
-      zIndex: 50
-    });
+      // Set initial states - don't set absolute positioning for headings initially
+      gsap.set([leftImageRef.current, rightContentRef.current, rightImage1Ref.current, rightImage2Ref.current, buttonRef.current, bottomTextRef.current, overwhelmedParaRef.current], {
+        opacity: 0
+      });
+      
+      gsap.set(headingRef.current, {
+        opacity: 0,
+        y: -50
+      });
+      
+      gsap.set(subheadingRef.current, {
+        opacity: 0,
+        y: -50
+      });
 
-    gsap.set(leftImageRef.current, { x: -400 });
-    gsap.set(rightContentRef.current, { x: 400 });
-    gsap.set(rightImage1Ref.current, { scale: 0 });
-    gsap.set(rightImage2Ref.current, { x: 300 });
-    gsap.set(buttonRef.current, { y: -500 }); // Button starts from top of screen
-    gsap.set(bottomTextRef.current, { y: -500 }); // Bottom text starts from top of screen
-    gsap.set(overwhelmedParaRef.current, { y: -500 }); // Overwhelmed para starts from top of screen
+      gsap.set(leftImageRef.current, { x: -400 });
+      gsap.set(rightContentRef.current, { x: 400 });
+      gsap.set(rightImage1Ref.current, { scale: 0 });
+      gsap.set(rightImage2Ref.current, { x: 300 });
+      gsap.set(buttonRef.current, { y: -500 }); // Button starts from top of screen
+      gsap.set(bottomTextRef.current, { y: -500 }); // Bottom text starts from top of screen
+      gsap.set(overwhelmedParaRef.current, { y: -500 }); // Overwhelmed para starts from top of screen
 
-    // Animation sequence
-    tl.to([headingRef.current, subheadingRef.current], {
-      delay: 2,
-      duration: 1.5,
-      position: 'relative',
-      top: '10',
-      left: 'auto',
-      transform: 'none',
-      ease: "power2.out"
-    })
-    .to(leftImageRef.current, {
-      opacity: 1,
-      x: 0,
-      duration: 1.2,
-      ease: "power3.out"
-    }, 2) // Start at same time as headings
-    .to(rightContentRef.current, {
-      opacity: 1,
-      x: 0,
-      duration: 1.2,
-      ease: "power3.out"
-    }, 2) // Start at same time as headings
-    .to(rightImage1Ref.current, {
-      opacity: 1,
-      scale: 1,
-      duration: 1.2,
-      ease: "back.out(1.7)"
-    }, 2) // Start at same time as headings
-    .to(rightImage2Ref.current, {
-      opacity: 1,
-      x: 0,
-      duration: 1.2,
-      ease: "power3.out"
-    }, 2) // Start at same time as headings
-    .to([buttonRef.current, bottomTextRef.current, overwhelmedParaRef.current], {
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      ease: "power2.out",
-      stagger: 0.1
-    }, "+=0.1"); // Start 0.1 seconds after other animations complete
+      // Animation sequence - start with headings
+      tl.to([headingRef.current, subheadingRef.current], {
+        opacity: 1,
+        y: 0,
+        duration: 1.5,
+        ease: "power2.out"
+      })
+      .to(leftImageRef.current, {
+        opacity: 1,
+        x: 0,
+        duration: 1.2,
+        ease: "power3.out"
+      }, 0.5) // Start slightly after headings
+      .to(rightContentRef.current, {
+        opacity: 1,
+        x: 0,
+        duration: 1.2,
+        ease: "power3.out"
+      }, 0.5) // Start slightly after headings
+      .to(rightImage1Ref.current, {
+        opacity: 1,
+        scale: 1,
+        duration: 1.2,
+        ease: "back.out(1.7)"
+      }, 0.5) // Start slightly after headings
+      .to(rightImage2Ref.current, {
+        opacity: 1,
+        x: 0,
+        duration: 1.2,
+        ease: "power3.out"
+      }, 0.5) // Start slightly after headings
+      .to([buttonRef.current, bottomTextRef.current, overwhelmedParaRef.current], {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: "power2.out",
+        stagger: 0.1
+      }, "+=0.3"); // Start after other animations
+    };
 
+    if (containerRef.current) {
+      // Set initial states first
+      gsap.set([leftImageRef.current, rightContentRef.current, rightImage1Ref.current, rightImage2Ref.current, buttonRef.current, bottomTextRef.current, overwhelmedParaRef.current], {
+        opacity: 0
+      });
+      gsap.set(headingRef.current, { opacity: 0, y: -50 });
+      gsap.set(subheadingRef.current, { opacity: 0, y: -50 });
+      gsap.set(leftImageRef.current, { x: -400 });
+      gsap.set(rightContentRef.current, { x: 400 });
+      gsap.set(rightImage1Ref.current, { scale: 0 });
+      gsap.set(rightImage2Ref.current, { x: 300 });
+      gsap.set(buttonRef.current, { y: -500 });
+      gsap.set(bottomTextRef.current, { y: -500 });
+      gsap.set(overwhelmedParaRef.current, { y: -500 });
+
+      // Create scroll trigger for care section
+      ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: "top 85%",
+        onEnter: () => {
+          console.log("STCare animation triggered!"); // Debug log
+          runAnimation();
+        }
+      });
+
+      // Listen for manual animation triggers
+      const handleAnimationTrigger = (event) => {
+        if (event.detail?.sectionName === 'care') {
+          console.log("STCare manual trigger!"); // Debug log
+          runAnimation();
+        }
+      };
+
+      window.addEventListener('triggerSectionAnimation', handleAnimationTrigger);
+
+      return () => {
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        window.removeEventListener('triggerSectionAnimation', handleAnimationTrigger);
+      };
+    }
   }, []);
   return (
-    <div className="min-h-screen bg-rose-100 relative overflow-hidden">
+    <div ref={containerRef} className="min-h-screen bg-rose-100 relative overflow-hidden" id="care-section">
       {/* Background design elements */}
       <div className="absolute inset-0">
         <svg

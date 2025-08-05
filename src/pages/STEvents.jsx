@@ -48,16 +48,24 @@ export default function STEvents() {
 
   // GSAP Animation Timeline with ScrollTrigger
   useEffect(() => {
-    const runAnimation = () => {
-      const tl = gsap.timeline();
-      
-      // Reset elements first
+    if (containerRef.current) {
+      // Set initial positions
       gsap.set(mainSliderRef.current, { x: -window.innerWidth, opacity: 0 });
       gsap.set(bottomSliderRef.current, { x: window.innerWidth, opacity: 0 });
       gsap.set(textContentRef.current, { y: -100, opacity: 0 });
       gsap.set(buttonsRef.current, { y: -50, opacity: 0 });
       
-      // Animate all elements simultaneously
+      // Create scroll-triggered timeline
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1,
+          invalidateOnRefresh: true
+        }
+      });
+
       tl.to(mainSliderRef.current, { 
         x: 0, 
         opacity: 1, 
@@ -82,34 +90,9 @@ export default function STEvents() {
         duration: 1, 
         ease: "power2.out" 
       }, 0.2);
-    };
-
-    if (containerRef.current) {
-      // Set initial positions
-      gsap.set(mainSliderRef.current, { x: -window.innerWidth, opacity: 0 });
-      gsap.set(bottomSliderRef.current, { x: window.innerWidth, opacity: 0 });
-      gsap.set(textContentRef.current, { y: -100, opacity: 0 });
-      gsap.set(buttonsRef.current, { y: -50, opacity: 0 });
-      
-      // Create scroll trigger for events section
-      ScrollTrigger.create({
-        trigger: containerRef.current,
-        start: "top 80%",
-        onEnter: runAnimation
-      });
-
-      // Listen for manual animation triggers
-      const handleAnimationTrigger = (event) => {
-        if (event.detail?.sectionName === 'events') {
-          runAnimation();
-        }
-      };
-
-      window.addEventListener('triggerSectionAnimation', handleAnimationTrigger);
 
       return () => {
         ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-        window.removeEventListener('triggerSectionAnimation', handleAnimationTrigger);
       };
     }
   }, []);
