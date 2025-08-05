@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import stcareBanner from "../src/assets/StCare/Frame 2147223325.svg"
+import stcareBanner from "../assets/StCare/Frame 2147223325.svg"
 
 const STCare = () => {
   const headingRef = useRef(null);

@@ -1,16 +1,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MainScreen from './MainScreen';
-import BrandsScreen from './BrandsScreen';
-import StudentApp from './StudentApp';
+import MainScreen from './pages/MainScreen';
+import BrandsScreen from './pages/BrandsScreen';
+import StudentApp from './pages/StudentApp';
 import BottomNavbar from './components/BottomNavbar';
 import Footer from './components/Footer';
-import STEvents from './STEvents';
-import StBeast from './STbeast';
-import STCare from './STCare';
-import SplashSplash2 from './SplashSplash2';
-import CurvedCarousel from './ImageSlider';
+import STEvents from './pages/STEvents';
+import StBeast from './pages/STbeast';
+import STCare from './pages/STCare';
+import SplashSplash2 from './pages/SplashSplash2';
+import CurvedCarousel from './pages/ImageSlider';
 
 
 

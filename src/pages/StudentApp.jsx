@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import robot from "../src/assets/BrandsSection/image 269.svg";
-import iphone from "../src/assets/BrandsSection/iPhone.svg";
-import quizImg from "../src/assets/BrandsSection/center.svg";
+import robot from "../assets/BrandsSection/image 269.svg";
+import iphone from "../assets/BrandsSection/iPhone.svg";
+import quizImg from "../assets/BrandsSection/center.svg";
 
 export default function StudentApp() {
   const [isVisible, setIsVisible] = useState(false);
