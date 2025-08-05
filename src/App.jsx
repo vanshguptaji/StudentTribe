@@ -38,9 +38,21 @@ function App() {
     };
   }, []);
 
+  // Handler to immediately end splash on click
+  const handleSplashClick = () => {
+    setFadeOut(true);
+    setTimeout(() => {
+      setShowSplash(false);
+    }, 700); // match fade duration
+  };
+
   // If splash screen should be shown, render only the splash screen
   if (showSplash) {
-    return <SplashSplash2 fade={fadeOut} />;
+    return (
+      <div onClick={handleSplashClick} style={{ cursor: 'pointer', width: '100vw', height: '100vh' }}>
+        <SplashSplash2 fade={fadeOut} />
+      </div>
+    );
   }
 
   return (

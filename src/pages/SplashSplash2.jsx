@@ -277,16 +277,6 @@ const SplashSplash2 = ({ fade }) => {
       </div>
     </div>
 
-    {/* People Silhouettes at Bottom - positioned like in Figma design */}
-    <div className="absolute bottom-0 left-0 right-0 flex items-end justify-center opacity-30">
-      {/* Scattered people across the bottom */}
-      <div className="relative w-full h-32 flex items-end justify-center">
-        {/* Left side people removed, now only right side people remain */}
-        
-        {/* Right side people removed */}
-      </div>
-    </div>
-
     {/* Additional decorative elements */}
     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
   </div>
