@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
 
 export default function STEvents() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [activeTab, setActiveTab] = useState('Students');
   
   // Refs for GSAP animations
+  const containerRef = useRef(null);
   const mainSliderRef = useRef(null);
   const bottomSliderRef = useRef(null);
   const textContentRef = useRef(null);
@@ -41,41 +46,72 @@ export default function STEvents() {
     }
   }, [currentSlide, sliderImages.length]);
 
-  // GSAP Animation Timeline
+  // GSAP Animation Timeline with ScrollTrigger
   useEffect(() => {
-    const tl = gsap.timeline();
-    
-    // Set initial positions
-    gsap.set(mainSliderRef.current, { x: -window.innerWidth, opacity: 0 });
-    gsap.set(bottomSliderRef.current, { x: window.innerWidth, opacity: 0 });
-    gsap.set(textContentRef.current, { y: -100, opacity: 0 });
-    gsap.set(buttonsRef.current, { y: -50, opacity: 0 });
-    
-    // Animate all elements simultaneously
-    tl.to(mainSliderRef.current, { 
-      x: 0, 
-      opacity: 1, 
-      duration: 1.2, 
-      ease: "power3.out" 
-    }, 0)
-    .to(bottomSliderRef.current, { 
-      x: 0, 
-      opacity: 1, 
-      duration: 1.2, 
-      ease: "power3.out" 
-    }, 0)
-    .to(textContentRef.current, { 
-      y: 0, 
-      opacity: 1, 
-      duration: 1, 
-      ease: "power2.out" 
-    }, 0)
-    .to(buttonsRef.current, { 
-      y: 0, 
-      opacity: 1, 
-      duration: 1, 
-      ease: "power2.out" 
-    }, 0.2);
+    const runAnimation = () => {
+      const tl = gsap.timeline();
+      
+      // Reset elements first
+      gsap.set(mainSliderRef.current, { x: -window.innerWidth, opacity: 0 });
+      gsap.set(bottomSliderRef.current, { x: window.innerWidth, opacity: 0 });
+      gsap.set(textContentRef.current, { y: -100, opacity: 0 });
+      gsap.set(buttonsRef.current, { y: -50, opacity: 0 });
+      
+      // Animate all elements simultaneously
+      tl.to(mainSliderRef.current, { 
+        x: 0, 
+        opacity: 1, 
+        duration: 1.2, 
+        ease: "power3.out" 
+      }, 0)
+      .to(bottomSliderRef.current, { 
+        x: 0, 
+        opacity: 1, 
+        duration: 1.2, 
+        ease: "power3.out" 
+      }, 0)
+      .to(textContentRef.current, { 
+        y: 0, 
+        opacity: 1, 
+        duration: 1, 
+        ease: "power2.out" 
+      }, 0)
+      .to(buttonsRef.current, { 
+        y: 0, 
+        opacity: 1, 
+        duration: 1, 
+        ease: "power2.out" 
+      }, 0.2);
+    };
+
+    if (containerRef.current) {
+      // Set initial positions
+      gsap.set(mainSliderRef.current, { x: -window.innerWidth, opacity: 0 });
+      gsap.set(bottomSliderRef.current, { x: window.innerWidth, opacity: 0 });
+      gsap.set(textContentRef.current, { y: -100, opacity: 0 });
+      gsap.set(buttonsRef.current, { y: -50, opacity: 0 });
+      
+      // Create scroll trigger for events section
+      ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: "top 80%",
+        onEnter: runAnimation
+      });
+
+      // Listen for manual animation triggers
+      const handleAnimationTrigger = (event) => {
+        if (event.detail?.sectionName === 'events') {
+          runAnimation();
+        }
+      };
+
+      window.addEventListener('triggerSectionAnimation', handleAnimationTrigger);
+
+      return () => {
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        window.removeEventListener('triggerSectionAnimation', handleAnimationTrigger);
+      };
+    }
   }, []);
 
   const nextSlide = () => {
@@ -87,7 +123,7 @@ export default function STEvents() {
   };
 
   return (
-    <div className="min-h-screen bg-rose-100 relative overflow-hidden">
+    <div ref={containerRef} className="min-h-screen bg-rose-100 relative overflow-hidden" id="events-section">
       {/* Side Text Elements */}
       <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -rotate-90 text-black font-bold text-lg tracking-widest z-10">
         ST EVENTS
@@ -107,32 +143,6 @@ export default function STEvents() {
             <div className="text-gray-800 text-lg font-medium drop-shadow mb-4">
               Student Tribe
             </div>
-          </div>
-        </div>
-
-        {/* Navigation Tabs */}
-        <div className="flex justify-center mb-12">
-          <div className="bg-gray-800 rounded-full p-1 flex">
-            <button
-              onClick={() => setActiveTab('Students')}
-              className={`px-8 py-3 rounded-full font-medium transition-all duration-300 ${
-                activeTab === 'Students'
-                  ? 'bg-red-600 text-white'
-                  : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              Students
-            </button>
-            <button
-              onClick={() => setActiveTab('Brands')}
-              className={`px-8 py-3 rounded-full font-medium transition-all duration-300 ${
-                activeTab === 'Brands'
-                  ? 'bg-red-600 text-white'
-                  : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              Brands
-            </button>
           </div>
         </div>
 

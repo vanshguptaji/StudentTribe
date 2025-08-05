@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import robot from "../assets/BrandsSection/image 269.svg";
 import iphone from "../assets/BrandsSection/iPhone.svg";
 import quizImg from "../assets/BrandsSection/center.svg";
 
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
+
 export default function StudentApp() {
   const [isVisible, setIsVisible] = useState(false);
+  const containerRef = useRef(null);
   const phoneRef = useRef(null);
   const topLeftCardRef = useRef(null);
   const topRightCardRef = useRef(null);
@@ -25,7 +30,7 @@ export default function StudentApp() {
   const bottomRightContentRef = useRef(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const runAnimation = () => {
       setIsVisible(true);
       
       // Create GSAP timeline for simultaneous animations
@@ -72,13 +77,40 @@ export default function StudentApp() {
         ease: "power3.out",
         stagger: 0.1
       }, 0.3);
-      
-    }, 300);
-    return () => clearTimeout(timer);
+    };
+
+    if (containerRef.current) {
+      // Set initial states
+      gsap.set([phoneRef.current], { opacity: 0, y: 200 });
+      gsap.set([topLeftCardRef.current, topRightCardRef.current, bottomLeftCardRef.current, bottomRightCardRef.current], { opacity: 0 });
+      gsap.set([topLeftBgRef.current, topRightBgRef.current, bottomLeftBgRef.current, bottomRightBgRef.current], { scale: 0 });
+      gsap.set([topLeftContentRef.current, topRightContentRef.current, bottomLeftContentRef.current, bottomRightContentRef.current], { opacity: 0 });
+
+      // Create scroll trigger for student app section
+      ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: "top 80%",
+        onEnter: runAnimation
+      });
+
+      // Listen for manual animation triggers
+      const handleAnimationTrigger = (event) => {
+        if (event.detail?.sectionName === 'app') {
+          runAnimation();
+        }
+      };
+
+      window.addEventListener('triggerSectionAnimation', handleAnimationTrigger);
+
+      return () => {
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        window.removeEventListener('triggerSectionAnimation', handleAnimationTrigger);
+      };
+    }
   }, []);
 
   return (
-    <div className="min-h-screen w-screen bg-gradient-to-br from-[#b8001f] to-[#7a0015] overflow-hidden relative">
+    <div ref={containerRef} className="min-h-screen w-full bg-gradient-to-br from-[#b8001f] to-[#7a0015] overflow-hidden relative">
       {/* Header */}
       <div className="relative z-20 pt-16 text-center">
         <div className="text-white font-black text-6xl leading-none drop-shadow-lg tracking-tight">st.</div>

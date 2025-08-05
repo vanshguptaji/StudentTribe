@@ -1,6 +1,9 @@
 import React, { useRef, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import gsap from "gsap";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
 
 const randomPhotos = [
   "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=facearea&w=400&q=80",
@@ -40,81 +43,111 @@ function getRandomStyle() {
   };
 }
 
-const MainScreen = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const isBrands = location.pathname === "/brands";
+const MainScreen = ({ onNavigateToSection }) => {
   const logoRef = useRef(null);
   const backgroundRef = useRef(null);
   const buttonsRef = useRef(null);
   const descriptionRef = useRef(null);
   const descriptionLettersRef = useRef([]);
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    if (logoRef.current) {
-      // Initially hide all other elements
-      gsap.set([backgroundRef.current, buttonsRef.current], {
-        opacity: 0,
-      });
-
-      gsap.set(descriptionLettersRef.current, {
-        opacity: 0,
-        rotateX: 90,
-        transformOrigin: "left bottom",
-        display: "inline-block",
-      });
-
-      // Set logo initial state - large and centered
-      gsap.set(logoRef.current, {
-        scale: 2.5,
-        x: 0,
-        y: 0,
-        opacity: 1,
-      });
-
-      // Create timeline for sequence
-      const tl = gsap.timeline();
-      tl
-        .to(
-          logoRef.current,
-          {
-            duration: 1.2,
-            scale: 1,
-            ease: "power3.out",
-          },
-          "+=0.3"
-        )
-        // Step 3: Fade in other elements
-        .to(
-          backgroundRef.current,
-          {
-            duration: 0.8,
-            opacity: 1,
-            ease: "power2.out",
-          },
-          "-=0.6"
-        )
-        .to(
-          buttonsRef.current,
-          {
-            duration: 0.6,
-            opacity: 1,
-            ease: "power2.out",
-          },
-          "-=0.4"
-        )
-        .to(descriptionLettersRef.current, {
-          opacity: 1,
-          rotateX: 0,
-          duration: 0.5,
-          ease: "back.out(1.7)",
-          stagger: 0.035,
+    const runAnimation = () => {
+      if (logoRef.current && containerRef.current) {
+        // Initially hide all elements
+        gsap.set([backgroundRef.current, buttonsRef.current], {
+          opacity: 0,
         });
+
+        gsap.set(descriptionLettersRef.current, {
+          opacity: 0,
+          rotateX: 90,
+          transformOrigin: "left bottom",
+          display: "inline-block",
+        });
+
+        // Set logo initial state
+        gsap.set(logoRef.current, {
+          scale: 2.5,
+          x: 0,
+          y: 0,
+          opacity: 1,
+        });
+
+        // Create timeline for sequence
+        const tl = gsap.timeline();
+        tl
+          .to(
+            logoRef.current,
+            {
+              duration: 1.2,
+              scale: 1,
+              ease: "power3.out",
+            },
+            "+=0.3"
+          )
+          .to(
+            backgroundRef.current,
+            {
+              duration: 0.8,
+              opacity: 1,
+              ease: "power2.out",
+            },
+            "-=0.6"
+          )
+          .to(
+            buttonsRef.current,
+            {
+              duration: 0.6,
+              opacity: 1,
+              ease: "power2.out",
+            },
+            "-=0.4"
+          )
+          .to(descriptionLettersRef.current, {
+            opacity: 1,
+            rotateX: 0,
+            duration: 0.5,
+            ease: "back.out(1.7)",
+            stagger: 0.035,
+          });
+      }
+    };
+
+    if (logoRef.current && containerRef.current) {
+      // Create scroll trigger for main screen animation
+      ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: "top 80%",
+        onEnter: runAnimation
+      });
+
+      // Listen for manual animation triggers
+      const handleAnimationTrigger = (event) => {
+        if (event.detail?.sectionName === 'main') {
+          runAnimation();
+        }
+      };
+
+      window.addEventListener('triggerSectionAnimation', handleAnimationTrigger);
+
+      return () => {
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        window.removeEventListener('triggerSectionAnimation', handleAnimationTrigger);
+      };
     }
   }, []);
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <>
-      <div className="relative w-screen h-screen flex items-center justify-center bg-[#b8001f] overflow-hidden">
+      <div ref={containerRef} className="relative w-screen h-screen flex items-center justify-center bg-[#b8001f] overflow-hidden"
+           id="main-section">
         {/* Background images container */}
         <div
           ref={backgroundRef}
@@ -150,27 +183,19 @@ const MainScreen = () => {
                 Student Tribe
               </div>
             </div>
-            <div
+                        <div
               ref={buttonsRef}
-              className="mx-auto mt-0 w-[400px] max-w-[90vw] bg-[#2d000a] rounded-full flex overflow-hidden shadow-lg text-xl font-bold"
+              className="mx-auto mt-8 w-[400px] max-w-[90vw] bg-[#2d000a] rounded-full flex overflow-hidden shadow-lg text-xl font-bold"
             >
               <button
-                className={`flex-1 py-4 text-center rounded-l-full transition-colors duration-300 ${
-                  !isBrands
-                    ? "bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white"
-                    : "text-gray-300 bg-transparent"
-                }`}
-                onClick={() => navigate("/")}
+                className="flex-1 py-4 text-center rounded-l-full transition-colors duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white"
+                onClick={() => scrollToSection('main-section')}
               >
                 Students
               </button>
               <button
-                className={`flex-1 py-4 text-center rounded-r-full transition-colors duration-300 ${
-                  isBrands
-                    ? "bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white"
-                    : "text-gray-300 bg-transparent"
-                }`}
-                onClick={() => navigate("/brands")}
+                className="flex-1 py-4 text-center rounded-r-full transition-colors duration-300 text-gray-300 bg-transparent"
+                onClick={() => scrollToSection('brands-section')}
               >
                 Brands
               </button>

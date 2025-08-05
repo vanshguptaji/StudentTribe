@@ -1,30 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
 // import Footer from './components/Footer';
 
 export default function BrandsScreen() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const isBrands = location.pathname === "/brands";
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef(null);
   const imagesRef = useRef([]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const runAnimation = () => {
       setIsVisible(true);
       
-      // GSAP animation for images appearing from bottom
+      // Animate images when section comes into view
       if (imagesRef.current.length > 0) {
-        // Set initial position - all images start from extreme bottom of viewport
+        // Reset images first
         gsap.set(imagesRef.current, {
-          y: window.innerHeight + 200, // Start from below viewport
+          y: window.innerHeight + 200,
           opacity: 0,
           scale: 0.8
         });
 
-        // Animate images to their final positions with staggered timing
         gsap.to(imagesRef.current, {
           y: 0,
           opacity: 1,
@@ -32,13 +31,42 @@ export default function BrandsScreen() {
           duration: 1.2,
           ease: "power3.out",
           stagger: {
-            amount: 1.5, // Total time for all animations
-            from: "random" // Random order for more dynamic effect
+            amount: 1.5,
+            from: "random"
           }
         });
       }
-    }, 300);
-    return () => clearTimeout(timer);
+    };
+
+    if (containerRef.current) {
+      // Set initial state for images
+      gsap.set(imagesRef.current, {
+        y: window.innerHeight + 200,
+        opacity: 0,
+        scale: 0.8
+      });
+
+      // Create scroll trigger for brands screen
+      ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: "top 80%",
+        onEnter: runAnimation
+      });
+
+      // Listen for manual animation triggers
+      const handleAnimationTrigger = (event) => {
+        if (event.detail?.sectionName === 'brands') {
+          runAnimation();
+        }
+      };
+
+      window.addEventListener('triggerSectionAnimation', handleAnimationTrigger);
+
+      return () => {
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        window.removeEventListener('triggerSectionAnimation', handleAnimationTrigger);
+      };
+    }
   }, []);
 
   // Function to add image refs
@@ -48,8 +76,16 @@ export default function BrandsScreen() {
     }
   };
 
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <div className="relative w-screen min-h-screen flex flex-col items-center justify-start bg-gradient-to-br from-[#fff6f6] to-[#FFF8F8] overflow-hidden">
+    <div ref={containerRef} className="relative w-screen min-h-screen flex flex-col items-center justify-start bg-gradient-to-br from-[#fff6f6] to-[#FFF8F8] overflow-hidden"
+         id="brands-section">
       {/* Main content */}
       <div className="relative z-10 flex flex-col items-center w-full px-4 pt-16">
         <div className="mb-8 text-center">
@@ -63,22 +99,14 @@ export default function BrandsScreen() {
           </div>
           <div className="mx-auto mt-8 w-[400px] max-w-[90vw] bg-[#2d000a] rounded-full flex overflow-hidden shadow-lg text-xl font-bold">
             <button
-              className={`flex-1 py-4 text-center rounded-l-full transition-colors duration-300 ${
-                !isBrands
-                  ? "bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white"
-                  : "text-gray-300 bg-transparent"
-              }`}
-              onClick={() => navigate("/")}
+              className="flex-1 py-4 text-center rounded-l-full transition-colors duration-300 text-gray-300 bg-transparent"
+              onClick={() => scrollToSection('main-section')}
             >
               Students
             </button>
             <button
-              className={`flex-1 py-4 text-center rounded-r-full transition-colors duration-300 ${
-                isBrands
-                  ? "bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white"
-                  : "text-gray-300 bg-transparent"
-              }`}
-              onClick={() => navigate("/brands")}
+              className="flex-1 py-4 text-center rounded-r-full transition-colors duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white"
+              onClick={() => scrollToSection('brands-section')}
             >
               Brands
             </button>

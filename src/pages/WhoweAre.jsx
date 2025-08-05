@@ -1,5 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
 
 function WhoweAre() {
   const [activeTab, setActiveTab] = useState('Students');
@@ -9,6 +13,7 @@ function WhoweAre() {
   const [typewriterText3, setTypewriterText3] = useState('');
   
   // Refs for GSAP animations
+  const containerRef = useRef(null);
   const logoRef = useRef(null);
   const tabsRef = useRef(null);
   const zeroRef = useRef(null);
@@ -31,94 +36,138 @@ function WhoweAre() {
     'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=100&h=100&fit=crop',
   ];
 
-  // GSAP Animation Timeline
+  // Typewriter function
+  const typeWriter = (text, setter, duration = 1) => {
+    return {
+      duration: duration,
+      onUpdate: function() {
+        const progress = this.progress();
+        const currentLength = Math.floor(progress * text.length);
+        setter(text.substring(0, currentLength));
+      }
+    };
+  };
+
+  // GSAP Animation Timeline with ScrollTrigger
   useEffect(() => {
-    const tl = gsap.timeline();
-    
-    // Set initial positions
-    gsap.set([logoRef.current, tabsRef.current], { y: -50, opacity: 0 });
-    gsap.set(zeroRef.current, { scale: 0, opacity: 0 });
-    gsap.set(textContentRef.current, { y: 50, opacity: 0 });
-    gsap.set(sideTextRef.current, { opacity: 0 });
-    gsap.set([typewriter1Ref.current, typewriter2Ref.current, typewriter3Ref.current], { opacity: 0 });
-    
-    // Typewriter function
-    const typeWriter = (text, setter, duration = 1) => {
-      return {
-        duration: duration,
-        onUpdate: function() {
-          const progress = this.progress();
-          const currentLength = Math.floor(progress * text.length);
-          setter(text.substring(0, currentLength));
+    const runAnimation = () => {
+      // Set initial positions
+      gsap.set([logoRef.current, tabsRef.current], { y: -50, opacity: 0 });
+      gsap.set(zeroRef.current, { scale: 0, opacity: 0 });
+      gsap.set(textContentRef.current, { y: 50, opacity: 0 });
+      gsap.set(sideTextRef.current, { opacity: 0 });
+      gsap.set([typewriter1Ref.current, typewriter2Ref.current, typewriter3Ref.current], { opacity: 0 });
+      
+      // Reset typewriter texts
+      setTypewriterText1('');
+      setTypewriterText2('');
+      setTypewriterText3('');
+      setDisplayNumber('0');
+      numberRef.current.value = 0;
+      
+      const tl = gsap.timeline();
+      
+      // Animate all elements in sequence
+      tl.to([logoRef.current, tabsRef.current], { 
+        y: 0, 
+        opacity: 1, 
+        duration: 0.8, 
+        ease: "power2.out",
+        stagger: 0.1
+      }, 0)
+      .to(sideTextRef.current, { 
+        opacity: 1, 
+        duration: 0.6, 
+        ease: "power2.out" 
+      }, 0.5)
+      .to([typewriter1Ref.current, typewriter2Ref.current, typewriter3Ref.current], {
+        opacity: 1,
+        duration: 0.3
+      }, 1)
+      .to({}, {
+        ...typeWriter("We Tuned", setTypewriterText1, 1.5),
+        ease: "none"
+      }, 1.2)
+      .to(zeroRef.current, { 
+        scale: 1, 
+        opacity: 1, 
+        duration: 1.2, 
+        ease: "back.out(1.7)" 
+      }, 2.8)
+      .to(numberRef.current, {
+        value: 25000,
+        duration: 2,
+        ease: "power2.out",
+        onUpdate: () => {
+          const currentValue = Math.floor(numberRef.current.value);
+          if (currentValue >= 1000) {
+            setDisplayNumber(`${Math.floor(currentValue / 1000)}k`);
+          } else {
+            setDisplayNumber(currentValue.toString());
+          }
         }
-      };
+      }, 3.2)
+      .to({}, {
+        ...typeWriter("Students,", setTypewriterText2, 1),
+        ease: "none"
+      }, 5.5)
+      .to({}, {
+        ...typeWriter("and still counting ...", setTypewriterText3, 1.5),
+        ease: "none"
+      }, 6.8)
+      .to(textContentRef.current, { 
+        y: 0, 
+        opacity: 1, 
+        duration: 0.8, 
+        ease: "power2.out" 
+      }, 8.5);
     };
 
-    // Animate all elements in sequence
-    tl.to([logoRef.current, tabsRef.current], { 
-      y: 0, 
-      opacity: 1, 
-      duration: 0.8, 
-      ease: "power2.out",
-      stagger: 0.1
-    }, 0)
-    .to(sideTextRef.current, { 
-      opacity: 1, 
-      duration: 0.6, 
-      ease: "power2.out" 
-    }, 0.5)
-    // Show typewriter containers
-    .to([typewriter1Ref.current, typewriter2Ref.current, typewriter3Ref.current], {
-      opacity: 1,
-      duration: 0.3
-    }, 1)
-    // First typewriter: "We Tuned"
-    .to({}, {
-      ...typeWriter("We Tuned", setTypewriterText1, 1.5),
-      ease: "none"
-    }, 1.2)
-    // Show and animate the number
-    .to(zeroRef.current, { 
-      scale: 1, 
-      opacity: 1, 
-      duration: 1.2, 
-      ease: "back.out(1.7)" 
-    }, 2.8)
-    // Number counting animation from 0 to 25000
-    .to(numberRef.current, {
-      value: 25000,
-      duration: 2,
-      ease: "power2.out",
-      onUpdate: () => {
-        const currentValue = Math.floor(numberRef.current.value);
-        if (currentValue >= 1000) {
-          setDisplayNumber(`${Math.floor(currentValue / 1000)}k`);
-        } else {
-          setDisplayNumber(currentValue.toString());
+    if (containerRef.current) {
+      // Set initial positions
+      gsap.set([logoRef.current, tabsRef.current], { y: -50, opacity: 0 });
+      gsap.set(zeroRef.current, { scale: 0, opacity: 0 });
+      gsap.set(textContentRef.current, { y: 50, opacity: 0 });
+      gsap.set(sideTextRef.current, { opacity: 0 });
+      gsap.set([typewriter1Ref.current, typewriter2Ref.current, typewriter3Ref.current], { opacity: 0 });
+      
+      // Typewriter function
+      const typeWriter = (text, setter, duration = 1) => {
+        return {
+          duration: duration,
+          onUpdate: function() {
+            const progress = this.progress();
+            const currentLength = Math.floor(progress * text.length);
+            setter(text.substring(0, currentLength));
+          }
+        };
+      };
+
+      // Create scroll trigger for about section
+      ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: "top 80%",
+        onEnter: runAnimation
+      });
+
+      // Listen for manual animation triggers
+      const handleAnimationTrigger = (event) => {
+        if (event.detail?.sectionName === 'about') {
+          runAnimation();
         }
-      }
-    }, 3.2)
-    // Second typewriter: "Students,"
-    .to({}, {
-      ...typeWriter("Students,", setTypewriterText2, 1),
-      ease: "none"
-    }, 5.5)
-    // Third typewriter: "and still counting"
-    .to({}, {
-      ...typeWriter("and still counting ...", setTypewriterText3, 1.5),
-      ease: "none"
-    }, 6.8)
-    // Finally show the description text
-    .to(textContentRef.current, { 
-      y: 0, 
-      opacity: 1, 
-      duration: 0.8, 
-      ease: "power2.out" 
-    }, 8.5);
+      };
+
+      window.addEventListener('triggerSectionAnimation', handleAnimationTrigger);
+
+      return () => {
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        window.removeEventListener('triggerSectionAnimation', handleAnimationTrigger);
+      };
+    }
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-900 via-red-800 to-red-900 relative overflow-hidden">
+    <div ref={containerRef} className="min-h-screen bg-gradient-to-br from-red-900 via-red-800 to-red-900 relative overflow-hidden" id="about-section">
       {/* Side Text Elements */}
       <div ref={sideTextRef} className="absolute right-0 top-1/2 transform -translate-y-1/2 rotate-90 text-white font-bold text-lg tracking-widest z-10">
         WHO WE ARE

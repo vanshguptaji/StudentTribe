@@ -1,8 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import stcareBanner from "../assets/StCare/Frame 2147223325.svg"
 
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
+
 const STCare = () => {
+  const containerRef = useRef(null);
   const headingRef = useRef(null);
   const subheadingRef = useRef(null);
   const leftImageRef = useRef(null);

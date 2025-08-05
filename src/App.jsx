@@ -1,17 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MainScreen from './pages/MainScreen';
-import BrandsScreen from './pages/BrandsScreen';
-import StudentApp from './pages/StudentApp';
+import { BrowserRouter as Router } from 'react-router-dom';
+import SinglePageLayout from './pages/SinglePageLayout';
 import BottomNavbar from './components/BottomNavbar';
 import Footer from './components/Footer';
-import STEvents from './pages/STEvents';
-import StBeast from './pages/STbeast';
-import STCare from './pages/STCare';
 import SplashSplash2 from './pages/SplashSplash2';
-import CurvedCarousel from './pages/ImageSlider';
-import WhoweAre from './pages/WhoweAre';
 
 
 
@@ -99,7 +92,7 @@ function App() {
         }
       `}</style>
       <div
-        className="min-h-screen w-screen bg-gradient-to-br from-[#b8001f] to-[#7a0015] overflow-hidden relative transition-colors duration-500 flex flex-col"
+        className="min-h-screen w-full bg-gradient-to-br from-[#b8001f] to-[#7a0015] overflow-x-hidden relative transition-colors duration-500 flex flex-col"
         style={{
           userSelect: 'none',
           WebkitUserSelect: 'none',
@@ -108,15 +101,7 @@ function App() {
         }}
       >
         <div className="flex-1">
-          <Routes>
-            <Route path="/" element={<MainScreen />} />
-            <Route path="/brands" element={<BrandsScreen />} />
-            <Route path="/app" element={<StudentApp />} />
-            <Route path="/st-events" element={<STEvents />} />
-            <Route path="/beast" element={<StBeast />} />
-            <Route path="/care" element={<STCare />} />
-            <Route path="/about" element={<WhoweAre />} />
-          </Routes>
+          <SinglePageLayout />
         </div>
         <Footer />
         <BottomNavbar />

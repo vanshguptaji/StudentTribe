@@ -1,45 +1,70 @@
-import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 
 const BottomNavbar = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [activeTab, setActiveTab] = useState('ST School');
 
   const navItems = [
-    { id: 'ST School', label: 'ST School', path: '/' },
-    { id: 'ST App', label: 'ST App', path: '/app' },
-    { id: 'ST Beast', label: 'ST Beast', path: '/beast' },
-    { id: 'ST Care', label: 'ST Care', path: '/care' },
-    { id: 'Who We Are', label: 'Who We Are', path: '/about' },
-    { id: 'ST Events', label: 'ST Events', path: '/st-events' }
+    { id: 'ST School', label: 'ST School', sectionId: 'main-section' },
+    { id: 'ST Brands', label: 'ST Brands', sectionId: 'brands-section' },
+    { id: 'ST App', label: 'ST App', sectionId: 'app-section' },
+    { id: 'ST Events', label: 'ST Events', sectionId: 'events-section' },
+    { id: 'ST Beast', label: 'ST Beast', sectionId: 'beast-section' },
+    { id: 'ST Care', label: 'ST Care', sectionId: 'care-section' },
+    { id: 'Who We Are', label: 'Who We Are', sectionId: 'about-section' }
   ];
 
-  const handleTabClick = (item) => {
-    if (item.path) {
-      navigate(item.path);
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
     }
   };
 
-  // Determine active tab based on current route
-  const getActiveTab = () => {
-    switch (location.pathname) {
-      case '/':
-        return 'ST School';
-      case '/app':
-        return 'ST App';
-      case '/st-events':
-        return 'ST Events';
-      case '/beast':
-        return 'ST Beast';
-      case '/care':
-        return 'ST Care';
-      case '/about':
-        return 'Who We Are';
-      default:
-        return '';
-    }
+  const handleTabClick = (item) => {
+    setActiveTab(item.id);
+    scrollToSection(item.sectionId);
+    
+    // Dispatch custom event to trigger section animations
+    const event = new CustomEvent('navbarClick', { 
+      detail: { sectionId: item.sectionId } 
+    });
+    window.dispatchEvent(event);
   };
-  const activeTab = getActiveTab();
+
+  // Track scroll position to update active tab
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = navItems.map(item => ({
+        id: item.id,
+        element: document.getElementById(item.sectionId)
+      }));
+
+      const scrollPosition = window.scrollY + 100; // Add offset for better detection
+
+      let currentActiveTab = 'ST School'; // Default to first section
+
+      sections.forEach((section) => {
+        if (section.element) {
+          const sectionTop = section.element.offsetTop;
+          const sectionBottom = sectionTop + section.element.offsetHeight;
+          
+          if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+            currentActiveTab = section.id;
+          }
+        }
+      });
+
+      setActiveTab(currentActiveTab);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Call once to set initial state
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [navItems]);
 
   return (
     <div className="fixed flex justify-center items-center bottom-0 left-0 right-0 z-50">
