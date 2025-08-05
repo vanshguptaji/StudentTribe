@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { gsap } from 'gsap';
 // import Footer from './components/Footer';
 
 export default function BrandsScreen() {
-  const [activeTab, setActiveTab] = useState('students');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isBrands = location.pathname === "/brands";
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef(null);
   const imagesRef = useRef([]);
@@ -47,41 +49,44 @@ export default function BrandsScreen() {
   };
 
   return (
-    <div className="min-h-screen w-screen bg-gradient-to-br from-[#fff6f6] to-[#FFF8F8] overflow-hidden relative">
-      {/* Header */}
-      <div className="relative z-20 pt-16 text-center">
-        <div className="text-[#b8001f] font-black text-6xl leading-none drop-shadow-lg tracking-tight">st.</div>
-        <div className="text-[#b8001f] text-lg font-medium drop-shadow mb-8">Student Tribe</div>
-      </div>
-
-      {/* Main Content Area */}
-      <div className="relative z-20 px-8">
-        {/* Navigation Toggle */}
-        <div className="flex justify-center mb-12">
-          <div className="w-[400px] max-w-[90vw] bg-[#2d000a] rounded-full flex overflow-hidden shadow-lg text-xl font-bold">
-           
+    <div className="relative w-screen min-h-screen flex flex-col items-center justify-start bg-gradient-to-br from-[#fff6f6] to-[#FFF8F8] overflow-hidden">
+      {/* Main content */}
+      <div className="relative z-10 flex flex-col items-center w-full px-4 pt-16">
+        <div className="mb-8 text-center">
+          <div className="logo-container">
+            <div className="text-[#b8001f] font-black text-6xl leading-none drop-shadow-lg tracking-tight">
+              st.
+            </div>
+            <div className="text-[#b8001f] text-lg font-medium drop-shadow mb-4">
+              Student Tribe
+            </div>
+          </div>
+          <div className="mx-auto mt-8 w-[400px] max-w-[90vw] bg-[#2d000a] rounded-full flex overflow-hidden shadow-lg text-xl font-bold">
             <button
-              className={`flex-1 py-4 text-center rounded-l-full transition-all duration-300 ${activeTab === 'students' ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white' : 'text-gray-300 bg-transparent hover:bg-gray-800/20'}`}
-              onClick={() => setActiveTab('students')}
+              className={`flex-1 py-4 text-center rounded-l-full transition-colors duration-300 ${
+                !isBrands
+                  ? "bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white"
+                  : "text-gray-300 bg-transparent"
+              }`}
+              onClick={() => navigate("/")}
             >
-               <Link to={'/'}>
               Students
-
-            </Link>
             </button>
             <button
-              className={`flex-1 py-4 text-center rounded-r-full transition-all duration-300 ${activeTab === 'brands' ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white' : 'text-gray-300 bg-transparent hover:bg-gray-800/20'}`}
-              onClick={() => setActiveTab('brands')}
+              className={`flex-1 py-4 text-center rounded-r-full transition-colors duration-300 ${
+                isBrands
+                  ? "bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white"
+                  : "text-gray-300 bg-transparent"
+              }`}
+              onClick={() => navigate("/brands")}
             >
-
-            <Link to={'/brands'}>
               Brands
-
-            </Link>
             </button>
           </div>
         </div>
 
+      {/* Content Area */}
+      <div className="relative z-20 px-8 w-full">
         {/* Title and Description */}
         <div className="text-center mb-12">
           <h1 className="text-6xl font-extrabold text-[#2d1c1c] mb-6 leading-tight">
@@ -206,6 +211,7 @@ export default function BrandsScreen() {
 
         {/* Additional spacing for content below */}
         <div className="h-32"></div>
+      </div>
       </div>
 
       {/* Right Side Label */}

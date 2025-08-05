@@ -74,15 +74,7 @@ const MainScreen = () => {
 
       // Create timeline for sequence
       const tl = gsap.timeline();
-
-      // Step 1: Show logo for a moment
       tl
-        // .to(logoRef.current, {
-        //   duration: 0.8,
-        //   scale: 1.8,
-        //   ease: "power2.inOut"
-        // })
-        // Step 2: Move logo to final position and scale down
         .to(
           logoRef.current,
           {
@@ -148,7 +140,7 @@ const MainScreen = () => {
           ))}
         </div>
         {/* Main content */}
-        <div className="relative z-10 flex flex-col items-center w-full px-4">
+        <div className="absolute top-20 z-10 flex flex-col items-center w-full px-4">
           <div className="mb-8 text-center">
             <div ref={logoRef} className="logo-container">
               <div className="text-white font-black text-6xl leading-none drop-shadow-lg tracking-tight">
@@ -160,7 +152,7 @@ const MainScreen = () => {
             </div>
             <div
               ref={buttonsRef}
-              className="mx-auto mt-8 w-[400px] max-w-[90vw] bg-[#2d000a] rounded-full flex overflow-hidden shadow-lg text-xl font-bold"
+              className="mx-auto mt-0 w-[400px] max-w-[90vw] bg-[#2d000a] rounded-full flex overflow-hidden shadow-lg text-xl font-bold"
             >
               <button
                 className={`flex-1 py-4 text-center rounded-l-full transition-colors duration-300 ${
