@@ -8,12 +8,34 @@ const CurvedCarousel = ({ products }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [startRotation, setStartRotation] = useState(0);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const autoRotateRef = useRef(null);
 
   const radius = 1200; // Radius of the cylinder
   const angleStep = (2 * Math.PI) / products.length; // Angle between each image
+  const rotationSpeed = 360 / products.length; // Degrees to rotate per step
+
+  // Auto rotation functionality
+  const startAutoRotation = () => {
+    if (autoRotateRef.current) {
+      clearInterval(autoRotateRef.current);
+    }
+    
+    autoRotateRef.current = setInterval(() => {
+      setRotation(prevRotation => prevRotation + rotationSpeed);
+    }, 2000); // Rotate every 2 seconds
+  };
+
+  const stopAutoRotation = () => {
+    if (autoRotateRef.current) {
+      clearInterval(autoRotateRef.current);
+      autoRotateRef.current = null;
+    }
+  };
 
   // Mouse drag functionality
   const handleMouseDown = (e) => {
+    stopAutoRotation(); // Stop auto rotation when user interacts
     setIsDragging(true);
     setStartX(e.clientX);
     setStartRotation(rotation);
@@ -29,14 +51,23 @@ const CurvedCarousel = ({ products }) => {
 
   const handleMouseUp = () => {
     setIsDragging(false);
+    // Restart auto rotation after a delay
+    setTimeout(() => {
+      startAutoRotation();
+    }, 3000); // Wait 3 seconds before resuming auto rotation
   };
 
   const handleMouseLeave = () => {
     setIsDragging(false);
+    // Restart auto rotation after a delay
+    setTimeout(() => {
+      startAutoRotation();
+    }, 3000);
   };
 
   // Touch support
   const handleTouchStart = (e) => {
+    stopAutoRotation(); // Stop auto rotation when user interacts
     setIsDragging(true);
     setStartX(e.touches[0].clientX);
     setStartRotation(rotation);
@@ -52,6 +83,10 @@ const CurvedCarousel = ({ products }) => {
 
   const handleTouchEnd = () => {
     setIsDragging(false);
+    // Restart auto rotation after a delay
+    setTimeout(() => {
+      startAutoRotation();
+    }, 3000);
   };
 
   useEffect(() => {
@@ -59,9 +94,13 @@ const CurvedCarousel = ({ products }) => {
     window.addEventListener('mouseup', handleGlobalMouseUp);
     window.addEventListener('touchend', handleGlobalMouseUp);
     
+    // Start auto rotation when component mounts
+    startAutoRotation();
+    
     return () => {
       window.removeEventListener('mouseup', handleGlobalMouseUp);
       window.removeEventListener('touchend', handleGlobalMouseUp);
+      stopAutoRotation(); // Clean up interval on unmount
     };
   }, []);
 
@@ -112,7 +151,7 @@ const CurvedCarousel = ({ products }) => {
                 className="absolute"
                 style={{
                   width: '700px',
-                  height: '500px',
+                  height: hoveredIndex === index ? '1000px' : '500px',
                   left: '50%',
                   top: '50%',
                   transform: `
@@ -124,10 +163,22 @@ const CurvedCarousel = ({ products }) => {
                   `,
                   transformStyle: 'preserve-3d',
                   opacity: opacity,
-                  transition: isDragging ? 'opacity 0.3s' : 'opacity 0.3s, transform 0.3s ease-out',
+                  transition: isDragging ? 'opacity 0.3s' : 'opacity 0.3s, transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1), height 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)',
+                  zIndex: hoveredIndex === index ? 10 : 1,
                 }}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
               >
-                <div className="w-full h-full rounded-lg overflow-hidden shadow-2xl bg-gray-800">
+                <div 
+                  className="w-full h-full rounded-lg overflow-hidden bg-gray-800"
+                  style={{
+                    boxShadow: hoveredIndex === index 
+                      ? '0 30px 60px -12px rgba(0, 0, 0, 0.9), 0 35px 35px -5px rgba(0, 0, 0, 0.5)' 
+                      : '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+                    transition: 'box-shadow 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)',
+                    transform: hoveredIndex === index ? 'scale(1.02)' : 'scale(1)',
+                  }}
+                >
                   <img
                     src={product.image}
                     alt={product.title}
@@ -136,6 +187,8 @@ const CurvedCarousel = ({ products }) => {
                     style={{
                       userSelect: 'none',
                       backfaceVisibility: 'hidden',
+                      transition: 'transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)',
+                      transform: hoveredIndex === index ? 'scale(1.05)' : 'scale(1)',
                     }}
                   />
                   
@@ -171,7 +224,7 @@ const CurvedCarousel = ({ products }) => {
       
       {/* Instructions */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/60 text-sm">
-        Drag to rotate the carousel
+        Auto-rotating carousel • Drag to pause
       </div>
     </div>
   );
