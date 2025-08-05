@@ -49,7 +49,18 @@ function App() {
   // If splash screen should be shown, render only the splash screen
   if (showSplash) {
     return (
-      <div onClick={handleSplashClick} style={{ cursor: 'pointer', width: '100vw', height: '100vh' }}>
+      <div
+        onClick={handleSplashClick}
+        style={{
+          cursor: 'pointer',
+          width: '100vw',
+          height: '100vh',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          MozUserSelect: 'none',
+          msUserSelect: 'none',
+        }}
+      >
         <SplashSplash2 fade={fadeOut} />
       </div>
     );
@@ -57,7 +68,15 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen w-screen bg-gradient-to-br from-[#b8001f] to-[#7a0015] overflow-hidden relative transition-colors duration-500 flex flex-col">
+      <div
+        className="min-h-screen w-screen bg-gradient-to-br from-[#b8001f] to-[#7a0015] overflow-hidden relative transition-colors duration-500 flex flex-col"
+        style={{
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          MozUserSelect: 'none',
+          msUserSelect: 'none',
+        }}
+      >
         <div className="flex-1">
           <Routes>
             <Route path="/" element={<MainScreen />} />
