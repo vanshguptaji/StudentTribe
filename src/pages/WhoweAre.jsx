@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import bg from "../assets/whoweare/Frame 2147223304.svg"
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -57,70 +58,70 @@ function WhoweAre() {
       gsap.set(textContentRef.current, { y: 50, opacity: 0 });
       gsap.set(sideTextRef.current, { opacity: 0 });
       gsap.set([typewriter1Ref.current, typewriter2Ref.current, typewriter3Ref.current], { opacity: 0 });
-      
+
       // Reset typewriter texts
       setTypewriterText1('');
       setTypewriterText2('');
       setTypewriterText3('');
       setDisplayNumber('0');
       numberRef.current.value = 0;
-      
+
       const tl = gsap.timeline();
-      
-      // Animate all elements in sequence
-      tl.to([logoRef.current, tabsRef.current], { 
-        y: 0, 
-        opacity: 1, 
-        duration: 0.8, 
-        ease: "power2.out",
-        stagger: 0.1
-      }, 0)
-      .to(sideTextRef.current, { 
-        opacity: 1, 
-        duration: 0.6, 
-        ease: "power2.out" 
-      }, 0.5)
-      .to([typewriter1Ref.current, typewriter2Ref.current, typewriter3Ref.current], {
+
+      // Animate all elements in sequence (faster timings)
+      tl.to([logoRef.current, tabsRef.current], {
+        y: 0,
         opacity: 1,
-        duration: 0.3
-      }, 1)
-      .to({}, {
-        ...typeWriter("We Tuned", setTypewriterText1, 1.5),
-        ease: "none"
-      }, 1.2)
-      .to(zeroRef.current, { 
-        scale: 1, 
-        opacity: 1, 
-        duration: 1.2, 
-        ease: "back.out(1.7)" 
-      }, 2.8)
-      .to(numberRef.current, {
-        value: 25000,
-        duration: 2,
+        duration: 0.2,
         ease: "power2.out",
-        onUpdate: () => {
-          const currentValue = Math.floor(numberRef.current.value);
-          if (currentValue >= 1000) {
-            setDisplayNumber(`${Math.floor(currentValue / 1000)}k`);
-          } else {
-            setDisplayNumber(currentValue.toString());
+        stagger: 0.05
+      }, 0)
+        .to(sideTextRef.current, {
+          opacity: 1,
+          duration: 0.3,
+          ease: "power2.out"
+        }, 0.2)
+        .to([typewriter1Ref.current, typewriter2Ref.current, typewriter3Ref.current], {
+          opacity: 1,
+          duration: 0.01
+        }, 0.5)
+        .to({}, {
+          ...typeWriter("We Tuned", setTypewriterText1, 0.7),
+          ease: "none"
+        }, 0.6)
+        .to(zeroRef.current, {
+          scale: 1,
+          opacity: 1,
+          duration: 0.5,
+          ease: "back.out(1.7)"
+        }, 1.3)
+        .to(numberRef.current, {
+          value: 25000,
+          duration: 0.7,
+          ease: "power2.out",
+          onUpdate: () => {
+            const currentValue = Math.floor(numberRef.current.value);
+            if (currentValue >= 1000) {
+              setDisplayNumber(`${Math.floor(currentValue / 1000)}k`);
+            } else {
+              setDisplayNumber(currentValue.toString());
+            }
           }
-        }
-      }, 3.2)
-      .to({}, {
-        ...typeWriter("Students,", setTypewriterText2, 1),
-        ease: "none"
-      }, 5.5)
-      .to({}, {
-        ...typeWriter("and still counting ...", setTypewriterText3, 1.5),
-        ease: "none"
-      }, 6.8)
-      .to(textContentRef.current, { 
-        y: 0, 
-        opacity: 1, 
-        duration: 0.8, 
-        ease: "power2.out" 
-      }, 8.5);
+        }, 1.5)
+        .to({}, {
+          ...typeWriter("Students,", setTypewriterText2, 0.4),
+          ease: "none"
+        }, 2.3)
+        .to({}, {
+          ...typeWriter("and still counting ...", setTypewriterText3, 0.7),
+          ease: "none"
+        }, 2.8)
+        .to(textContentRef.current, {
+          y: 0,
+          opacity: 1,
+          duration: 0.4,
+          ease: "power2.out"
+        }, 3.5);
     };
 
     if (containerRef.current) {
@@ -167,7 +168,17 @@ function WhoweAre() {
   }, []);
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-transparent relative overflow-hidden" id="about-section">
+    <div
+      ref={containerRef}
+      className="min-h-screen bg- relative overflow-hidden"
+      id="about-section"
+      style={{
+        backgroundImage: `url(${bg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
       {/* Side Text Elements */}
       <div ref={sideTextRef} className="absolute right-0 top-1/2 transform -translate-y-1/2 rotate-90 text-white font-bold text-lg tracking-widest z-10">
         WHO WE ARE

@@ -1,7 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const BottomNavbar = () => {
   const [activeTab, setActiveTab] = useState('ST School');
+  const [footerVisible, setFooterVisible] = useState(false);
+  const observerRef = useRef(null);
+  // Hide navbar when footer is visible
+  useEffect(() => {
+    const footer = document.querySelector('footer');
+    if (!footer) return;
+    if (observerRef.current) observerRef.current.disconnect();
+    observerRef.current = new window.IntersectionObserver(
+      ([entry]) => {
+        setFooterVisible(entry.isIntersecting);
+      },
+      {
+        root: null,
+        threshold: 0.1,
+      }
+    );
+    observerRef.current.observe(footer);
+    return () => observerRef.current && observerRef.current.disconnect();
+  }, []);
 
   const navItems = [
     { id: 'ST School', label: 'ST School', sectionId: 'main-section' },
@@ -64,6 +83,8 @@ const BottomNavbar = () => {
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, [navItems]);
+
+  if (footerVisible) return null;
 
   return (
     <div className="fixed flex justify-center items-center bottom-0 left-0 right-0 z-50">
