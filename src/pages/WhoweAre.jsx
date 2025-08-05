@@ -167,7 +167,7 @@ function WhoweAre() {
   }, []);
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-gradient-to-br from-red-900 via-red-800 to-red-900 relative overflow-hidden" id="about-section">
+    <div ref={containerRef} className="min-h-screen bg-transparent relative overflow-hidden" id="about-section">
       {/* Side Text Elements */}
       <div ref={sideTextRef} className="absolute right-0 top-1/2 transform -translate-y-1/2 rotate-90 text-white font-bold text-lg tracking-widest z-10">
         WHO WE ARE

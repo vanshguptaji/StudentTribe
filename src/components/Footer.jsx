@@ -5,11 +5,11 @@ export default function Footer() {
   return (
     <footer className="w-full bg-transparent mt-16">
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="bg-[#2C1B1B]/90 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row md:items-start md:justify-between shadow-2xl relative overflow-hidden">
+        <div className="bg-[#2C1B1B]/90 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row md:items-start md:justify-between relative overflow-hidden">
           {/* Left: Join Community */}
           <div className="mb-10 md:mb-0 md:w-1/3 flex flex-col justify-center">
             <h2 className="text-white text-4xl md:text-5xl font-extrabold mb-6 leading-tight">Want to join our<br />community?</h2>
-            <button className="bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white font-bold px-7 py-3 rounded-full shadow-lg flex items-center gap-2 text-lg w-fit mb-2">
+            <button className="bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white font-bold px-7 py-3 rounded-full flex items-center gap-2 text-lg w-fit mb-2">
               Contact US <span className="ml-2">→</span>
             </button>
           </div>

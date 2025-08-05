@@ -5,7 +5,6 @@ const BottomNavbar = () => {
 
   const navItems = [
     { id: 'ST School', label: 'ST School', sectionId: 'main-section' },
-    { id: 'ST Brands', label: 'ST Brands', sectionId: 'brands-section' },
     { id: 'ST App', label: 'ST App', sectionId: 'app-section' },
     { id: 'ST Events', label: 'ST Events', sectionId: 'events-section' },
     { id: 'ST Beast', label: 'ST Beast', sectionId: 'beast-section' },
