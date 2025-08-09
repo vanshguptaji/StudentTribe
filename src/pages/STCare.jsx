@@ -163,10 +163,10 @@ const STCare = () => {
         <div className="flex flex-col lg:flex-row gap-8 items-start mb-12">
           {/* Left side - Assembly image */}
           <div className="flex-1">
-            <h1 ref={headingRef} className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4 text-center">
+            <h1 ref={headingRef} className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-800 mb-4 text-center">
                 Feeling Stuck?
             </h1>
-            <h2 ref={subheadingRef} className="text-2xl lg:text-3xl font-semibold text-center text-gray-700 mb-6">
+            <h2 ref={subheadingRef} className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-semibold text-center text-gray-700 mb-6">
               You're Not Alone — We're Here.
             </h2>
             <div ref={leftImageRef} className="relative overflow-hidden shadow-2xl opacity-0">

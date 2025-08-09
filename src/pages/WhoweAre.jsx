@@ -180,28 +180,28 @@ function WhoweAre() {
       }}
     >
       {/* Side Text Elements */}
-      <div ref={sideTextRef} className="absolute right-0 top-1/2 transform -translate-y-1/2 rotate-90 text-white font-bold text-lg tracking-widest z-10">
+      <div ref={sideTextRef} className="absolute right-2 md:right-0 top-1/2 transform -translate-y-1/2 rotate-90 text-white font-bold text-sm md:text-lg tracking-widest z-10">
         WHO WE ARE
       </div>
 
       {/* Main Content Container */}
-      <div className="max-w-7xl mx-auto px-4 py-8 relative z-5">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 py-4 md:py-8 relative z-5">
         {/* Header with Logo */}
-        <div ref={logoRef} className="text-center mb-8">
+        <div ref={logoRef} className="text-center mb-4 md:mb-8">
           <div className="logo-container">
-            <div className="text-white font-black text-6xl leading-none drop-shadow-lg tracking-tight">
+            <div className="text-white font-black text-3xl sm:text-4xl md:text-6xl leading-none drop-shadow-lg tracking-tight">
               st.
             </div>
-            <div className="text-red-200 text-lg font-medium drop-shadow mb-4">
+            <div className="text-red-200 text-sm sm:text-base md:text-lg font-medium drop-shadow mb-2 md:mb-4">
               Student Tribe
             </div>
           </div>
         </div>
 
         {/* Main Content Layout */}
-        <div className="flex flex-col items-center justify-center text-center space-y-8">
+        <div className="flex flex-col items-center justify-center text-center space-y-4 md:space-y-8">
           {/* Typewriter Text Above Number */}
-          <div ref={typewriter1Ref} className="text-white text-4xl md:text-6xl font-bold tracking-wide">
+          <div ref={typewriter1Ref} className="text-white text-xl sm:text-2xl md:text-4xl lg:text-6xl font-bold tracking-wide">
             {typewriterText1}
             <span className="animate-pulse text-red-400">|</span>
           </div>
@@ -211,7 +211,7 @@ function WhoweAre() {
             <div className="relative">
               {/* Large Number Background */}
               <div 
-                className="text-[25rem] md:text-[20rem] font-black text-transparent bg-clip-text bg-center bg-contain leading-none"
+                className="text-[8rem] sm:text-[12rem] md:text-[18rem] lg:text-[25rem] font-black text-transparent bg-clip-text bg-center bg-contain leading-none"
                 style={{ 
                   backgroundImage: `url(${zeroImages[0]})`,
                   WebkitBackgroundClip: 'text',
@@ -223,7 +223,7 @@ function WhoweAre() {
               
               {/* Image Grid Overlay */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="grid grid-cols-4 gap-2 w-48 h-64">
+                <div className="grid grid-cols-4 gap-1 sm:gap-2 w-24 h-32 sm:w-32 sm:h-44 md:w-48 md:h-64">
                   {zeroImages.map((image, index) => (
                     <div key={index} className="relative">
                     </div>
@@ -234,15 +234,15 @@ function WhoweAre() {
           </div>
 
           {/* Typewriter Text Below Number */}
-          <div className="flex flex-col items-center space-y-2">
-            <div className="flex items-center space-x-2">
-              <div ref={typewriter2Ref} className="text-white text-3xl md:text-5xl font-bold">
+          <div className="flex flex-col items-center space-y-1 md:space-y-2">
+            <div className="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-2">
+              <div ref={typewriter2Ref} className="text-white text-lg sm:text-xl md:text-3xl lg:text-5xl font-bold">
                 {typewriterText2}
                 {typewriterText2 && typewriterText2.length > 0 && !typewriterText3 && (
                   <span className="animate-pulse text-red-400">|</span>
                 )}
               </div>
-              <div ref={typewriter3Ref} className="text-red-300 text-2xl md:text-4xl font-medium">
+              <div ref={typewriter3Ref} className="text-red-300 text-base sm:text-lg md:text-2xl lg:text-4xl font-medium">
                 {typewriterText3}
                 {typewriterText3 && typewriterText3.length > 0 && (
                   <span className="animate-pulse text-red-400">|</span>
@@ -252,13 +252,13 @@ function WhoweAre() {
           </div>
 
           {/* Text Content Below */}
-          <div ref={textContentRef} className="text-white space-y-6 max-w-3xl">
-            <div className="text-xl leading-relaxed">
+          <div ref={textContentRef} className="text-white space-y-3 md:space-y-6 max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl px-2">
+            <div className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed">
               We are India's largest and fastest growing student community, 
               connecting <span className="text-red-300 font-bold">25,000+</span> students across the nation through 
               innovative platforms and experiences.
             </div>
-            <div className="text-lg text-red-200">
+            <div className="text-xs sm:text-sm md:text-base lg:text-lg text-red-200">
               Join thousands of students who are already part of our vibrant ecosystem.
             </div>
           </div>
