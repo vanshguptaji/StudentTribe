@@ -86,25 +86,41 @@ export default function StudentApp() {
       gsap.set([topLeftBgRef.current, topRightBgRef.current, bottomLeftBgRef.current, bottomRightBgRef.current], { scale: 0 });
       gsap.set([topLeftContentRef.current, topRightContentRef.current, bottomLeftContentRef.current, bottomRightContentRef.current], { opacity: 0 });
 
-      // Create scroll trigger for student app section
+      // Create scroll trigger for student app section - improved to work for both scroll directions
       ScrollTrigger.create({
         trigger: containerRef.current,
         start: "top 80%",
-        onEnter: runAnimation
+        end: "bottom 20%",
+        onEnter: runAnimation,
+        onEnterBack: runAnimation, // Also trigger when scrolling back up to this section
       });
 
-      // Listen for manual animation triggers
+      // Listen for manual animation triggers with improved handling
       const handleAnimationTrigger = (event) => {
         if (event.detail?.sectionName === 'app') {
-          runAnimation();
+          // Small delay to ensure the section is visible before starting animation
+          setTimeout(() => {
+            runAnimation();
+          }, 100);
         }
       };
 
       window.addEventListener('triggerSectionAnimation', handleAnimationTrigger);
 
+      // Refresh ScrollTrigger to ensure accurate calculations
+      ScrollTrigger.refresh();
+
+      // Handle window resize to recalculate ScrollTrigger positions
+      const handleResize = () => {
+        ScrollTrigger.refresh();
+      };
+
+      window.addEventListener('resize', handleResize);
+
       return () => {
         ScrollTrigger.getAll().forEach(trigger => trigger.kill());
         window.removeEventListener('triggerSectionAnimation', handleAnimationTrigger);
+        window.removeEventListener('resize', handleResize);
       };
     }
   }, []);
