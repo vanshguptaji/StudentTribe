@@ -113,25 +113,126 @@ export default function StudentApp() {
     <div ref={containerRef} className="min-h-screen w-full bg-gradient-to-br from-[#b8001f] to-[#7a0015] overflow-hidden relative">
       {/* Header */}
       <div className="relative z-20 pt-16 text-center">
-        <div className="text-white font-black text-6xl leading-none drop-shadow-lg tracking-tight">st.</div>
-        <div className="text-white text-lg font-medium drop-shadow mb-8">Student Tribe</div>
+        <div className="text-white font-black text-4xl md:text-5xl lg:text-6xl leading-none drop-shadow-lg tracking-tight">st.</div>
+        <div className="text-white text-base md:text-lg font-medium drop-shadow mb-8">Student Tribe</div>
       </div>
 
       {/* Main Content */}
       <div className="relative z-20 px-8">
         {/* Title */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-extrabold text-white mb-6 leading-tight">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight">
             Where Fun Meets Learning and New<br/>Connections
           </h1>
         </div>
 
-      {/* Main Grid Layout - 2 rows, 3 columns, phone spans 2 rows */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 grid-rows-2 gap-8 mb-16">
+      {/* Mobile Grid Layout - 2x2 cards */}
+      <div className="lg:hidden max-w-md mx-auto grid grid-cols-2 gap-4 mb-8">
+        {/* Communities & Daily Quizzes */}
+        <div className="">
+          <div
+            className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-4 h-full flex flex-col border-2 border-white/40 shadow-lg min-h-[280px]"
+            style={{
+              borderRadius: '16px',
+              border: '2px solid rgba(255,255,255,0.34)',
+              boxShadow: '0 2px 16px 2px rgba(255,255,255,0.45), 0 4px 24px 0 rgba(0,0,0,0.2)',
+              background: 'rgba(44,27,27,0.92)',
+            }}
+          >
+            <div>
+              <h3 className="text-white text-sm font-extrabold mb-3 text-center">Communities & Daily Quizzes</h3>
+              <div className="w-full mb-3">
+                <img src={quizImg} alt="Quiz" className="w-full h-20 object-cover rounded-xl shadow-lg" />
+              </div>
+              <p className="text-white/90 text-xs text-center leading-relaxed">
+                Be part of active student communities across India.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* ST PRO Membership */}
+        <div className="">
+          <div
+            className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-4 h-full flex flex-col border-2 border-white/40 shadow-lg items-center justify-center min-h-[280px]"
+            style={{
+              borderRadius: '16px',
+              border: '2px solid rgba(255,255,255,0.34)',
+              boxShadow: '0 2px 16px 2px rgba(255,255,255,0.45), 0 4px 24px 0 rgba(0,0,0,0.2)',
+              background: 'rgba(44,27,27,0.92)',
+            }}
+          >
+            <div>
+              <h3 className="text-white text-sm font-extrabold mb-3 text-center">ST PRO Membership</h3>
+              <p className="text-white/90 text-xs text-center leading-relaxed">
+                Exclusive opportunities, career events & priority invites – all for just <span className="font-extrabold">₹299/month</span>.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Your Dost AI */}
+        <div className="">
+          <div
+            className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-4 h-full flex flex-col border-2 border-white/40 shadow-lg min-h-[280px]"
+            style={{
+              borderRadius: '16px',
+              border: '2px solid rgba(255,255,255,0.34)',
+              boxShadow: '0 2px 16px 2px rgba(255,255,255,0.45), 0 4px 24px 0 rgba(0,0,0,0.2)',
+              background: 'rgba(44,27,27,0.92)',
+            }}
+          >
+            <div className="flex flex-col items-center justify-center h-full text-center">
+              <div className="mb-3">
+                <img src={robot} alt="Your Dost AI" className="w-16 h-16 object-contain mx-auto" />
+              </div>
+              <div>
+                <h3 className="text-white text-sm font-extrabold mb-2">Your Dost AI</h3>
+                <p className="text-white/90 text-xs leading-relaxed">
+                  Your <span className="font-bold">AI buddy</span> for everything – from silly questions to serious career advice.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Gigs & Star Connects */}
+        <div className="">
+          <div
+            className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-4 h-full flex flex-col border-2 border-white/40 shadow-lg min-h-[280px]"
+            style={{
+              borderRadius: '16px',
+              border: '2px solid rgba(255,255,255,0.34)',
+              boxShadow: '0 2px 16px 2px rgba(255,255,255,0.45), 0 4px 24px 0 rgba(0,0,0,0.2)',
+              background: 'rgba(44,27,27,0.92)',
+            }}
+          >
+            <div>
+              <h3 className="text-white text-sm font-extrabold mb-3 text-center">Gigs & Star Connects</h3>
+              <div className="w-full mb-3">
+                <img src={quizImg} alt="Gigs" className="w-full h-20 object-cover rounded-xl shadow-lg" />
+              </div>
+              <p className="text-white/90 text-xs text-center leading-relaxed">
+                Chill gigs, fun open mics, and star connects – vibe, showcase your talent.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Phone Mockup - Mobile After Cards */}
+      <div className="lg:hidden mb-16">
+        <div className="flex justify-center">
+          <img src={iphone} alt="iPhone Mockup" className="w-[280px] h-auto drop-shadow-2xl" />
+        </div>
+      </div>
+
+      {/* Desktop Grid Layout - 2 rows, 3 columns, phone spans 2 rows */}
+      <div className="hidden lg:grid max-w-7xl mx-auto grid-cols-3 grid-rows-2 gap-8 mb-16">
         {/* Communities & Daily Quizzes */}
         <div
           ref={topLeftCardRef}
-          className="opacity-0"
+          className="opacity-0 lg:opacity-0"
           style={{ gridRow: '1', gridColumn: '1' }}
         >
           <div
@@ -168,7 +269,7 @@ export default function StudentApp() {
         </div>
 
         {/* ST PRO Membership */}
-        <div ref={topRightCardRef} className="opacity-0"
+        <div ref={topRightCardRef} className="opacity-0 lg:opacity-0"
           style={{ gridRow: '1', gridColumn: '3' }}>
           <div ref={topRightBgRef} className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-6 h-full flex flex-col border-2 border-white/40 shadow-lg items-center justify-center"
             style={{
@@ -191,7 +292,7 @@ export default function StudentApp() {
         </div>
 
         {/* Your Dost AI */}
-        <div ref={bottomLeftCardRef} className="opacity-0"
+        <div ref={bottomLeftCardRef} className="opacity-0 lg:opacity-0"
           style={{ gridRow: '2', gridColumn: '1' }}>
           <div ref={bottomLeftBgRef} className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-6 h-full flex flex-col border-2 border-white/40 shadow-lg"
             style={{
@@ -217,7 +318,7 @@ export default function StudentApp() {
         </div>
 
         {/* Gigs & Star Connects */}
-        <div ref={bottomRightCardRef} className="opacity-0"
+        <div ref={bottomRightCardRef} className="opacity-0 lg:opacity-0"
           style={{ gridRow: '2', gridColumn: '3' }}
         >
           <div
@@ -246,8 +347,8 @@ export default function StudentApp() {
       </div>
 
       {/* Right Side Label */}
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 bg-[#2d1c1c] text-white font-bold text-xl px-4 py-8 rounded-l-xl tracking-widest flex items-center justify-center shadow-lg z-30" 
-           style={{writingMode: 'vertical-rl', textOrientation: 'mixed'}}>
+      <div className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 bg-[#2d1c1c] text-white font-bold text-xl px-4 py-8 rounded-l-xl tracking-widest items-center justify-center shadow-lg z-30" 
+           style={{writingMode: 'vertical-rl', textOrientation: 'mixed', display: 'flex'}}>
         ST APP
       </div>
     </div>
