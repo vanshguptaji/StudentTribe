@@ -1,10 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import SinglePageLayout from './pages/student/SinglePageLayout';
 import BottomNavbar from './components/BottomNavbar';
+import BrandsBottomNavbar from './components/BrandsBottomNavbar';
 import Footer from './components/Footer';
 import SplashSplash2 from './pages/student/SplashSplash2';
+import Home from './pages/brands/Home';
 
 
 
@@ -41,6 +43,21 @@ function App() {
 
   return (
     <Router>
+      <AppContent 
+        showSplash={showSplash}
+        fadeOut={fadeOut}
+        handleSplashClick={handleSplashClick}
+      />
+    </Router>
+  );
+}
+
+function AppContent({ showSplash, fadeOut, handleSplashClick }) {
+  const location = useLocation();
+  const isBrandsRoute = location.pathname.startsWith('/brands');
+
+  return (
+    <>
       {/* Disable image selection and dragging globally */}
       <style>{`
         img, svg {
@@ -58,7 +75,11 @@ function App() {
       
       {/* Main content with red background - always present */}
       <div
-        className="min-h-screen w-full bg-gradient-to-br from-[#b8001f] to-[#7a0015] overflow-x-hidden relative transition-colors duration-500 flex flex-col"
+        className={`min-h-screen w-full overflow-x-hidden relative transition-colors duration-500 flex flex-col ${
+          isBrandsRoute 
+            ? 'bg-gradient-to-r from-[#4a1a1a] via-[#8B4B6B] to-[#E8B4CD]' 
+            : 'bg-gradient-to-br from-[#b8001f] to-[#7a0015]'
+        }`}
         style={{
           userSelect: 'none',
           WebkitUserSelect: 'none',
@@ -67,10 +88,13 @@ function App() {
         }}
       >
         <div className="flex-1">
-          <SinglePageLayout />
+          <Routes>
+            <Route path="/" element={<SinglePageLayout />} />
+            <Route path="/brands" element={<Home />} />
+          </Routes>
         </div>
-        <Footer />
-        <BottomNavbar />
+        {!isBrandsRoute && <Footer />}
+        {isBrandsRoute ? <BrandsBottomNavbar /> : <BottomNavbar />}
       </div>
 
       {/* Splash screen overlay - only when showSplash is true */}
@@ -90,7 +114,7 @@ function App() {
           <SplashSplash2 fade={fadeOut} />
         </div>
       )}
-    </Router>
+    </>
   );
 }
 

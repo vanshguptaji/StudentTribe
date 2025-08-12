@@ -1,10 +1,11 @@
 import React, { useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
-
+  
 const randomPhotos = [
   "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=facearea&w=400&q=80",
   "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=facearea&w=400&q=80",
@@ -68,6 +69,7 @@ function getFixedStyle(index) {
 }
 
 const MainScreen = ({ onNavigateToSection }) => {
+  const navigate = useNavigate();
   const logoRef = useRef(null);
   const backgroundRef = useRef(null);
   const buttonsRef = useRef(null);
@@ -203,6 +205,10 @@ const MainScreen = ({ onNavigateToSection }) => {
     }
   };
 
+  const handleBrandsClick = () => {
+    navigate('/brands');
+  };
+
   return (
     <>
       <div
@@ -247,8 +253,8 @@ const MainScreen = ({ onNavigateToSection }) => {
                   Students
                 </button>
                 <button
-                  className="flex-1 py-4 text-center rounded-r-full transition-colors duration-300 text-gray-300 bg-transparent"
-                  onClick={() => scrollToSection('brands-section')}
+                  className="flex-1 py-4 text-center rounded-r-full transition-colors duration-300 text-gray-300 bg-transparent hover:bg-[#b8001f] hover:text-white"
+                  onClick={handleBrandsClick}
                 >
                   Brands
                 </button>
