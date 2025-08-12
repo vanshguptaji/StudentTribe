@@ -145,17 +145,17 @@ export default function STEvents() {
 
         {/* Image Slider */}
         <div ref={mainSliderRef} className="relative mb-8">
-          <div className="flex justify-center space-x-4 overflow-hidden">
+          <div className="flex justify-center items-center space-x-2 sm:space-x-4 overflow-hidden px-4 sm:px-0">
             <div 
-              className="flex space-x-4 transition-transform duration-500 ease-in-out"
+              className="flex items-center space-x-2 sm:space-x-4 transition-transform duration-500 ease-in-out"
               style={{ 
-                transform: `translateX(-${(currentSlide % sliderImages.length) * 280}px)`,
-                width: `${infiniteImages.length * 280}px`
+                transform: `translateX(-${(currentSlide % sliderImages.length) * 200}px)`,
+                width: `${infiniteImages.length * 200}px`
               }}
             >
               {infiniteImages.map((image, index) => {
                 const relativeIndex = index - currentSlide;
-                let className = "w-64 h-40 rounded-lg object-cover transition-all duration-500 ease-in-out flex-shrink-0 ";
+                let className = "w-44 h-28 sm:w-64 sm:h-40 rounded-lg object-cover transition-all duration-500 ease-in-out flex-shrink-0 mx-auto ";
                 
                 if (relativeIndex === 0) {
                   className += "scale-100 opacity-100 z-10";
@@ -168,7 +168,7 @@ export default function STEvents() {
                 }
 
                 return (
-                  <div key={`infinite-${index}`} className="relative flex-shrink-0">
+                  <div key={`infinite-${index}`} className="relative flex-shrink-0 flex justify-center">
                     <img
                       src={image}
                       alt={`Event ${(index % sliderImages.length) + 1}`}
@@ -182,19 +182,35 @@ export default function STEvents() {
             </div>
           </div>
 
-          {/* Navigation Arrows */}
+          {/* Navigation Arrows - Desktop */}
           <button
             onClick={prevSlide}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 shadow-lg transition-all duration-200"
+            className="hidden sm:block absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 shadow-lg transition-all duration-200"
           >
             <ChevronLeft className="w-6 h-6 text-gray-800" />
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 shadow-lg transition-all duration-200"
+            className="hidden sm:block absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 shadow-lg transition-all duration-200"
           >
             <ChevronRight className="w-6 h-6 text-gray-800" />
           </button>
+
+          {/* Navigation Arrows - Mobile (Bottom) */}
+          <div className="flex sm:hidden justify-center space-x-4 mt-4">
+            <button
+              onClick={prevSlide}
+              className="bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-200"
+            >
+              <ChevronLeft className="w-6 h-6 text-gray-800" />
+            </button>
+            <button
+              onClick={nextSlide}
+              className="bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-200"
+            >
+              <ChevronRight className="w-6 h-6 text-gray-800" />
+            </button>
+          </div>
         </div>
 
         {/* Action Buttons */}
@@ -210,13 +226,13 @@ export default function STEvents() {
         </div>
 
         {/* Bottom Image Row */}
-        <div ref={bottomSliderRef} className="mt-16 flex justify-center space-x-4 overflow-hidden">
+        <div ref={bottomSliderRef} className="mt-16 flex justify-center items-center space-x-2 sm:space-x-4 overflow-hidden px-4">
           {sliderImages.slice(0, 5).map((image, index) => (
-            <div key={`bottom-${index}`} className="relative">
+            <div key={`bottom-${index}`} className="relative flex justify-center">
               <img
                 src={image}
                 alt={`Bottom event ${index + 1}`}
-                className="w-48 h-32 rounded-lg object-cover opacity-80 hover:opacity-100 transition-opacity duration-300"
+                className="w-28 h-20 sm:w-48 sm:h-32 rounded-lg object-cover opacity-80 hover:opacity-100 transition-opacity duration-300 mx-auto"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg"></div>
             </div>
