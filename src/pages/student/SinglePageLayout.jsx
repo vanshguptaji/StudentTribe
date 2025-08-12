@@ -3,11 +3,11 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MainScreen from "./MainScreen";
 import BrandsScreen from "./BrandsScreen";
-import StudentApp from "./StudentApp";
-import STEvents from "./STEvents";
+import StudentApp from "../StudentApp";
+import STEvents from "../STEvents";
 import STbeast from "./STbeast";
-import STCare from "./STCare";
-import WhoweAre from "./WhoweAre";
+import STCare from "../STCare";
+import WhoweAre from "../WhoweAre";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
