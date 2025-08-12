@@ -24,9 +24,9 @@ export default function Footer() {
 
   return (
     <footer className="w-full bg-transparent">
-      <div className="max-w-7xl mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto px-4 py-4 sm:py-8 md:py-12">
         {/* Footer navigation buttons */}
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
+        <div className="flex flex-wrap justify-center gap-2 mb-4 sm:mb-6 md:mb-8">
           {navItems.map((item) => (
             <button
               key={item.id}

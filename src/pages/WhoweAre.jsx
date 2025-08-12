@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import banner from '../assets/whoweare/banner.svg';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import bg from "../assets/whoweare/Frame 2147223304.svg"
@@ -179,39 +180,43 @@ function WhoweAre() {
         backgroundRepeat: 'no-repeat',
       }}
     >
-      {/* Side Text Elements */}
-      <div ref={sideTextRef} className="absolute right-2 md:right-0 top-1/2 transform -translate-y-1/2 rotate-90 text-white font-bold text-sm md:text-lg tracking-widest z-10">
-        WHO WE ARE
-      </div>
+      {/* Banner image top-right */}
+      <img
+        src={banner}
+        alt="ST Beast Banner"
+        className="absolute top-0 right-4 md:top-0 md:right-8 lg:top-0 lg:right-12 w-[20px] md:w-[30px] lg:w-[56px] h-auto z-30 select-none pointer-events-none"
+        style={{ minWidth: '20px' }}
+        loading="eager"
+      />
 
       {/* Main Content Container */}
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 py-4 md:py-8 relative z-5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-12 md:py-16 relative z-5 min-h-screen flex flex-col justify-center">
         {/* Header with Logo */}
-        <div ref={logoRef} className="text-center mb-4 md:mb-8">
+        <div ref={logoRef} className="text-center mb-6 sm:mb-8 md:mb-12">
           <div className="logo-container">
             <div className="text-white font-black text-3xl sm:text-4xl md:text-6xl leading-none drop-shadow-lg tracking-tight">
               st.
             </div>
-            <div className="text-red-200 text-sm sm:text-base md:text-lg font-medium drop-shadow mb-2 md:mb-4">
+            <div className="text-red-200 text-sm sm:text-base md:text-lg font-medium drop-shadow mb-2 sm:mb-4 md:mb-6">
               Student Tribe
             </div>
           </div>
         </div>
 
         {/* Main Content Layout */}
-        <div className="flex flex-col items-center justify-center text-center space-y-4 md:space-y-8">
+        <div className="flex flex-col items-center justify-center text-center space-y-4 sm:space-y-6 md:space-y-10 flex-grow">
           {/* Typewriter Text Above Number */}
-          <div ref={typewriter1Ref} className="text-white text-xl sm:text-2xl md:text-4xl lg:text-6xl font-bold tracking-wide">
+          <div ref={typewriter1Ref} className="text-white text-lg sm:text-xl md:text-4xl lg:text-6xl font-bold tracking-wide">
             {typewriterText1}
             <span className="animate-pulse text-red-400">|</span>
           </div>
 
           {/* Large Number with Images */}
-          <div ref={zeroRef} className="flex justify-center">
+          <div ref={zeroRef} className="flex justify-center my-2 sm:my-4 md:my-6">
             <div className="relative">
               {/* Large Number Background */}
               <div 
-                className="text-[8rem] sm:text-[12rem] md:text-[18rem] lg:text-[25rem] font-black text-transparent bg-clip-text bg-center bg-contain leading-none"
+                className="text-[5rem] sm:text-[8rem] md:text-[18rem] lg:text-[25rem] font-black text-transparent bg-clip-text bg-center bg-contain leading-none"
                 style={{ 
                   backgroundImage: `url(${zeroImages[0]})`,
                   WebkitBackgroundClip: 'text',
@@ -223,7 +228,7 @@ function WhoweAre() {
               
               {/* Image Grid Overlay */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="grid grid-cols-4 gap-1 sm:gap-2 w-24 h-32 sm:w-32 sm:h-44 md:w-48 md:h-64">
+                <div className="grid grid-cols-4 gap-1 sm:gap-2 w-20 h-24 sm:w-32 sm:h-40 md:w-48 md:h-64">
                   {zeroImages.map((image, index) => (
                     <div key={index} className="relative">
                     </div>
@@ -234,15 +239,15 @@ function WhoweAre() {
           </div>
 
           {/* Typewriter Text Below Number */}
-          <div className="flex flex-col items-center space-y-1 md:space-y-2">
-            <div className="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-2">
-              <div ref={typewriter2Ref} className="text-white text-lg sm:text-xl md:text-3xl lg:text-5xl font-bold">
+          <div className="flex flex-col items-center space-y-2 sm:space-y-3 md:space-y-4">
+            <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-3">
+              <div ref={typewriter2Ref} className="text-white text-xl sm:text-2xl md:text-3xl lg:text-5xl font-bold">
                 {typewriterText2}
                 {typewriterText2 && typewriterText2.length > 0 && !typewriterText3 && (
                   <span className="animate-pulse text-red-400">|</span>
                 )}
               </div>
-              <div ref={typewriter3Ref} className="text-red-300 text-base sm:text-lg md:text-2xl lg:text-4xl font-medium">
+              <div ref={typewriter3Ref} className="text-red-300 text-lg sm:text-xl md:text-2xl lg:text-4xl font-medium">
                 {typewriterText3}
                 {typewriterText3 && typewriterText3.length > 0 && (
                   <span className="animate-pulse text-red-400">|</span>
@@ -252,7 +257,7 @@ function WhoweAre() {
           </div>
 
           {/* Text Content Below */}
-          <div ref={textContentRef} className="text-white space-y-3 md:space-y-6 max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl px-2">
+          <div ref={textContentRef} className="text-white space-y-3 sm:space-y-4 md:space-y-6 max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-4xl px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8">
             <div className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed">
               We are India's largest and fastest growing student community, 
               connecting <span className="text-red-300 font-bold">25,000+</span> students across the nation through 

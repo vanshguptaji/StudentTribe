@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import banner from '../assets/stApp/banner.svg';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import robot from "../assets/BrandsSection/image 269.svg";
@@ -127,6 +128,14 @@ export default function StudentApp() {
 
   return (
     <div ref={containerRef} className="min-h-screen w-full bg-gradient-to-br from-[#b8001f] to-[#7a0015] overflow-hidden relative">
+      {/* Banner image top-right */}
+      <img
+        src={banner}
+        alt="ST Beast Banner"
+        className="absolute top-0 right-4 md:top-0 md:right-8 lg:top-0 lg:right-12 w-[20px] md:w-[30px] lg:w-[56px] h-auto z-30 select-none pointer-events-none"
+        style={{ minWidth: '20px' }}
+        loading="eager"
+      />
       {/* Header */}
       <div className="relative z-20 pt-16 text-center">
         <div className="text-white font-black text-4xl md:text-5xl lg:text-6xl leading-none drop-shadow-lg tracking-tight">st.</div>
@@ -360,12 +369,6 @@ export default function StudentApp() {
           </div>
         </div>
       </div>
-      </div>
-
-      {/* Right Side Label */}
-      <div className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 bg-[#2d1c1c] text-white font-bold text-xl px-4 py-8 rounded-l-xl tracking-widest items-center justify-center shadow-lg z-30" 
-           style={{writingMode: 'vertical-rl', textOrientation: 'mixed', display: 'flex'}}>
-        ST APP
       </div>
     </div>
   );

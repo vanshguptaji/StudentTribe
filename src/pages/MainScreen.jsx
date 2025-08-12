@@ -48,7 +48,7 @@ const MainScreen = ({ onNavigateToSection }) => {
   const backgroundRef = useRef(null);
   const buttonsRef = useRef(null);
   const descriptionRef = useRef(null);
-  const descriptionLettersRef = useRef([]);
+  const descriptionWordsRef = useRef([]);
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const MainScreen = ({ onNavigateToSection }) => {
           opacity: 0,
         });
 
-        gsap.set(descriptionLettersRef.current, {
+        gsap.set(descriptionWordsRef.current, {
           opacity: 0,
           rotateX: 90,
           transformOrigin: "left bottom",
@@ -104,12 +104,12 @@ const MainScreen = ({ onNavigateToSection }) => {
             },
             "-=0.4"
           )
-          .to(descriptionLettersRef.current, {
+          .to(descriptionWordsRef.current, {
             opacity: 1,
             rotateX: 0,
             duration: 0.5,
             ease: "back.out(1.7)",
-            stagger: 0.035,
+            stagger: 0.12,
           });
       }
     };
@@ -212,26 +212,18 @@ const MainScreen = ({ onNavigateToSection }) => {
                 "and fastest growing student",
                 "community.",
               ];
-              let letterIndex = 0;
+              let wordIndex = 0;
               return lines.map((line, i) => (
                 <React.Fragment key={i}>
-                  {Array.from(line).map((char, j) => {
-                    if (char === " ") {
-                      letterIndex++;
-                      return " ";
-                    }
-                    return (
-                      <span
-                        key={j}
-                        ref={(el) =>
-                          (descriptionLettersRef.current[letterIndex++] = el)
-                        }
-                        style={{ display: "inline-block" }}
-                      >
-                        {char}
-                      </span>
-                    );
-                  })}
+                  {line.split(" ").map((word, j) => (
+                    <span
+                      key={j}
+                      ref={el => (descriptionWordsRef.current[wordIndex++] = el)}
+                      style={{ display: "inline-block", whiteSpace: "pre" }}
+                    >
+                      {word + (j < line.split(" ").length - 1 ? " " : "")}
+                    </span>
+                  ))}
                   {i < lines.length - 1 && <br />}
                 </React.Fragment>
               ));

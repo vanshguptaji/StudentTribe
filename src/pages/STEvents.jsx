@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import banner from '../assets/StEvent/banner.svg';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -107,13 +108,14 @@ export default function STEvents() {
 
   return (
     <div ref={containerRef} className="min-h-screen bg-rose-100 relative overflow-hidden" id="events-section">
-      {/* Side Text Elements */}
-      <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -rotate-90 text-black font-bold text-lg tracking-widest z-10">
-        ST EVENTS
-      </div>
-      <div className="absolute right-0 top-1/2 transform -translate-y-1/2 rotate-90 text-black font-bold text-lg tracking-widest z-10">
-        ST EVENTS
-      </div>
+      {/* Banner image top-right */}
+      <img
+        src={banner}
+        alt="ST Beast Banner"
+        className="absolute top-0 right-4 md:top-0 md:right-8 lg:top-0 lg:right-12 w-[20px] md:w-[30px] lg:w-[56px] h-auto z-30 select-none pointer-events-none"
+        style={{ minWidth: '20px' }}
+        loading="eager"
+      />
 
       {/* Main Content Container */}
       <div className="max-w-6xl mx-auto px-4 py-8">
@@ -196,12 +198,12 @@ export default function STEvents() {
         </div>
 
         {/* Action Buttons */}
-        <div ref={buttonsRef} className="flex justify-center space-x-6">
-          <button className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-full font-medium transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl">
+        <div ref={buttonsRef} className="flex justify-center space-x-4 sm:space-x-6">
+          <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 sm:px-8 sm:py-4 rounded-full font-medium transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl text-sm sm:text-base">
             <span>Register now</span>
             <ChevronRight className="w-5 h-5" />
           </button>
-          <button className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-full font-medium transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl">
+          <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 sm:px-8 sm:py-4 rounded-full font-medium transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl text-sm sm:text-base">
             <span>Host an Event</span>
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -228,9 +230,11 @@ export default function STEvents() {
           <button
             key={index}
             onClick={() => setCurrentSlide(index + sliderImages.length)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              (currentSlide % sliderImages.length) === index ? 'bg-red-600' : 'bg-gray-400 hover:bg-gray-600'
+            className={`w-4 h-4 sm:w-3 sm:h-3 rounded-full border-2 border-white focus:outline-none transition-all duration-300 shadow-md ${
+              (currentSlide % sliderImages.length) === index ? 'bg-red-600 scale-110' : 'bg-gray-400 hover:bg-gray-600'
             }`}
+            aria-label={`Go to slide ${index + 1}`}
+            tabIndex={0}
           />
         ))}
       </div>

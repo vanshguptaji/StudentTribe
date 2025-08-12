@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import banner from "../assets/StBeast/banner.svg";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { gsap } from "gsap";
@@ -361,6 +362,14 @@ const StBeast = () => {
 
   return (
     <div ref={containerRef} className="min-h-screen bg-[#b8001f] relative overflow-hidden" id="beast-section">
+      {/* Responsive Banner Image Top Right */}
+      <img
+        src={banner}
+        alt="ST Beast Banner"
+        className="absolute top-0 right-4 md:top-0 md:right-8 lg:top-0 lg:right-12 w-[20px] md:w-[30px] lg:w-[56px] h-auto z-30 select-none pointer-events-none"
+        style={{ minWidth: '20px' }}
+        loading="eager"
+      />
       {/* Background Pattern and Top Dashed Texts */}
       <div className="absolute inset-0 opacity-10">
         {/* Decorative dashed boxes */}
