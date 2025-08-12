@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
-import banner from '../assets/whoweare/banner.svg';
+import banner from '../../assets/whoweare/banner.svg';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import bg from "../assets/whoweare/Frame 2147223304.svg"
+import bg from "../../assets/whoweare/Frame 2147223304.svg"
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);

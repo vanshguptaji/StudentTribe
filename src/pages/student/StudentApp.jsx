@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import banner from '../assets/stApp/banner.svg';
+import banner from '../../assets/stApp/banner.svg';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import robot from "../assets/BrandsSection/image 269.svg";
-import iphone from "../assets/BrandsSection/iPhone.svg";
-import quizImg from "../assets/BrandsSection/center.svg";
+import robot from "../../assets/BrandsSection/image 269.svg";
+import iphone from "../../assets/BrandsSection/iPhone.svg";
+import quizImg from "../../assets/BrandsSection/center.svg";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);

@@ -1,16 +1,16 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import person1 from "../assets/splashscreen/Rectangle 3463928.svg";
-import person2 from "../assets/splashscreen/Rectangle 3463931.svg";
-import person3 from "../assets/splashscreen/Rectangle 3463948.svg";
-import person4 from "../assets/splashscreen/Rectangle 3463957.svg";
-import person5 from "../assets/splashscreen/Rectangle 3463958.svg";
-import person6 from "../assets/splashscreen/Rectangle 3463959.svg";
-import person7 from "../assets/splashscreen/Rectangle 3463963.svg";
-import person8 from "../assets/splashscreen/Rectangle 3463964.svg";
-import person9 from "../assets/splashscreen/Rectangle 3463965.svg";
-import person10 from "../assets/splashscreen/Rectangle 3463966.svg";
-import fist from "../assets/splashscreen/Rectangle 3463918.svg"; 
+import person1 from "../../assets/splashscreen/Rectangle 3463928.svg";
+import person2 from "../../assets/splashscreen/Rectangle 3463931.svg";
+import person3 from "../../assets/splashscreen/Rectangle 3463948.svg";
+import person4 from "../../assets/splashscreen/Rectangle 3463957.svg";
+import person5 from "../../assets/splashscreen/Rectangle 3463958.svg";
+import person6 from "../../assets/splashscreen/Rectangle 3463959.svg";
+import person7 from "../../assets/splashscreen/Rectangle 3463963.svg";
+import person8 from "../../assets/splashscreen/Rectangle 3463964.svg";
+import person9 from "../../assets/splashscreen/Rectangle 3463965.svg";
+import person10 from "../../assets/splashscreen/Rectangle 3463966.svg";
+import fist from "../../assets/splashscreen/Rectangle 3463918.svg"; 
 
 const SplashSplash2 = ({ fade }) => {
   const peopleRef = useRef([]);

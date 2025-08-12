@@ -1,13 +1,13 @@
 import React, { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import MainScreen from "./MainScreen";
-import BrandsScreen from "./BrandsScreen";
-import StudentApp from "../StudentApp";
-import STEvents from "../STEvents";
-import STbeast from "./STbeast";
-import STCare from "../STCare";
-import WhoweAre from "../WhoweAre";
+import MainScreen from "../student/MainScreen";
+import BrandsScreen from "../student/BrandsScreen";
+import StudentApp from "../student/StudentApp";
+import STEvents from "../student/STEvents";
+import STbeast from "../student/STbeast";
+import STCare from "../student/STCare";
+import WhoweAre from "../student/WhoweAre";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);

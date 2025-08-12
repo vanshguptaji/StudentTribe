@@ -1,10 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import SinglePageLayout from './pages/SinglePageLayout';
+import SinglePageLayout from './pages/student/SinglePageLayout';
 import BottomNavbar from './components/BottomNavbar';
 import Footer from './components/Footer';
-import SplashSplash2 from './pages/SplashSplash2';
+import SplashSplash2 from './pages/student/SplashSplash2';
 
 
 

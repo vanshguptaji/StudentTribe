@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import banner from '../../assets/StEvent/banner.svg';
+import banner from '../assets/StEvent/banner.svg';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import banner from "../assets/StBeast/banner.svg";
+import banner from "../../assets/StBeast/banner.svg";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { gsap } from "gsap";
