@@ -221,13 +221,13 @@ const BottomNavbar = () => {
     <>
       {/* Desktop Navbar (hidden on mobile) */}
       <div className="fixed justify-center items-center bottom-0 left-0 right-0 z-50 hidden lg:flex">
-        <div className="max-w-7xl bg-black/90 backdrop-blur-sm rounded-full mx-4 mb-4 overflow-hidden shadow-2xl p-4">
+        <div className="max-w-7xl bg-black/90 backdrop-blur-sm rounded-full mx-4 mb-2 overflow-hidden shadow-2xl p-2">
           <div className="flex justify-between gap-2 items-center px-2">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleTabClick(item)}
-                className={`px-6 py-3 rounded-full text-lg font-semibold transition-all duration-300 whitespace-nowrap ${
+                className={`px-4 py-2 rounded-full text-base font-medium transition-all duration-300 whitespace-nowrap ${
                   activeTab === item.id
                     ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white shadow-lg scale-105 backdrop-blur-md'
                     : 'text-gray-300 hover:text-white hover:bg-white/10'
@@ -242,13 +242,13 @@ const BottomNavbar = () => {
 
       {/* Tablet Navbar (medium screens) */}
       <div className="fixed justify-center items-center bottom-0 left-0 right-0 z-50 hidden md:flex lg:hidden">
-        <div className="max-w-4xl bg-black/90 backdrop-blur-sm rounded-full mx-4 mb-4 overflow-hidden shadow-2xl p-3">
+        <div className="max-w-4xl bg-black/90 backdrop-blur-sm rounded-full mx-4 mb-2 overflow-hidden shadow-2xl p-2">
           <div className="flex justify-between gap-1 items-center px-1">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleTabClick(item)}
-                className={`px-3 py-2 rounded-full text-sm font-semibold transition-all duration-300 whitespace-nowrap ${
+                className={`px-2 py-1 rounded-full text-xs font-medium transition-all duration-300 whitespace-nowrap ${
                   activeTab === item.id
                     ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white shadow-lg scale-105 backdrop-blur-md'
                     : 'text-gray-300 hover:text-white hover:bg-white/10'
@@ -269,13 +269,13 @@ const BottomNavbar = () => {
             ? 'translate-y-0 opacity-100 scale-100' 
             : 'translate-y-full opacity-0 scale-95 pointer-events-none'
         }`}>
-          <div className="bg-black/95 backdrop-blur-md rounded-2xl mb-4 overflow-hidden shadow-2xl border border-gray-800">
-            <div className="p-2">
+          <div className="bg-black/95 backdrop-blur-md rounded-2xl mb-2 overflow-hidden shadow-2xl border border-gray-800">
+            <div className="p-1">
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleTabClick(item)}
-                  className={`w-full text-left px-4 py-3 rounded-xl text-base font-semibold transition-all duration-300 mb-1 last:mb-0 ${
+                  className={`w-full text-left px-3 py-2 rounded-xl text-xs font-medium transition-all duration-300 mb-1 last:mb-0 ${
                     activeTab === item.id
                       ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white shadow-lg'
                       : 'text-gray-300 hover:text-white hover:bg-white/10'
@@ -291,7 +291,7 @@ const BottomNavbar = () => {
         {/* Mobile Toggle Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 ${
+          className={`bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white p-3 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 ${
             isOpen ? 'rotate-45' : 'rotate-0'
           }`}
           aria-label="Toggle navigation menu"

@@ -342,7 +342,7 @@ export default function BrandsScreen() {
               Students
             </button>
             <button
-              className="flex-1 py-4 px-6 text-center rounded-r-full transition-colors duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white"
+              className="flex-1 py-4 px-6 text-center rounded-full transition-colors duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white"
               onClick={() => scrollToSection('brands-section')}
             >
               Brands

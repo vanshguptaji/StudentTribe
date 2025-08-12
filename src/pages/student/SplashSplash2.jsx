@@ -1,15 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import person1 from "../../assets/splashscreen/Rectangle 3463928.svg";
 import person2 from "../../assets/splashscreen/Rectangle 3463931.svg";
 import person3 from "../../assets/splashscreen/Rectangle 3463948.svg";
 import person4 from "../../assets/splashscreen/Rectangle 3463957.svg";
 import person5 from "../../assets/splashscreen/Rectangle 3463958.svg";
-import person6 from "../../assets/splashscreen/Rectangle 3463959.svg";
-import person7 from "../../assets/splashscreen/Rectangle 3463963.svg";
 import person8 from "../../assets/splashscreen/Rectangle 3463964.svg";
-import person9 from "../../assets/splashscreen/Rectangle 3463965.svg";
-import person10 from "../../assets/splashscreen/Rectangle 3463966.svg";
 import fist from "../../assets/splashscreen/Rectangle 3463918.svg"; 
 
 const SplashSplash2 = ({ fade }) => {
@@ -241,42 +237,72 @@ const SplashSplash2 = ({ fade }) => {
         <img src={fist} alt="Fist Icon" className="w-full h-full object-contain" loading="eager" />
 
         {/* ST Text Overlay on Fist */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <div className="text-white text-6xl font-bold" style={{fontFamily: 'system-ui, -apple-system, sans-serif'}}>
+        <div className="absolute inset-0 mt-24 flex flex-col items-center justify-center">
+          <div className="text-white text-9xl font-bold" style={{fontFamily: 'system-ui, -apple-system, sans-serif'}}>
             st.
           </div>
-          <div className="text-white text-lg font-normal tracking-widest mt-1" style={{fontFamily: 'system-ui, -apple-system, sans-serif'}}>
+          <div className="text-white text-xl font-normal tracking-widest mt-1" style={{fontFamily: 'system-ui, -apple-system, sans-serif'}}>
             Student Tribe
           </div>
         </div>
       </div>
 
       {/* Group of people entering the fist - funnel formation with gaps */}
-      <div className="relative w-80 h-80 flex items-center justify-center" style={{ marginTop: '-40px' }}>
+      <div className="relative w-96 h-96 flex items-center justify-center" style={{ marginTop: '-40px' }}>
         {/* Front row - closest to fist */}
-        <img ref={el => peopleRef.current[0] = el} src={person1} alt="Person 1" className="absolute left-1/2 top-0 h-28 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)', filter: 'brightness(0.9)' }} loading="lazy" />
+        <img ref={el => peopleRef.current[0] = el} src={person1} alt="Person 1" className="absolute left-1/2 top-0 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
         
         {/* Second row */}
-        <img ref={el => peopleRef.current[1] = el} src={person2} alt="Person 2" className="absolute left-28 top-20 h-28 w-auto object-contain z-5" style={{ transform: 'translate(-85%, 0)', filter: 'brightness(0.88)' }} loading="lazy" />
-        <img ref={el => peopleRef.current[2] = el} src={person3} alt="Person 3" className="absolute left-52 top-20 h-28 w-auto object-contain z-5" style={{ transform: 'translate(-15%, 0)', filter: 'brightness(0.88)' }} loading="lazy" />
+        <img ref={el => peopleRef.current[1] = el} src={person2} alt="Person 2" className="absolute left-32 top-18 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
+        <img ref={el => peopleRef.current[2] = el} src={person3} alt="Person 3" className="absolute left-64 top-18 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
 
         {/* Third row */}
-        <img ref={el => peopleRef.current[3] = el} src={person4} alt="Person 4" className="absolute left-1/2 top-40 h-28 w-auto object-contain z-5" style={{ transform: 'translate(-125%, 0)', filter: 'brightness(0.85)' }} loading="lazy" />
-        <img ref={el => peopleRef.current[4] = el} src={person5} alt="Person 5" className="absolute left-1/2 top-40 h-28 w-auto object-contain z-5" style={{ transform: 'translate(-75%, 0)', filter: 'brightness(0.85)' }} loading="lazy" />
-        <img ref={el => peopleRef.current[5] = el} src={person1} alt="Person 1" className="absolute left-52 top-45 h-28 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)', filter: 'brightness(0.9)' }} loading="lazy" />
+        <img ref={el => peopleRef.current[3] = el} src={person4} alt="Person 4" className="absolute left-20 top-36 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
+        <img ref={el => peopleRef.current[4] = el} src={person5} alt="Person 5" className="absolute left-48 top-36 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
+        <img ref={el => peopleRef.current[5] = el} src={person8} alt="Person 8" className="absolute left-76 top-36 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
 
         {/* Fourth row */}
-        <img ref={el => peopleRef.current[6] = el} src={person8} alt="Person 8" className="absolute left-52 top-65 h-28 w-auto object-contain z-5" style={{ transform: 'translate(-150%, 0)', filter: 'brightness(0.82)' }} loading="lazy" />
-        <img ref={el => peopleRef.current[7] = el} src={person3} alt="Person 3" className="absolute left-0 top-65 h-28 w-auto object-contain z-5" style={{ transform: 'translate(-15%, 0)', filter: 'brightness(0.88)' }} loading="lazy" />
-        <img ref={el => peopleRef.current[8] = el} src={person4} alt="Person 4" className="absolute left-72 top-67 h-28 w-auto object-contain z-5" style={{ transform: 'translate(-125%, 0)', filter: 'brightness(0.85)' }} loading="lazy" />
-        <img ref={el => peopleRef.current[9] = el} src={person2} alt="Person 2" className="absolute left-80 top-65 h-28 w-auto object-contain z-5" style={{ transform: 'translate(-85%, 0)', filter: 'brightness(0.88)' }} loading="lazy" />
+        <img ref={el => peopleRef.current[6] = el} src={person1} alt="Person 1" className="absolute left-12 top-54 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
+        <img ref={el => peopleRef.current[7] = el} src={person3} alt="Person 3" className="absolute left-32 top-54 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
+        <img ref={el => peopleRef.current[8] = el} src={person4} alt="Person 4" className="absolute left-52 top-54 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
+        <img ref={el => peopleRef.current[9] = el} src={person2} alt="Person 2" className="absolute left-72 top-54 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
+        <img ref={el => peopleRef.current[10] = el} src={person5} alt="Person 5" className="absolute left-92 top-54 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
 
-        {/* Fifth row - back crowd */}
-        <img ref={el => peopleRef.current[10] = el} src={person8} alt="Person 8" className="absolute left-30 top-87 h-28 w-auto object-contain z-5" style={{ transform: 'translate(-150%, 0)', filter: 'brightness(0.82)' }} loading="lazy" />
-        <img ref={el => peopleRef.current[11] = el} src={person3} alt="Person 3" className="absolute left-52 top-87 h-28 w-auto object-contain z-5" style={{ transform: 'translate(-15%, 0)', filter: 'brightness(0.88)' }} loading="lazy" />
-        <img ref={el => peopleRef.current[12] = el} src={person4} alt="Person 4" className="absolute left-0 top-89 h-28 w-auto object-contain z-5" style={{ transform: 'translate(-125%, 0)', filter: 'brightness(0.85)' }} loading="lazy" />
-        <img ref={el => peopleRef.current[13] = el} src={person2} alt="Person 2" className="absolute left-40 top-87 h-28 w-auto object-contain z-5" style={{ transform: 'translate(-85%, 0)', filter: 'brightness(0.88)' }} loading="lazy" />
-        <img ref={el => peopleRef.current[14] = el} src={person2} alt="Person 2" className="absolute left-92 top-87 h-28 w-auto object-contain z-5" style={{ transform: 'translate(-85%, 0)', filter: 'brightness(0.88)' }} loading="lazy" />
+        {/* Fifth row */}
+        <img ref={el => peopleRef.current[11] = el} src={person8} alt="Person 8" className="absolute left-6 top-72 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
+        <img ref={el => peopleRef.current[12] = el} src={person3} alt="Person 3" className="absolute left-24 top-72 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
+        <img ref={el => peopleRef.current[13] = el} src={person4} alt="Person 4" className="absolute left-42 top-72 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
+        <img ref={el => peopleRef.current[14] = el} src={person1} alt="Person 1" className="absolute left-60 top-72 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
+        <img ref={el => peopleRef.current[15] = el} src={person2} alt="Person 2" className="absolute left-78 top-72 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
+        <img ref={el => peopleRef.current[16] = el} src={person5} alt="Person 5" className="absolute left-96 top-72 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
+
+        {/* Sixth row - back crowd */}
+        <img ref={el => peopleRef.current[17] = el} src={person8} alt="Person 8" className="absolute left-3 top-90 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
+        <img ref={el => peopleRef.current[18] = el} src={person3} alt="Person 3" className="absolute left-18 top-90 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
+        <img ref={el => peopleRef.current[19] = el} src={person4} alt="Person 4" className="absolute left-33 top-90 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
+        <img ref={el => peopleRef.current[20] = el} src={person1} alt="Person 1" className="absolute left-48 top-90 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
+        <img ref={el => peopleRef.current[21] = el} src={person2} alt="Person 2" className="absolute left-63 top-90 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
+        <img ref={el => peopleRef.current[22] = el} src={person5} alt="Person 5" className="absolute left-78 top-90 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
+        <img ref={el => peopleRef.current[23] = el} src={person8} alt="Person 8" className="absolute left-93 top-90 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)'}} loading="lazy" />
+
+        {/* Seventh row - deepest crowd */}
+        <img ref={el => peopleRef.current[24] = el} src={person3} alt="Person 3" className="absolute left-9 top-108 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)' }} loading="lazy" />
+        <img ref={el => peopleRef.current[25] = el} src={person4} alt="Person 4" className="absolute left-22 top-108 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)' }} loading="lazy" />
+        <img ref={el => peopleRef.current[26] = el} src={person1} alt="Person 1" className="absolute left-35 top-108 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)' }} loading="lazy" />
+        <img ref={el => peopleRef.current[27] = el} src={person2} alt="Person 2" className="absolute left-48 top-108 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)' }} loading="lazy" />
+        <img ref={el => peopleRef.current[28] = el} src={person5} alt="Person 5" className="absolute left-61 top-108 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)' }} loading="lazy" />
+        <img ref={el => peopleRef.current[29] = el} src={person8} alt="Person 8" className="absolute left-74 top-108 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)' }} loading="lazy" />
+        <img ref={el => peopleRef.current[30] = el} src={person3} alt="Person 3" className="absolute left-87 top-108 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)' }} loading="lazy" />
+
+        {/* Eighth row - final back row */}
+        <img ref={el => peopleRef.current[31] = el} src={person4} alt="Person 4" className="absolute left-6 top-126 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)',}} loading="lazy" />
+        <img ref={el => peopleRef.current[32] = el} src={person1} alt="Person 1" className="absolute left-18 top-126 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)' }} loading="lazy" />
+        <img ref={el => peopleRef.current[33] = el} src={person2} alt="Person 2" className="absolute left-30 top-126 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)' }} loading="lazy" />
+        <img ref={el => peopleRef.current[34] = el} src={person5} alt="Person 5" className="absolute left-42 top-126 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)' }} loading="lazy" />
+        <img ref={el => peopleRef.current[35] = el} src={person8} alt="Person 8" className="absolute left-54 top-126 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)' }} loading="lazy" />
+        <img ref={el => peopleRef.current[36] = el} src={person3} alt="Person 3" className="absolute left-66 top-126 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)' }} loading="lazy" />
+        <img ref={el => peopleRef.current[37] = el} src={person4} alt="Person 4" className="absolute left-78 top-126 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)' }} loading="lazy" />
+        <img ref={el => peopleRef.current[38] = el} src={person1} alt="Person 1" className="absolute left-90 top-126 h-40 w-auto object-contain z-5" style={{ transform: 'translate(-50%, 0)' }} loading="lazy" />
       </div>
       
       {/* Subtle loading indicator */}
