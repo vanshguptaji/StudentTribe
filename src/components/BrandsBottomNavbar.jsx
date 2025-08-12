@@ -1,29 +1,35 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const BrandsBottomNavbar = () => {
-  const [activeTab, setActiveTab] = useState('Home');
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Determine active tab based on current route
+  const getActiveTab = () => {
+    if (location.pathname === '/brands') return 'Home';
+    if (location.pathname === '/brands/offerings') return 'Our Offerings';
+    if (location.pathname === '/brands/clients') return 'Clients';
+    if (location.pathname === '/brands/testimonials') return 'Testimonials';
+    return 'Home';
+  };
+
+  const [activeTab, setActiveTab] = useState(getActiveTab());
+
+  useEffect(() => {
+    setActiveTab(getActiveTab());
+  }, [location.pathname]);
 
   const navItems = [
-    { id: 'Home', label: 'Home' },
-    { id: 'Our Offerings', label: 'Our Offerings' },
-    { id: 'Clients', label: 'Clients' },
-    { id: 'Testimonials', label: 'Testimonials' }
+    { id: 'Home', label: 'Home', route: '/brands' },
+    { id: 'Our Offerings', label: 'Our Offerings', route: '/brands/offerings' },
+    { id: 'Clients', label: 'Clients', route: '/brands/clients' },
+    { id: 'Testimonials', label: 'Testimonials', route: '/brands/testimonials' }
   ];
 
   const handleTabClick = (item) => {
     setActiveTab(item.id);
-    // Add specific navigation logic for different tabs
-    if (item.id === 'Home') {
-      // Stay on brands home page
-    } else if (item.id === 'Our Offerings') {
-      // Navigate to offerings page (to be implemented)
-    } else if (item.id === 'Clients') {
-      // Navigate to clients page (to be implemented)
-    } else if (item.id === 'Testimonials') {
-      // Navigate to testimonials page (to be implemented)
-    }
+    navigate(item.route);
   };
 
   return (

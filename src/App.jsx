@@ -7,6 +7,9 @@ import BrandsBottomNavbar from './components/BrandsBottomNavbar';
 import Footer from './components/Footer';
 import SplashSplash2 from './pages/student/SplashSplash2';
 import Home from './pages/brands/Home';
+import OurOfferings from './pages/brands/OurOfferings';
+import Clients from './pages/brands/Clients';
+import Testimonials from './pages/brands/Testimonials';
 
 
 
@@ -55,6 +58,7 @@ function App() {
 function AppContent({ showSplash, fadeOut, handleSplashClick }) {
   const location = useLocation();
   const isBrandsRoute = location.pathname.startsWith('/brands');
+  const isBrandsHome = location.pathname === '/brands';
 
   return (
     <>
@@ -76,8 +80,8 @@ function AppContent({ showSplash, fadeOut, handleSplashClick }) {
       {/* Main content with red background - always present */}
       <div
         className={`min-h-screen w-full overflow-x-hidden relative transition-colors duration-500 flex flex-col ${
-          isBrandsRoute 
-            ? 'bg-gradient-to-r from-[#4a1a1a] via-[#8B4B6B] to-[#E8B4CD]' 
+          isBrandsHome
+            ? '' // Home page handles its own gradient
             : 'bg-gradient-to-br from-[#b8001f] to-[#7a0015]'
         }`}
         style={{
@@ -91,6 +95,9 @@ function AppContent({ showSplash, fadeOut, handleSplashClick }) {
           <Routes>
             <Route path="/" element={<SinglePageLayout />} />
             <Route path="/brands" element={<Home />} />
+            <Route path="/brands/offerings" element={<OurOfferings />} />
+              <Route path="/brands/clients" element={<Clients />} />
+              <Route path="/brands/testimonials" element={<Testimonials />} />
           </Routes>
         </div>
         {!isBrandsRoute && <Footer />}
