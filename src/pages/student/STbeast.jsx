@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import banner from "../../assets/StBeast/banner.svg";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -237,6 +238,9 @@ const CurvedCarousel = ({ products }) => {
 };
 
 const StBeast = () => {
+  const navigate = useNavigate();
+  const [showButtons, setShowButtons] = useState(false);
+  const hideButtonsTimeoutRef = useRef(null);
   const containerRef = useRef(null);
   const headerRef = useRef(null);
   const titleRef = useRef(null);
@@ -356,9 +360,38 @@ const StBeast = () => {
 
       return () => {
         ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        // Clean up timeout on unmount
+        if (hideButtonsTimeoutRef.current) {
+          clearTimeout(hideButtonsTimeoutRef.current);
+        }
       };
     }
   }, []);
+
+  // Hover handlers for logo/buttons
+  const handleLogoOrButtonsMouseEnter = () => {
+    // Clear any pending hide timeout
+    if (hideButtonsTimeoutRef.current) {
+      clearTimeout(hideButtonsTimeoutRef.current);
+      hideButtonsTimeoutRef.current = null;
+    }
+    setShowButtons(true);
+  };
+  
+  const handleLogoOrButtonsMouseLeave = (e) => {
+    // Check if the mouse is leaving to go to a related element within the same container
+    const relatedTarget = e.relatedTarget;
+    const currentTarget = e.currentTarget;
+    
+    // If there's no related target (mouse left the window) or the related target 
+    // is not within our logo container, hide the buttons with a delay
+    if (!relatedTarget || !currentTarget.contains(relatedTarget)) {
+      // Add a small delay before hiding to allow smooth movement to buttons
+      hideButtonsTimeoutRef.current = setTimeout(() => {
+        setShowButtons(false);
+      }, 300); // 300ms delay
+    }
+  };
 
   return (
     <div ref={containerRef} className="min-h-screen bg-[#b8001f] relative overflow-hidden" id="beast-section">
@@ -412,48 +445,70 @@ const StBeast = () => {
       {/* Header - Styled like MainScreen */}
       <div ref={headerRef} className="relative z-10 pt-12 pb-8">
         <div className="text-center">
-          <div
-            className="text-white font-black text-6xl leading-none drop-shadow-lg tracking-tight"
-            style={{
-              fontFamily: "Inter, sans-serif",
-              letterSpacing: "-0.04em",
-            }}
+          <div 
+            className="logo-container group inline-block cursor-pointer relative"
+            onMouseEnter={handleLogoOrButtonsMouseEnter}
+            onMouseLeave={handleLogoOrButtonsMouseLeave}
           >
-            st.
-          </div>
-          <div className="text-white text-lg font-medium drop-shadow mb-4">
-            Student Tribe
-          </div>
-          <div className="mx-auto mt-8 w-[400px] max-w-[90vw] bg-[#2d000a] rounded-full flex overflow-hidden shadow-lg text-xl font-bold">
-            <button
-              className={`flex-1 py-4 text-center rounded-l-full transition-colors duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white`}
-              style={{ pointerEvents: "none" }}
+            <div
+              className="text-white font-black text-6xl leading-none drop-shadow-lg tracking-tight group-hover:scale-105 transition-transform duration-300"
+              style={{
+                fontFamily: "Inter, sans-serif",
+                letterSpacing: "-0.04em",
+              }}
             >
-              Students
-            </button>
-            <button
-              className={`flex-1 py-4 text-center rounded-r-full transition-colors duration-300 text-gray-300 bg-transparent`}
-              style={{ pointerEvents: "none" }}
+              st.
+            </div>
+            <div className="text-white text-lg font-medium drop-shadow mb-4 group-hover:scale-105 transition-transform duration-300">
+              Student Tribe
+            </div>
+            {/* Buttons appear below text on hover */}
+            <div
+              className={`absolute left-1/2 -translate-x-1/2 w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
+                showButtons ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+              }`}
+              style={{
+                top: 'calc(100% + 8px)',
+              }}
             >
-              Brands
-            </button>
+              <button
+                className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white border-none cursor-pointer text-lg hover:scale-105"
+                onClick={() => navigate('/')}
+              >
+                Students
+              </button>
+              <button
+                className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-transparent text-gray-300 border-none cursor-pointer text-lg hover:bg-[#b8001f] hover:text-white hover:scale-105"
+                onClick={() => navigate('/brands')}
+              >
+                Brands
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Title Section */}
-      <div ref={titleRef} className="text-center text-white mb-16">
-        <h1 className="text-4xl font-bold mb-4">Beast Mode - Wear What Roars</h1>
-        <p className="text-lg opacity-80">
-          From oversized fits that scream confidence to punchlines that rep
-          <br />
-          your vibe — this drop is all about you.
-        </p>
-      </div>
+      {/* Main Content with shifting */}
+      <div 
+        className="transition-transform duration-500"
+        style={{
+          transform: showButtons ? 'translateY(80px)' : 'translateY(0)',
+        }}
+      >
+        {/* Title Section */}
+        <div ref={titleRef} className="text-center text-white mb-16">
+          <h1 className="text-4xl font-bold mb-4">Beast Mode - Wear What Roars</h1>
+          <p className="text-lg opacity-80">
+            From oversized fits that scream confidence to punchlines that rep
+            <br />
+            your vibe — this drop is all about you.
+          </p>
+        </div>
 
-      {/* 3D Curved Carousel */}
-      <div ref={carouselRef} className="relative flex items-center justify-center min-h-[500px] px-8">
-        <CurvedCarousel products={products} />
+        {/* 3D Curved Carousel */}
+        <div ref={carouselRef} className="relative flex items-center justify-center min-h-[500px] px-8">
+          <CurvedCarousel products={products} />
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 const CurvedCarousel = () => {
+  const navigate = useNavigate();
+  const [showButtons, setShowButtons] = useState(false);
+  const hideButtonsTimeoutRef = useRef(null);
   const containerRef = useRef(null);
   const [rotation, setRotation] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -72,21 +76,91 @@ const CurvedCarousel = () => {
     return () => {
       window.removeEventListener('mouseup', handleGlobalMouseUp);
       window.removeEventListener('touchend', handleGlobalMouseUp);
+      // Clean up timeout on unmount
+      if (hideButtonsTimeoutRef.current) {
+        clearTimeout(hideButtonsTimeoutRef.current);
+      }
     };
   }, []);
 
+  // Hover handlers for logo/buttons
+  const handleLogoOrButtonsMouseEnter = () => {
+    // Clear any pending hide timeout
+    if (hideButtonsTimeoutRef.current) {
+      clearTimeout(hideButtonsTimeoutRef.current);
+      hideButtonsTimeoutRef.current = null;
+    }
+    setShowButtons(true);
+  };
+  
+  const handleLogoOrButtonsMouseLeave = (e) => {
+    // Check if the mouse is leaving to go to a related element within the same container
+    const relatedTarget = e.relatedTarget;
+    const currentTarget = e.currentTarget;
+    
+    // If there's no related target (mouse left the window) or the related target 
+    // is not within our logo container, hide the buttons with a delay
+    if (!relatedTarget || !currentTarget.contains(relatedTarget)) {
+      // Add a small delay before hiding to allow smooth movement to buttons
+      hideButtonsTimeoutRef.current = setTimeout(() => {
+        setShowButtons(false);
+      }, 300); // 300ms delay
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-900 overflow-hidden flex items-center justify-center">
+    <div className="min-h-screen bg-gray-900 overflow-hidden flex flex-col">
+      {/* Header with Logo */}
+      <div className="relative z-20 pt-16 pb-8 text-center">
+        <div 
+          className="logo-container group inline-block cursor-pointer relative"
+          onMouseEnter={handleLogoOrButtonsMouseEnter}
+          onMouseLeave={handleLogoOrButtonsMouseLeave}
+        >
+          <div className="text-white font-black text-4xl md:text-5xl lg:text-6xl leading-none drop-shadow-lg tracking-tight group-hover:scale-105 transition-transform duration-300">st.</div>
+          <div className="text-white text-base md:text-lg font-medium drop-shadow mb-8 group-hover:scale-105 transition-transform duration-300">Student Tribe</div>
+          {/* Buttons appear below text on hover */}
+          <div
+            className={`absolute left-1/2 -translate-x-1/2 w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
+              showButtons ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+            }`}
+            style={{
+              top: 'calc(100% + 8px)',
+            }}
+          >
+            <button
+              className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white border-none cursor-pointer text-lg hover:scale-105"
+              onClick={() => navigate('/')}
+            >
+              Students
+            </button>
+            <button
+              className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-transparent text-gray-300 border-none cursor-pointer text-lg hover:bg-[#b8001f] hover:text-white hover:scale-105"
+              onClick={() => navigate('/brands')}
+            >
+              Brands
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Carousel Container */}
       <div 
-        className="relative w-full h-screen flex items-center justify-center cursor-grab active:cursor-grabbing"
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseLeave}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+        className="flex-1 flex items-center justify-center transition-transform duration-500"
+        style={{
+          transform: showButtons ? 'translateY(80px)' : 'translateY(0)',
+        }}
       >
+        <div 
+          className="relative w-full h-screen flex items-center justify-center cursor-grab active:cursor-grabbing"
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseLeave}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
         <div 
           className="relative"
           style={{
@@ -183,6 +257,7 @@ const CurvedCarousel = () => {
         {/* Instructions */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/60 text-sm">
           Drag to rotate the carousel
+        </div>
         </div>
       </div>
     </div>

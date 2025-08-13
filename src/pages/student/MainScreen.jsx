@@ -77,7 +77,8 @@ const MainScreen = ({ onNavigateToSection }) => {
   const backgroundImagesRef = useRef([]);
   const containerRef = useRef(null);
   const logoContainerRef = useRef(null);
-  const buttonsContainerRef = useRef(null);
+  const [showButtons, setShowButtons] = React.useState(false);
+  const hideButtonsTimeoutRef = useRef(null);
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
@@ -90,159 +91,32 @@ const MainScreen = ({ onNavigateToSection }) => {
     navigate('/brands');
   };
 
-  // Function to create buttons dynamically
-  const createButtons = () => {
-    console.log('Creating buttons...'); // Debug log
-    if (buttonsContainerRef.current) {
-      console.log('Buttons already exist');
-      return;
+
+  // Use React state for hover and buttons
+  // Keep buttons visible when hovering logo or buttons
+  const handleLogoOrButtonsMouseEnter = () => {
+    // Clear any pending hide timeout
+    if (hideButtonsTimeoutRef.current) {
+      clearTimeout(hideButtonsTimeoutRef.current);
+      hideButtonsTimeoutRef.current = null;
     }
-
-    const buttonsContainer = document.createElement('div');
-    buttonsContainer.innerHTML = `
-      <button id="students-btn" style="
-        flex: 1;
-        padding: 16px;
-        text-align: center;
-        border-radius: 9999px;
-        transition: all 0.3s;
-        background: linear-gradient(to right, rgb(184, 0, 31), rgb(122, 0, 21));
-        color: white;
-        border: none;
-        cursor: pointer;
-      ">Students</button>
-      <button id="brands-btn" style="
-        flex: 1;
-        padding: 16px;
-        text-align: center;
-        border-radius: 9999px;
-        transition: all 0.3s;
-        background: transparent;
-        color: rgb(209, 213, 219);
-        border: none;
-        cursor: pointer;
-      ">Brands</button>
-    `;
-    
-    buttonsContainer.style.cssText = `
-      position: absolute;
-      top: calc(100% + 16px);
-      left: 50%;
-      transform: translateX(-50%);
-      width: 400px;
-      max-width: 90vw;
-      background: rgb(45, 0, 10);
-      border-radius: 9999px;
-      overflow: hidden;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-      font-size: 1.25rem;
-      font-weight: bold;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.3s ease-out;
-      display: flex;
-      z-index: 20;
-    `;
-    
-    // Add event listeners
-    const studentsBtn = buttonsContainer.querySelector('#students-btn');
-    const brandsBtn = buttonsContainer.querySelector('#brands-btn');
-    
-    studentsBtn.onclick = () => scrollToSection('main-section');
-    brandsBtn.onclick = () => navigate('/brands');
-    
-    // Hover effects for brands button
-    brandsBtn.onmouseenter = () => {
-      brandsBtn.style.background = 'rgb(184, 0, 31)';
-      brandsBtn.style.color = 'white';
-    };
-    brandsBtn.onmouseleave = () => {
-      brandsBtn.style.background = 'transparent';
-      brandsBtn.style.color = 'rgb(209, 213, 219)';
-    };
-
-    // Keep buttons visible when hovering over them
-    buttonsContainer.onmouseenter = () => {
-      console.log('Mouse entered buttons');
-    };
-    
-    buttonsContainer.onmouseleave = () => {
-      console.log('Mouse left buttons');
-      removeButtons();
-    };
-
-    logoContainerRef.current.appendChild(buttonsContainer);
-    buttonsContainerRef.current = buttonsContainer;
-
-    // Move description text down
-    console.log('Moving description down');
-    if (descriptionRef.current) {
-      descriptionRef.current.style.transform = 'translateY(100px)';
-    }
-
-    // Animate buttons in
-    setTimeout(() => {
-      buttonsContainer.style.opacity = '1';
-      buttonsContainer.style.pointerEvents = 'auto';
-    }, 50);
+    setShowButtons(true);
   };
-
-  // Function to remove buttons
-  const removeButtons = () => {
-    console.log('Removing buttons...'); // Debug log
-    if (buttonsContainerRef.current) {
-      buttonsContainerRef.current.style.opacity = '0';
-      buttonsContainerRef.current.style.pointerEvents = 'none';
-      
-      // Move description text back up
-      console.log('Moving description back up');
-      if (descriptionRef.current) {
-        descriptionRef.current.style.transform = 'translateY(0)';
-      }
-      
-      setTimeout(() => {
-        if (buttonsContainerRef.current && logoContainerRef.current && logoContainerRef.current.contains(buttonsContainerRef.current)) {
-          logoContainerRef.current.removeChild(buttonsContainerRef.current);
-          buttonsContainerRef.current = null;
-        }
-      }, 300);
+  
+  const handleLogoOrButtonsMouseLeave = (e) => {
+    // Check if the mouse is leaving to go to a related element within the same container
+    const relatedTarget = e.relatedTarget;
+    const currentTarget = e.currentTarget;
+    
+    // If there's no related target (mouse left the window) or the related target 
+    // is not within our logo container, hide the buttons with a delay
+    if (!relatedTarget || !currentTarget.contains(relatedTarget)) {
+      // Add a small delay before hiding to allow smooth movement to buttons
+      hideButtonsTimeoutRef.current = setTimeout(() => {
+        setShowButtons(false);
+      }, 300); // 300ms delay
     }
   };
-
-  // Setup hover event listeners
-  useEffect(() => {
-    const logoContainer = logoContainerRef.current;
-    console.log('Setting up hover listeners', logoContainer); // Debug log
-    
-    if (logoContainer) {
-      const handleMouseEnter = () => {
-        console.log('Mouse entered logo'); // Debug log
-        createButtons();
-      };
-      
-      const handleMouseLeave = (event) => {
-        console.log('Mouse left logo', event.relatedTarget); // Debug log
-        // Add small delay to allow moving to buttons
-        setTimeout(() => {
-          // Check if we're not hovering over the buttons
-          if (!buttonsContainerRef.current || !buttonsContainerRef.current.matches(':hover')) {
-            removeButtons();
-          }
-        }, 100);
-      };
-      
-      logoContainer.addEventListener('mouseenter', handleMouseEnter);
-      logoContainer.addEventListener('mouseleave', handleMouseLeave);
-      
-      return () => {
-        logoContainer.removeEventListener('mouseenter', handleMouseEnter);
-        logoContainer.removeEventListener('mouseleave', handleMouseLeave);
-        if (buttonsContainerRef.current) {
-          removeButtons();
-        }
-      };
-    }
-  }, []);
 
   useEffect(() => {
     const runAnimation = () => {
@@ -352,6 +226,10 @@ const MainScreen = ({ onNavigateToSection }) => {
           "triggerSectionAnimation",
           handleAnimationTrigger
         );
+        // Clean up timeout on unmount
+        if (hideButtonsTimeoutRef.current) {
+          clearTimeout(hideButtonsTimeoutRef.current);
+        }
       };
     }
   }, []);
@@ -380,21 +258,55 @@ const MainScreen = ({ onNavigateToSection }) => {
           ))}
         </div>
         {/* Main content */}
-        <div className="absolute top-0 z-10 flex flex-col items-center w-full px-4">
+        <div className="absolute top-0 z-10 mt-4 flex flex-col items-center w-full px-4">
           <div className="text-center">
-            <div ref={(el) => {logoRef.current = el; logoContainerRef.current = el;}} className="logo-container group inline-block cursor-pointer relative">
+            <div
+              ref={(el) => {
+                logoRef.current = el;
+                logoContainerRef.current = el;
+              }}
+              className="logo-container group inline-block cursor-pointer relative"
+              onMouseEnter={handleLogoOrButtonsMouseEnter}
+              onMouseLeave={handleLogoOrButtonsMouseLeave}
+            >
               <div className="text-white font-black text-6xl leading-none drop-shadow-lg tracking-tight group-hover:scale-105 transition-transform duration-300">
                 st.
               </div>
               <div className="text-white text-lg font-medium drop-shadow group-hover:scale-105 transition-transform duration-300">
                 Student Tribe
               </div>
+              {/* Buttons appear above text on hover */}
+              <div
+                className={`absolute left-1/2 -translate-x-1/2 w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
+                  showButtons ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                }`}
+                style={{
+                  top: 'calc(100% + 8px)',
+                }}
+                onMouseEnter={handleLogoOrButtonsMouseEnter}
+                onMouseLeave={handleLogoOrButtonsMouseLeave}
+              >
+                <button
+                  className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white border-none cursor-pointer text-lg hover:scale-105"
+                  onClick={() => scrollToSection('main-section')}
+                >
+                  Students
+                </button>
+                <button
+                  className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-transparent text-gray-300 border-none cursor-pointer text-lg hover:bg-[#b8001f] hover:text-white hover:scale-105"
+                  onClick={() => navigate('/brands')}
+                >
+                  Brands
+                </button>
+              </div>
             </div>
           </div>
           <div
             ref={descriptionRef}
-            className="text-white text-2xl sm:text-3xl md:text-4xl leading-relaxed lg:text-5xl xl:text-6xl 2xl:text-7xl font-extrabold text-center mt-8 drop-shadow-lg max-w-4xl px-4"
-            style={{ transition: 'transform 0.5s ease-out' }}
+            className="text-white text-2xl sm:text-3xl md:text-4xl leading-relaxed lg:text-5xl xl:text-6xl 2xl:text-7xl font-extrabold text-center mt-8 drop-shadow-lg max-w-4xl px-4 transition-transform duration-500"
+            style={{
+              transform: showButtons ? 'translateY(80px)' : 'translateY(0)',
+            }}
           >
             {(() => {
               // The text to animate as one line

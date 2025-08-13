@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import banner from '../../assets/whoweare/banner.svg';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -8,11 +9,13 @@ import bg from "../../assets/whoweare/Frame 2147223304.svg"
 gsap.registerPlugin(ScrollTrigger);
 
 function WhoweAre() {
-  const [activeTab, setActiveTab] = useState('Students');
+  const navigate = useNavigate();
+  const [showButtons, setShowButtons] = useState(false);
   const [displayNumber, setDisplayNumber] = useState('0');
   const [typewriterText1, setTypewriterText1] = useState('');
   const [typewriterText2, setTypewriterText2] = useState('');
   const [typewriterText3, setTypewriterText3] = useState('');
+  const hideButtonsTimeoutRef = useRef(null);
   
   // Refs for GSAP animations
   const containerRef = useRef(null);
@@ -48,6 +51,31 @@ function WhoweAre() {
         setter(text.substring(0, currentLength));
       }
     };
+  };
+
+  // Hover handlers for logo/buttons
+  const handleLogoOrButtonsMouseEnter = () => {
+    // Clear any pending hide timeout
+    if (hideButtonsTimeoutRef.current) {
+      clearTimeout(hideButtonsTimeoutRef.current);
+      hideButtonsTimeoutRef.current = null;
+    }
+    setShowButtons(true);
+  };
+  
+  const handleLogoOrButtonsMouseLeave = (e) => {
+    // Check if the mouse is leaving to go to a related element within the same container
+    const relatedTarget = e.relatedTarget;
+    const currentTarget = e.currentTarget;
+    
+    // If there's no related target (mouse left the window) or the related target 
+    // is not within our logo container, hide the buttons with a delay
+    if (!relatedTarget || !currentTarget.contains(relatedTarget)) {
+      // Add a small delay before hiding to allow smooth movement to buttons
+      hideButtonsTimeoutRef.current = setTimeout(() => {
+        setShowButtons(false);
+      }, 300); // 300ms delay
+    }
   };
 
   // GSAP Animation Timeline with ScrollTrigger
@@ -193,18 +221,49 @@ function WhoweAre() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-12 md:py-16 relative z-5 min-h-screen flex flex-col justify-center">
         {/* Header with Logo */}
         <div ref={logoRef} className="text-center mb-6 sm:mb-8 md:mb-12">
-          <div className="logo-container">
-            <div className="text-white font-black text-3xl sm:text-4xl md:text-6xl leading-none drop-shadow-lg tracking-tight">
+          <div 
+            className="logo-container group inline-block cursor-pointer relative"
+            onMouseEnter={handleLogoOrButtonsMouseEnter}
+            onMouseLeave={handleLogoOrButtonsMouseLeave}
+          >
+            <div className="text-white font-black text-3xl sm:text-4xl md:text-6xl leading-none drop-shadow-lg tracking-tight group-hover:scale-105 transition-transform duration-300">
               st.
             </div>
-            <div className="text-red-200 text-sm sm:text-base md:text-lg font-medium drop-shadow mb-2 sm:mb-4 md:mb-6">
+            <div className="text-red-200 text-sm sm:text-base md:text-lg font-medium drop-shadow mb-2 sm:mb-4 md:mb-6 group-hover:scale-105 transition-transform duration-300">
               Student Tribe
+            </div>
+            {/* Buttons appear below text on hover */}
+            <div
+              className={`absolute left-1/2 -translate-x-1/2 w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
+                showButtons ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+              }`}
+              style={{
+                top: 'calc(100% + 8px)',
+              }}
+            >
+              <button
+                className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white border-none cursor-pointer text-lg hover:scale-105"
+                onClick={() => navigate('/')}
+              >
+                Students
+              </button>
+              <button
+                className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-transparent text-gray-300 border-none cursor-pointer text-lg hover:bg-[#b8001f] hover:text-white hover:scale-105"
+                onClick={() => navigate('/brands')}
+              >
+                Brands
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Main Content Layout */}
-        <div className="flex flex-col items-center justify-center text-center space-y-4 sm:space-y-6 md:space-y-10 flex-grow">
+        {/* Main Content Layout with shifting */}
+        <div 
+          className="flex flex-col items-center justify-center text-center space-y-4 sm:space-y-6 md:space-y-10 flex-grow transition-transform duration-500"
+          style={{
+            transform: showButtons ? 'translateY(80px)' : 'translateY(0)',
+          }}
+        >
           {/* Typewriter Text Above Number */}
           <div ref={typewriter1Ref} className="text-white text-lg sm:text-xl md:text-4xl lg:text-6xl font-bold tracking-wide">
             {typewriterText1}

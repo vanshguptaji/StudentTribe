@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import banner from "../../assets/StCare/banner.svg";
@@ -7,6 +8,9 @@ import banner from "../../assets/StCare/banner.svg";
 gsap.registerPlugin(ScrollTrigger);
 
 const STCare = () => {
+  const navigate = useNavigate();
+  const [showButtons, setShowButtons] = useState(false);
+  const hideButtonsTimeoutRef = useRef(null);
   const containerRef = useRef(null);
   const headingRef = useRef(null);
   const subheadingRef = useRef(null);
@@ -178,6 +182,32 @@ const STCare = () => {
       };
     }
   }, []);
+
+  // Hover handlers for logo/buttons
+  const handleLogoOrButtonsMouseEnter = () => {
+    // Clear any pending hide timeout
+    if (hideButtonsTimeoutRef.current) {
+      clearTimeout(hideButtonsTimeoutRef.current);
+      hideButtonsTimeoutRef.current = null;
+    }
+    setShowButtons(true);
+  };
+  
+  const handleLogoOrButtonsMouseLeave = (e) => {
+    // Check if the mouse is leaving to go to a related element within the same container
+    const relatedTarget = e.relatedTarget;
+    const currentTarget = e.currentTarget;
+    
+    // If there's no related target (mouse left the window) or the related target 
+    // is not within our logo container, hide the buttons with a delay
+    if (!relatedTarget || !currentTarget.contains(relatedTarget)) {
+      // Add a small delay before hiding to allow smooth movement to buttons
+      hideButtonsTimeoutRef.current = setTimeout(() => {
+        setShowButtons(false);
+      }, 300); // 300ms delay
+    }
+  };
+
   return (
     <div
       ref={containerRef}
@@ -211,18 +241,51 @@ const STCare = () => {
         {/* Header section */}
         <div className="text-center mb-12">
           {/* ST logo */}
-          <div className="mb-8">
-            <span className="text-5xl font-bold text-red-700 px-4 py-2">
+          <div 
+            className="logo-container group inline-block cursor-pointer relative mb-8"
+            onMouseEnter={handleLogoOrButtonsMouseEnter}
+            onMouseLeave={handleLogoOrButtonsMouseLeave}
+          >
+            <span className="text-5xl font-bold text-red-700 px-4 py-2 group-hover:scale-105 transition-transform duration-300">
               st.
             </span>
-            <p className="text-red-700 text-lg mt-2 font-medium">
+            <p className="text-red-700 text-lg mt-2 font-medium group-hover:scale-105 transition-transform duration-300">
               Student Tribe
             </p>
+            {/* Buttons appear below text on hover */}
+            <div
+              className={`absolute left-1/2 -translate-x-1/2 w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
+                showButtons ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+              }`}
+              style={{
+                top: 'calc(100% + 8px)',
+              }}
+            >
+              <button
+                className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white border-none cursor-pointer text-lg hover:scale-105"
+                onClick={() => navigate('/')}
+              >
+                Students
+              </button>
+              <button
+                className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-transparent text-gray-300 border-none cursor-pointer text-lg hover:bg-[#b8001f] hover:text-white hover:scale-105"
+                onClick={() => navigate('/brands')}
+              >
+                Brands
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Main content section - Two main flex sections */}
-        <div className="flex flex-col lg:flex-row gap-8 items-start mb-12">
+        {/* Main Content with shifting */}
+        <div 
+          className="transition-transform duration-500"
+          style={{
+            transform: showButtons ? 'translateY(80px)' : 'translateY(0)',
+          }}
+        >
+          {/* Main content section - Two main flex sections */}
+          <div className="flex flex-col lg:flex-row gap-8 items-start mb-12">
           {/* Left side - Assembly image */}
           <div className="flex-1">
             <h1
@@ -348,6 +411,7 @@ const STCare = () => {
             fill="rgba(200,200,200,0.1)"
           />
         </svg>
+      </div>
       </div>
     </div>
   );

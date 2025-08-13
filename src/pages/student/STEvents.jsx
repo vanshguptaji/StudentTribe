@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from "react-router-dom";
 import banner from '../../assets/StEvent/banner.svg';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { gsap } from 'gsap';
@@ -8,8 +9,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function STEvents() {
+  const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [activeTab, setActiveTab] = useState('Students');
+  const [showButtons, setShowButtons] = useState(false);
+  const hideButtonsTimeoutRef = useRef(null);
   
   // Refs for GSAP animations
   const containerRef = useRef(null);
@@ -98,6 +101,31 @@ export default function STEvents() {
     }
   }, []);
 
+  // Hover handlers for logo/buttons
+  const handleLogoOrButtonsMouseEnter = () => {
+    // Clear any pending hide timeout
+    if (hideButtonsTimeoutRef.current) {
+      clearTimeout(hideButtonsTimeoutRef.current);
+      hideButtonsTimeoutRef.current = null;
+    }
+    setShowButtons(true);
+  };
+  
+  const handleLogoOrButtonsMouseLeave = (e) => {
+    // Check if the mouse is leaving to go to a related element within the same container
+    const relatedTarget = e.relatedTarget;
+    const currentTarget = e.currentTarget;
+    
+    // If there's no related target (mouse left the window) or the related target 
+    // is not within our logo container, hide the buttons with a delay
+    if (!relatedTarget || !currentTarget.contains(relatedTarget)) {
+      // Add a small delay before hiding to allow smooth movement to buttons
+      hideButtonsTimeoutRef.current = setTimeout(() => {
+        setShowButtons(false);
+      }, 300); // 300ms delay
+    }
+  };
+
   const nextSlide = () => {
     setCurrentSlide((prev) => prev + 1);
   };
@@ -121,18 +149,51 @@ export default function STEvents() {
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header with Logo */}
         <div className="text-center mb-8">
-          <div className="logo-container">
-            <div className="text-red-600 font-black text-6xl leading-none drop-shadow-lg tracking-tight">
+          <div 
+            className="logo-container group inline-block cursor-pointer relative"
+            onMouseEnter={handleLogoOrButtonsMouseEnter}
+            onMouseLeave={handleLogoOrButtonsMouseLeave}
+          >
+            <div className="text-red-600 font-black text-6xl leading-none drop-shadow-lg tracking-tight group-hover:scale-105 transition-transform duration-300">
               st.
             </div>
-            <div className="text-gray-800 text-lg font-medium drop-shadow mb-4">
+            <div className="text-gray-800 text-lg font-medium drop-shadow mb-4 group-hover:scale-105 transition-transform duration-300">
               Student Tribe
+            </div>
+            {/* Buttons appear below text on hover */}
+            <div
+              className={`absolute left-1/2 -translate-x-1/2 w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
+                showButtons ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+              }`}
+              style={{
+                top: 'calc(100% + 8px)',
+              }}
+            >
+              <button
+                className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white border-none cursor-pointer text-lg hover:scale-105"
+                onClick={() => navigate('/')}
+              >
+                Students
+              </button>
+              <button
+                className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-transparent text-gray-300 border-none cursor-pointer text-lg hover:bg-[#b8001f] hover:text-white hover:scale-105"
+                onClick={() => navigate('/brands')}
+              >
+                Brands
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Main Heading */}
-        <div ref={textContentRef} className="text-center mb-12">
+        {/* Main Content with shifting */}
+        <div 
+          className="transition-transform duration-500"
+          style={{
+            transform: showButtons ? 'translateY(80px)' : 'translateY(0)',
+          }}
+        >
+          {/* Main Heading */}
+          <div ref={textContentRef} className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
             Say Goodbye to FOMO. Step Into the Action.
           </h1>
@@ -253,6 +314,7 @@ export default function STEvents() {
             tabIndex={0}
           />
         ))}
+      </div>
       </div>
     </div>
   );

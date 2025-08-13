@@ -256,6 +256,7 @@
 
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from "react-router-dom";
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -263,9 +264,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function BrandsScreen() {
+  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
+  const [showButtons, setShowButtons] = useState(false);
   const containerRef = useRef(null);
   const imagesRef = useRef([]);
+  const hideButtonsTimeoutRef = useRef(null);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -302,6 +306,10 @@ export default function BrandsScreen() {
 
       return () => {
         ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        // Clean up timeout on unmount
+        if (hideButtonsTimeoutRef.current) {
+          clearTimeout(hideButtonsTimeoutRef.current);
+        }
       };
     }
   }, []);
@@ -320,38 +328,80 @@ export default function BrandsScreen() {
     }
   };
 
+  // Hover handlers for logo/buttons
+  const handleLogoOrButtonsMouseEnter = () => {
+    // Clear any pending hide timeout
+    if (hideButtonsTimeoutRef.current) {
+      clearTimeout(hideButtonsTimeoutRef.current);
+      hideButtonsTimeoutRef.current = null;
+    }
+    setShowButtons(true);
+  };
+  
+  const handleLogoOrButtonsMouseLeave = (e) => {
+    // Check if the mouse is leaving to go to a related element within the same container
+    const relatedTarget = e.relatedTarget;
+    const currentTarget = e.currentTarget;
+    
+    // If there's no related target (mouse left the window) or the related target 
+    // is not within our logo container, hide the buttons with a delay
+    if (!relatedTarget || !currentTarget.contains(relatedTarget)) {
+      // Add a small delay before hiding to allow smooth movement to buttons
+      hideButtonsTimeoutRef.current = setTimeout(() => {
+        setShowButtons(false);
+      }, 300); // 300ms delay
+    }
+  };
+
   return (
     <div ref={containerRef} className="relative w-full min-h-screen flex flex-col items-center justify-start bg-gradient-to-br from-[#fff6f6] to-[#FFF8F8] overflow-hidden"
          id="brands-section">
       {/* Main content */}
       <div className="relative z-10 flex flex-col items-center w-full px-4 pt-8 sm:pt-12 lg:pt-16">
         <div className="mb-8 sm:mb-12 text-center">
-          <div className="logo-container">
-            <div className="text-[#b8001f] font-black text-4xl sm:text-5xl lg:text-6xl leading-none drop-shadow-lg tracking-tight">
+          <div 
+            className="logo-container group inline-block cursor-pointer relative"
+            onMouseEnter={handleLogoOrButtonsMouseEnter}
+            onMouseLeave={handleLogoOrButtonsMouseLeave}
+          >
+            <div className="text-[#b8001f] font-black text-4xl sm:text-5xl lg:text-6xl leading-none drop-shadow-lg tracking-tight group-hover:scale-105 transition-transform duration-300">
               st.
             </div>
-            <div className="text-[#b8001f] text-base sm:text-lg font-medium drop-shadow mb-4">
+            <div className="text-[#b8001f] text-base sm:text-lg font-medium drop-shadow mb-4 group-hover:scale-105 transition-transform duration-300">
               Student Tribe
             </div>
-          </div>
-          <div className="mx-auto mt-6 sm:mt-8 w-[350px] sm:w-[400px] max-w-[90vw] bg-[#2d000a] rounded-full flex overflow-hidden shadow-lg text-lg sm:text-xl font-bold">
-            <button
-              className="flex-1 py-4 px-6 text-center rounded-l-full transition-colors duration-300 text-gray-300 bg-transparent hover:bg-white/10"
-              onClick={() => scrollToSection('main-section')}
+            {/* Buttons appear below text on hover */}
+            <div
+              className={`absolute left-1/2 -translate-x-1/2 w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
+                showButtons ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+              }`}
+              style={{
+                top: 'calc(100% + 8px)',
+              }}
             >
-              Students
-            </button>
-            <button
-              className="flex-1 py-4 px-6 text-center rounded-full transition-colors duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white"
-              onClick={() => scrollToSection('brands-section')}
-            >
-              Brands
-            </button>
+              <button
+                className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-transparent text-gray-300 border-none cursor-pointer text-lg hover:bg-[#b8001f] hover:text-white hover:scale-105"
+                onClick={() => navigate('/')}
+              >
+                Students
+              </button>
+              <button
+                className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white border-none cursor-pointer text-lg hover:scale-105"
+                onClick={() => scrollToSection('brands-section')}
+              >
+                Brands
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Content Area */}
-        <div className="relative z-20 px-4 sm:px-6 lg:px-8 w-full">
+        {/* Content Area with shifting */}
+        <div 
+          className="relative z-20 px-4 sm:px-6 lg:px-8 w-full transition-transform duration-500"
+          style={{
+            transform: showButtons ? 'translateY(80px)' : 'translateY(0)',
+          }}
+        >
           {/* Title and Description */}
           <div className="text-center mb-8 sm:mb-12">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-[#2d1c1c] mb-4 sm:mb-6 leading-tight">

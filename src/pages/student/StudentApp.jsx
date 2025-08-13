@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from "react-router-dom";
 import banner from '../../assets/stApp/banner.svg';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -10,7 +11,10 @@ import quizImg from "../../assets/BrandsSection/center.svg";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function StudentApp() {
+  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
+  const [showButtons, setShowButtons] = useState(false);
+  const hideButtonsTimeoutRef = useRef(null);
   const containerRef = useRef(null);
   const phoneRef = useRef(null);
   const topLeftCardRef = useRef(null);
@@ -122,9 +126,38 @@ export default function StudentApp() {
         ScrollTrigger.getAll().forEach(trigger => trigger.kill());
         window.removeEventListener('triggerSectionAnimation', handleAnimationTrigger);
         window.removeEventListener('resize', handleResize);
+        // Clean up timeout on unmount
+        if (hideButtonsTimeoutRef.current) {
+          clearTimeout(hideButtonsTimeoutRef.current);
+        }
       };
     }
   }, []);
+
+  // Hover handlers for logo/buttons
+  const handleLogoOrButtonsMouseEnter = () => {
+    // Clear any pending hide timeout
+    if (hideButtonsTimeoutRef.current) {
+      clearTimeout(hideButtonsTimeoutRef.current);
+      hideButtonsTimeoutRef.current = null;
+    }
+    setShowButtons(true);
+  };
+  
+  const handleLogoOrButtonsMouseLeave = (e) => {
+    // Check if the mouse is leaving to go to a related element within the same container
+    const relatedTarget = e.relatedTarget;
+    const currentTarget = e.currentTarget;
+    
+    // If there's no related target (mouse left the window) or the related target 
+    // is not within our logo container, hide the buttons with a delay
+    if (!relatedTarget || !currentTarget.contains(relatedTarget)) {
+      // Add a small delay before hiding to allow smooth movement to buttons
+      hideButtonsTimeoutRef.current = setTimeout(() => {
+        setShowButtons(false);
+      }, 300); // 300ms delay
+    }
+  };
 
   return (
     <div ref={containerRef} className="min-h-screen w-full bg-gradient-to-br from-[#b8001f] to-[#7a0015] overflow-hidden relative">
@@ -138,12 +171,45 @@ export default function StudentApp() {
       />
       {/* Header */}
       <div className="relative z-20 pt-16 text-center">
-        <div className="text-white font-black text-4xl md:text-5xl lg:text-6xl leading-none drop-shadow-lg tracking-tight">st.</div>
-        <div className="text-white text-base md:text-lg font-medium drop-shadow mb-8">Student Tribe</div>
+        <div 
+          className="logo-container group inline-block cursor-pointer relative"
+          onMouseEnter={handleLogoOrButtonsMouseEnter}
+          onMouseLeave={handleLogoOrButtonsMouseLeave}
+        >
+          <div className="text-white font-black text-4xl md:text-5xl lg:text-6xl leading-none drop-shadow-lg tracking-tight group-hover:scale-105 transition-transform duration-300">st.</div>
+          <div className="text-white text-base md:text-lg font-medium drop-shadow mb-8 group-hover:scale-105 transition-transform duration-300">Student Tribe</div>
+          {/* Buttons appear below text on hover */}
+          <div
+            className={`absolute left-1/2 -translate-x-1/2 w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
+              showButtons ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+            }`}
+            style={{
+              top: 'calc(100% + 8px)',
+            }}
+          >
+            <button
+              className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white border-none cursor-pointer text-lg hover:scale-105"
+              onClick={() => navigate('/')}
+            >
+              Students
+            </button>
+            <button
+              className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-transparent text-gray-300 border-none cursor-pointer text-lg hover:bg-[#b8001f] hover:text-white hover:scale-105"
+              onClick={() => navigate('/brands')}
+            >
+              Brands
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Main Content */}
-      <div className="relative z-20 px-8">
+      <div 
+        className="relative z-20 px-8 transition-transform duration-500"
+        style={{
+          transform: showButtons ? 'translateY(80px)' : 'translateY(0)',
+        }}
+      >
         {/* Title */}
         <div className="text-center mb-12">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight">
