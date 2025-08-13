@@ -32,7 +32,7 @@ const StOpportunities = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-600 to-red-800 text-white relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-bl to-[#b8001f] from-[#7a0015] text-white relative overflow-hidden">
       {/* ST Logo at Top */}
       <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-20">
         <div 
