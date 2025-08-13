@@ -117,7 +117,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 const BottomNavbar = () => {
-  const [activeTab, setActiveTab] = useState('ST School');
+  const [activeTab, setActiveTab] = useState(null);
   const [footerVisible, setFooterVisible] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const observerRef = useRef(null);
@@ -141,7 +141,7 @@ const BottomNavbar = () => {
   }, []);
 
   const navItems = [
-    { id: 'ST School', label: 'ST School', sectionId: 'main-section' },
+    { id: 'ST School', label: 'ST School', sectionId: 'brands-section' },
     { id: 'ST App', label: 'ST App', sectionId: 'app-section' },
     { id: 'ST Events', label: 'ST Events', sectionId: 'events-section' },
     { id: 'ST Beast', label: 'ST Beast', sectionId: 'beast-section' },
@@ -163,7 +163,6 @@ const BottomNavbar = () => {
     setActiveTab(item.id);
     scrollToSection(item.sectionId);
     setIsOpen(false); // Close mobile menu after selection
-    
     // Dispatch custom event to trigger section animations
     const event = new CustomEvent('navbarClick', { 
       detail: { sectionId: item.sectionId } 
@@ -174,34 +173,24 @@ const BottomNavbar = () => {
   // Track scroll position to update active tab
   useEffect(() => {
     const handleScroll = () => {
-      const sections = navItems.map(item => ({
-        id: item.id,
-        element: document.getElementById(item.sectionId)
-      }));
-
-      const scrollPosition = window.scrollY + 100; // Add offset for better detection
-
-      let currentActiveTab = 'ST School'; // Default to first section
-
-      sections.forEach((section) => {
-        if (section.element) {
-          const sectionTop = section.element.offsetTop;
-          const sectionBottom = sectionTop + section.element.offsetHeight;
-          
-          if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-            currentActiveTab = section.id;
-          }
+      const brandsSection = document.getElementById('brands-section');
+      if (brandsSection) {
+        const scrollPosition = window.scrollY + 100;
+        const sectionTop = brandsSection.offsetTop;
+        const sectionBottom = sectionTop + brandsSection.offsetHeight;
+        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+          setActiveTab('ST School');
+          return;
         }
-      });
-
-      setActiveTab(currentActiveTab);
+      }
+      setActiveTab(null);
     };
 
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // Call once to set initial state
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [navItems]);
+  }, []);
 
   // Close mobile menu when clicking outside
   useEffect(() => {
@@ -228,7 +217,7 @@ const BottomNavbar = () => {
                 key={item.id}
                 onClick={() => handleTabClick(item)}
                 className={`px-4 py-2 rounded-full text-base font-medium transition-all duration-300 whitespace-nowrap ${
-                  activeTab === item.id
+                  activeTab === item.id && item.id === 'ST School'
                     ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white shadow-lg scale-105 backdrop-blur-md'
                     : 'text-gray-300 hover:text-white hover:bg-white/10'
                 }`}
@@ -249,7 +238,7 @@ const BottomNavbar = () => {
                 key={item.id}
                 onClick={() => handleTabClick(item)}
                 className={`px-2 py-1 rounded-full text-xs font-medium transition-all duration-300 whitespace-nowrap ${
-                  activeTab === item.id
+                  activeTab === item.id && item.id === 'ST School'
                     ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white shadow-lg scale-105 backdrop-blur-md'
                     : 'text-gray-300 hover:text-white hover:bg-white/10'
                 }`}
@@ -276,7 +265,7 @@ const BottomNavbar = () => {
                   key={item.id}
                   onClick={() => handleTabClick(item)}
                   className={`w-full text-left px-3 py-2 rounded-xl text-xs font-medium transition-all duration-300 mb-1 last:mb-0 ${
-                    activeTab === item.id
+                    activeTab === item.id && item.id === 'ST School'
                       ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white shadow-lg'
                       : 'text-gray-300 hover:text-white hover:bg-white/10'
                   }`}

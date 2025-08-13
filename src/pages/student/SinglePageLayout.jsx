@@ -8,6 +8,7 @@ import STEvents from "../student/STEvents";
 import STbeast from "../student/STbeast";
 import STCare from "../student/STCare";
 import WhoweAre from "../student/WhoweAre";
+import StOpportunities from "./StOppurtunities";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -98,6 +99,7 @@ const SinglePageLayout = () => {
       {/* Student App Section */}
       <section ref={appRef} className="min-h-screen w-full" id="app-section">
         <StudentApp />
+        <StOpportunities />
       </section>
 
       {/* Events Section */}
