@@ -339,7 +339,7 @@ const MainScreen = ({ onNavigateToSection }) => {
               return (
                 <>
                   {/* For screens >= 2560px, display in 3 lines */}
-                  <span className="hidden 2xl:block">
+                  <span className="hidden screen-4k:block">
                     {/* Line 1: "Be a part of India's largest" */}
                     <span className="block">
                       {words.slice(0, 6).map((word, i) => (
@@ -383,7 +383,7 @@ const MainScreen = ({ onNavigateToSection }) => {
                   </span>
 
                   {/* For screens < 2560px, display as single line */}
-                  <span className="2xl:hidden">
+                  <span className="max-screen-4k:block screen-4k:hidden">
                     {words.map((word, i) => (
                       <span
                         key={i}

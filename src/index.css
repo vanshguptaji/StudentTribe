@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
-@theme {
-  --breakpoint-3xl: 160rem; /* 2560px equivalent (2560/16 = 160rem) */
+/* Custom utility for 2560px breakpoint */
+@media (min-width: 2560px) {
+  .screen-4k\:block {
+    display: block;
+  }
+  .screen-4k\:hidden {
+    display: none;
+  }
+}
+
+@media (max-width: 2559px) {
+  .max-screen-4k\:block {
+    display: block;
+  }
+  .max-screen-4k\:hidden {
+    display: none;
+  }
 }
