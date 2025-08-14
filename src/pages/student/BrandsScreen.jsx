@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import stlogo from "../../assets/Red logo.png"
 // import Footer from './components/Footer';
 
 export default function BrandsScreen() {
@@ -103,8 +104,6 @@ export default function BrandsScreen() {
     }
   };
 
-
-
   // Clean up timeout on unmount
   useEffect(() => {
     return () => {
@@ -126,13 +125,13 @@ export default function BrandsScreen() {
             onMouseEnter={handleLogoOrButtonsMouseEnter}
             onMouseLeave={handleLogoOrButtonsMouseLeave}
           >
-            <div className="text-[#b8001f] font-black text-3xl md:text-5xl lg:text-6xl leading-none drop-shadow-lg tracking-tight">
-              st.
-            </div>
-            <div className="text-[#b8001f] text-sm md:text-lg font-medium drop-shadow mb-2 md:mb-4">
-              Student Tribe
-            </div>
-            {/* Buttons appear above text on hover */}
+            {/* Replace manual logo with image logo */}
+            <img 
+              src={stlogo} 
+              alt="Student Tribe Logo"
+              className="h-8 md:h-12 lg:h-16 w-auto drop-shadow-lg mb-4"
+            />
+            {/* Buttons appear below logo on hover */}
             <div
               className={`absolute left-1/2 -translate-x-1/2 w-[300px] md:w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
                 showButtons ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
@@ -158,12 +157,11 @@ export default function BrandsScreen() {
             </div>
           </div>
         </div>
-      {/* Clean up timeout on unmount */}
 
       {/* Content Area with translateY on logo hover */}
       <div
         className="relative z-20 px-4 md:px-8 w-full transition-transform duration-500"
-        style={{ transform: showButtons ? 'translateY(60px) md:translateY(80px)' : 'translateY(0)' }}
+        style={{ transform: showButtons ? 'translateY(80px)' : 'translateY(0)' }}
       >
         {/* Title and Description */}
         <div className="text-center mb-6 md:mb-12">

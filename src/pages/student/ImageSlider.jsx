@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import stlogo from "../../assets/Red logo.png";
 
 const CurvedCarousel = () => {
   const navigate = useNavigate();
@@ -117,9 +118,13 @@ const CurvedCarousel = () => {
           onMouseEnter={handleLogoOrButtonsMouseEnter}
           onMouseLeave={handleLogoOrButtonsMouseLeave}
         >
-          <div className="text-white font-black text-4xl md:text-5xl lg:text-6xl leading-none drop-shadow-lg tracking-tight group-hover:scale-105 transition-transform duration-300">st.</div>
-          <div className="text-white text-base md:text-lg font-medium drop-shadow mb-8 group-hover:scale-105 transition-transform duration-300">Student Tribe</div>
-          {/* Buttons appear below text on hover */}
+          {/* Replace manual logo with image logo */}
+          <img 
+            src={stlogo} 
+            alt="Student Tribe Logo"
+            className="h-16 md:h-20 lg:h-24 w-auto drop-shadow-lg group-hover:scale-105 transition-transform duration-300"
+          />
+          {/* Buttons appear below logo on hover */}
           <div
             className={`absolute left-1/2 -translate-x-1/2 w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
               showButtons ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'

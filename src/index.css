@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+@theme {
+  --breakpoint-3xl: 160rem; /* 2560px equivalent (2560/16 = 160rem) */
+}

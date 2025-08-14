@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import banner from "../../assets/StCare/banner.svg";
+import stlogo from "../../assets/Red logo.png";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -252,13 +253,13 @@ const STCare = () => {
             onMouseEnter={handleLogoOrButtonsMouseEnter}
             onMouseLeave={handleLogoOrButtonsMouseLeave}
           >
-            <span className="text-5xl font-bold text-red-700 px-4 py-2 group-hover:scale-105 transition-transform duration-300">
-              st.
-            </span>
-            <p className="text-red-700 text-lg mt-2 font-medium group-hover:scale-105 transition-transform duration-300">
-              Student Tribe
-            </p>
-            {/* Buttons appear below text on hover */}
+            {/* Replace manual logo with image logo */}
+            <img
+              src={stlogo}
+              alt="Student Tribe Logo"
+              className="h-8 md:h-12 lg:h-16 w-auto drop-shadow-lg mb-4"
+            />
+            {/* Buttons appear below logo on hover */}
             <div
               className={`absolute left-1/2 -translate-x-1/2 w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
                 showButtons

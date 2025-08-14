@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import stlogo from "../../assets/White logo.png";
 
 const StOpportunities = () => {
   const navigate = useNavigate();
@@ -15,13 +16,13 @@ const StOpportunities = () => {
     }
     setShowButtons(true);
   };
-  
+
   const handleLogoOrButtonsMouseLeave = (e) => {
     // Check if the mouse is leaving to go to a related element within the same container
     const relatedTarget = e.relatedTarget;
     const currentTarget = e.currentTarget;
-    
-    // If there's no related target (mouse left the window) or the related target 
+
+    // If there's no related target (mouse left the window) or the related target
     // is not within our logo container, hide the buttons with a delay
     if (!relatedTarget || !currentTarget.contains(relatedTarget)) {
       // Add a small delay before hiding to allow smooth movement to buttons
@@ -35,35 +36,37 @@ const StOpportunities = () => {
     <div className="min-h-screen bg-gradient-to-bl to-[#b8001f] from-[#7a0015] text-white relative overflow-hidden">
       {/* ST Logo at Top */}
       <div className="absolute top-6 md:top-8 left-1/2 transform -translate-x-1/2 z-20">
-        <div 
+        <div
           className="logo-container group inline-block cursor-pointer relative mb-8"
           onMouseEnter={handleLogoOrButtonsMouseEnter}
           onMouseLeave={handleLogoOrButtonsMouseLeave}
         >
-          <div className="text-white font-black text-3xl md:text-4xl lg:text-5xl leading-none drop-shadow-lg tracking-tight group-hover:scale-105 transition-transform duration-300 text-center">
-            st.
-          </div>
-          <div className="text-white text-base md:text-lg font-medium drop-shadow group-hover:scale-105 transition-transform duration-300 text-center">
-            Student Tribe
-          </div>
-          {/* Buttons appear below text on hover */}
+          {/* Replace manual logo with image logo */}
+          <img
+            src={stlogo}
+            alt="Student Tribe Logo"
+            className="h-8 md:h-12 lg:h-16 w-auto drop-shadow-lg mb-4"
+          />
+          {/* Buttons appear below logo on hover */}
           <div
             className={`absolute left-1/2 -translate-x-1/2 w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
-              showButtons ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+              showButtons
+                ? "opacity-100 pointer-events-auto"
+                : "opacity-0 pointer-events-none"
             }`}
             style={{
-              top: 'calc(100% + 8px)',
+              top: "calc(100% + 8px)",
             }}
           >
             <button
               className="flex-1 py-3 md:py-4 text-center rounded-full transition-all duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white border-none cursor-pointer text-base md:text-lg hover:scale-105"
-              onClick={() => navigate('/')}
+              onClick={() => navigate("/")}
             >
               Students
             </button>
             <button
               className="flex-1 py-3 md:py-4 text-center rounded-full transition-all duration-300 bg-transparent text-gray-300 border-none cursor-pointer text-base md:text-lg hover:bg-[#b8001f] hover:text-white hover:scale-105"
-              onClick={() => navigate('/brands')}
+              onClick={() => navigate("/brands")}
             >
               Brands
             </button>
@@ -72,16 +75,15 @@ const StOpportunities = () => {
       </div>
 
       {/* Main Content Grid with shifting */}
-      <div 
+      <div
         className="flex items-center justify-center min-h-screen px-4 md:px-8 transition-transform duration-500"
         style={{
-          transform: showButtons ? 'translateY(80px)' : 'translateY(0)',
+          transform: showButtons ? "translateY(80px)" : "translateY(0)",
         }}
       >
         {/* Mobile Layout */}
         <div className="lg:hidden w-full max-w-md mx-auto">
           {/* Title */}
-          
 
           {/* Mobile Grid - 2x2 */}
           <div className="grid grid-cols-1 gap-4 mb-6">
@@ -94,9 +96,7 @@ const StOpportunities = () => {
               />
               <div className="absolute inset-0 bg-black/30"></div>
               <div className="absolute bottom-4 left-4">
-                <h3 className="text-white text-xl font-bold">
-                  INTERNSHIPS
-                </h3>
+                <h3 className="text-white text-xl font-bold">INTERNSHIPS</h3>
               </div>
             </div>
 
@@ -109,9 +109,7 @@ const StOpportunities = () => {
               />
               <div className="absolute inset-0 bg-black/20"></div>
               <div className="absolute bottom-4 left-4">
-                <h3 className="text-white text-xl font-bold">
-                  JOB OPENINGS
-                </h3>
+                <h3 className="text-white text-xl font-bold">JOB OPENINGS</h3>
               </div>
             </div>
 
@@ -143,18 +141,26 @@ const StOpportunities = () => {
                 <h4 className="text-white text-base font-medium">Dharma</h4>
               </div>
               <div className="relative">
-                <span className="text-3xl text-white/30 absolute -top-1 -left-1">"</span>
+                <span className="text-3xl text-white/30 absolute -top-1 -left-1">
+                  "
+                </span>
                 <p className="text-white text-sm leading-relaxed ml-3">
-                  Find it all here — workshops, internships, and job openings that kick-start your career.
+                  Find it all here — workshops, internships, and job openings
+                  that kick-start your career.
                 </p>
-                <span className="text-3xl text-white/30 absolute -bottom-3 -right-1">"</span>
+                <span className="text-3xl text-white/30 absolute -bottom-3 -right-1">
+                  "
+                </span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Desktop Layout */}
-        <div className="hidden lg:grid grid-cols-3 gap-6 max-w-7xl w-full" style={{ height: '500px' }}>
+        <div
+          className="hidden lg:grid grid-cols-3 gap-6 max-w-7xl w-full"
+          style={{ height: "500px" }}
+        >
           {/* Left Column */}
           <div className="flex flex-col gap-6">
             {/* Top Left Card - INTERNSHIPS */}
@@ -166,16 +172,16 @@ const StOpportunities = () => {
               />
               <div className="absolute inset-0 bg-black/20"></div>
               <div className="absolute bottom-6 left-6">
-                <h3 className="text-white text-2xl font-bold">
-                  INTERNSHIPS
-                </h3>
+                <h3 className="text-white text-2xl font-bold">INTERNSHIPS</h3>
               </div>
             </div>
 
             {/* Bottom Left Card - Description */}
             <div className="flex-1 bg-gray-900/80 backdrop-blur-sm rounded-2xl p-6 flex items-center justify-center">
               <p className="text-white text-base leading-relaxed text-center">
-                Find it all here — workshops, internships, and job openings that kick-start your career. Get real-world exposure, build skills, and land roles that turn effort into pride and recognition.
+                Find it all here — workshops, internships, and job openings that
+                kick-start your career. Get real-world exposure, build skills,
+                and land roles that turn effort into pride and recognition.
               </p>
             </div>
           </div>
@@ -190,9 +196,7 @@ const StOpportunities = () => {
               />
               <div className="absolute inset-0 bg-black/10"></div>
               <div className="absolute bottom-6 left-6">
-                <h3 className="text-white text-2xl font-bold">
-                  JOB OPENINGS
-                </h3>
+                <h3 className="text-white text-2xl font-bold">JOB OPENINGS</h3>
               </div>
             </div>
           </div>
@@ -212,11 +216,16 @@ const StOpportunities = () => {
                 <h4 className="text-white text-lg font-medium">Dharma</h4>
               </div>
               <div className="relative">
-                <span className="text-4xl text-white/30 absolute -top-2 -left-1">"</span>
+                <span className="text-4xl text-white/30 absolute -top-2 -left-1">
+                  "
+                </span>
                 <p className="text-white text-sm leading-relaxed ml-4">
-                  Find it all here — workshops, internships, and job openings that kick-start your career.
+                  Find it all here — workshops, internships, and job openings
+                  that kick-start your career.
                 </p>
-                <span className="text-4xl text-white/30 absolute -bottom-4 -right-1">"</span>
+                <span className="text-4xl text-white/30 absolute -bottom-4 -right-1">
+                  "
+                </span>
               </div>
             </div>
 
