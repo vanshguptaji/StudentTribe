@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // Example client logos (replace with actual imports/assets as needed)
 const clients = [
@@ -17,6 +17,17 @@ const clients = [
 const stLogo = 'https://studenttribe.in/assets/logo.png'; // Replace with actual logo asset if available
 
 const Clients = () => {
+  const [hoveredButton, setHoveredButton] = useState('brands');
+
+  // Button hover handlers
+  const handleButtonHover = (buttonType) => {
+    setHoveredButton(buttonType);
+  };
+
+  const handleButtonLeave = () => {
+    setHoveredButton('brands');
+  };
+
   return (
     <div className="min-h-screen w-full flex flex-col bg-gradient-to-br from-[#f8d7dd] to-[#e7bfc7] relative">
       {/* Mobile Layout */}
@@ -28,10 +39,26 @@ const Clients = () => {
             <span className="text-sm font-semibold text-[#b8001f] tracking-wider">Student Tribe</span>
           </div>
           <div className="bg-black/40 backdrop-blur-sm rounded-full p-1 flex shadow-2xl">
-            <button className="px-4 py-2 text-white/70 font-medium transition-all duration-300 rounded-full hover:text-white text-sm">
+            <button 
+              className={`px-4 py-2 font-medium transition-all duration-300 rounded-full text-sm ${
+                hoveredButton === 'students'
+                  ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white'
+                  : 'text-white/70 hover:text-white'
+              }`}
+              onMouseEnter={() => handleButtonHover('students')}
+              onMouseLeave={handleButtonLeave}
+            >
               Students
             </button>
-            <button className="px-4 py-2 bg-[#b8001f] text-white font-medium rounded-full shadow-lg text-sm">
+            <button 
+              className={`px-4 py-2 font-medium rounded-full shadow-lg text-sm ${
+                hoveredButton === 'brands'
+                  ? 'bg-[#b8001f] text-white'
+                  : 'bg-transparent text-white/70 hover:text-white'
+              }`}
+              onMouseEnter={() => handleButtonHover('brands')}
+              onMouseLeave={handleButtonLeave}
+            >
               Brands
             </button>
           </div>
@@ -117,10 +144,26 @@ const Clients = () => {
             <span className="text-lg font-semibold text-[#b8001f] tracking-wider">Student Tribe</span>
           </div>
           <div className="bg-black/40 backdrop-blur-sm rounded-full p-1 flex shadow-2xl">
-            <button className="px-6 py-3 text-white/70 font-medium transition-all duration-300 rounded-full hover:text-white">
+            <button 
+              className={`px-6 py-3 font-medium transition-all duration-300 rounded-full ${
+                hoveredButton === 'students'
+                  ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white'
+                  : 'text-white/70 hover:text-white'
+              }`}
+              onMouseEnter={() => handleButtonHover('students')}
+              onMouseLeave={handleButtonLeave}
+            >
               Students
             </button>
-            <button className="px-6 py-3 bg-[#b8001f] text-white font-medium rounded-full shadow-lg">
+            <button 
+              className={`px-6 py-3 font-medium rounded-full shadow-lg ${
+                hoveredButton === 'brands'
+                  ? 'bg-[#b8001f] text-white'
+                  : 'bg-transparent text-white/70 hover:text-white'
+              }`}
+              onMouseEnter={() => handleButtonHover('brands')}
+              onMouseLeave={handleButtonLeave}
+            >
               Brands
             </button>
           </div>

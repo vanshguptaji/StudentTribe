@@ -1,9 +1,19 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 function OurOfferings() {
   const containerRef = useRef(null);
   const cardsRef = useRef([]);
   const leftNavRef = useRef(null);
+  const [hoveredButton, setHoveredButton] = useState('brands');
+
+  // Button hover handlers
+  const handleButtonHover = (buttonType) => {
+    setHoveredButton(buttonType);
+  };
+
+  const handleButtonLeave = () => {
+    setHoveredButton('brands');
+  };
 
   const cardsData = [
     {
@@ -166,10 +176,26 @@ function OurOfferings() {
       {/* Fixed Toggle Buttons */}
       <div className="fixed top-24 lg:top-32 left-1/2 transform -translate-x-1/2 z-50">
         <div className="bg-black/40 backdrop-blur-sm rounded-full p-1 flex shadow-2xl">
-          <button className="px-4 py-2 lg:px-6 lg:py-3 text-white/70 font-medium transition-all duration-300 rounded-full hover:text-white text-sm lg:text-base">
+          <button 
+            className={`px-4 py-2 lg:px-6 lg:py-3 font-medium transition-all duration-300 rounded-full text-sm lg:text-base ${
+              hoveredButton === 'students'
+                ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white'
+                : 'text-white/70 hover:text-white'
+            }`}
+            onMouseEnter={() => handleButtonHover('students')}
+            onMouseLeave={handleButtonLeave}
+          >
             Students
           </button>
-          <button className="px-4 py-2 lg:px-6 lg:py-3 bg-[#b8001f] text-white font-medium rounded-full shadow-lg text-sm lg:text-base">
+          <button 
+            className={`px-4 py-2 lg:px-6 lg:py-3 font-medium rounded-full shadow-lg text-sm lg:text-base ${
+              hoveredButton === 'brands'
+                ? 'bg-[#b8001f] text-white'
+                : 'bg-transparent text-white/70 hover:text-white'
+            }`}
+            onMouseEnter={() => handleButtonHover('brands')}
+            onMouseLeave={handleButtonLeave}
+          >
             Brands
           </button>
         </div>

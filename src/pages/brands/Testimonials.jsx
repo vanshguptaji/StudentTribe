@@ -52,6 +52,16 @@ const testimonialsData = [
 
 const Testimonials = () => {
 	const [currentIndex, setCurrentIndex] = useState(0);
+	const [hoveredButton, setHoveredButton] = useState('brands');
+
+	// Button hover handlers
+	const handleButtonHover = (buttonType) => {
+		setHoveredButton(buttonType);
+	};
+
+	const handleButtonLeave = () => {
+		setHoveredButton('brands');
+	};
 
 	const nextSlide = () => {
 		setCurrentIndex((prev) => (prev + 1) % testimonialsData.length);
@@ -98,13 +108,38 @@ const Testimonials = () => {
 
 						{/* Logo positioned in top right */}
 						<div className="flex-shrink-0 md:ml-8">
-							<div className="flex flex-col items-center mb-0">
+							<div className="flex flex-col items-center mb-4">
 								<span className="text-4xl md:text-6xl font-black text-white mb-0">
 									st.
 								</span>
 								<span className="text-sm md:text-lg font-semibold text-white tracking-wider">
 									Student Tribe
 								</span>
+							</div>
+							{/* Toggle Buttons */}
+							<div className="bg-black/40 backdrop-blur-sm rounded-full p-1 flex shadow-2xl">
+								<button 
+									className={`px-4 py-2 md:px-6 md:py-3 font-medium transition-all duration-300 rounded-full text-sm md:text-base ${
+										hoveredButton === 'students'
+											? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white'
+											: 'text-white/70 hover:text-white'
+									}`}
+									onMouseEnter={() => handleButtonHover('students')}
+									onMouseLeave={handleButtonLeave}
+								>
+									Students
+								</button>
+								<button 
+									className={`px-4 py-2 md:px-6 md:py-3 font-medium rounded-full shadow-lg text-sm md:text-base ${
+										hoveredButton === 'brands'
+											? 'bg-[#b8001f] text-white'
+											: 'bg-transparent text-white/70 hover:text-white'
+									}`}
+									onMouseEnter={() => handleButtonHover('brands')}
+									onMouseLeave={handleButtonLeave}
+								>
+									Brands
+								</button>
 							</div>
 						</div>
 					</div>
