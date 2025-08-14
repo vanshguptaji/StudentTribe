@@ -802,10 +802,11 @@ const MainScreen = ({ onNavigateToSection }) => {
           {/* Secondary description text */}
           <div
             ref={secondaryDescriptionRef}
-            className="text-white text-lg sm:text-lg md:text-lg lg:text-2xl xl:text-3xl text-center mt-20 drop-shadow-lg max-w-3xl px-4 transition-transform duration-500"
+            className="text-white text-base sm:text-lg md:text-lg lg:text-2xl xl:text-3xl text-center mt-10 sm:mt-16 md:mt-20 lg:mt-32 xl:mt-40 2xl:mt-56 drop-shadow-lg max-w-3xl px-4 transition-transform duration-500"
             style={{
               transform: "translateY(80px)",
               letterSpacing: "0.08em",
+              marginTop: `min(12vh, 4rem)` // For very short screens, reduce margin
             }}
           >
             {(() => {
