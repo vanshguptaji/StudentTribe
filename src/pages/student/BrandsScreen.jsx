@@ -372,24 +372,6 @@ export default function BrandsScreen() {
            style={{writingMode: 'vertical-rl', textOrientation: 'mixed'}}>
         ST SCHOOL
       </div>
-
-      {/* Bottom Right Small Images - Hidden on mobile */}
-      <div className="hidden md:block absolute bottom-8 right-8 z-20">
-        <div className="grid grid-cols-2 gap-2">
-          <div className="w-16 h-16 bg-gray-300 rounded-lg overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Thumb 1" className="w-full h-full object-cover" />
-          </div>
-          <div className="w-16 h-16 bg-gray-300 rounded-lg overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Thumb 2" className="w-full h-full object-cover" />
-          </div>
-          <div className="w-16 h-16 bg-gray-300 rounded-lg overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Thumb 3" className="w-full h-full object-cover" />
-          </div>
-          <div className="w-16 h-16 bg-gray-300 rounded-lg overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Thumb 4" className="w-full h-full object-cover" />
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
