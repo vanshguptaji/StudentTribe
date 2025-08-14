@@ -47,7 +47,6 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
 
   useEffect(() => {
     if (!fade) {
-      // Animate people moving upwards behind the fist
       peopleRef.current.forEach((person, index) => {
         if (person) {
           gsap.fromTo(
