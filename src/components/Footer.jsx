@@ -37,7 +37,7 @@ export default function Footer() {
             </button>
           ))}
         </div>
-  <div className="bg-[#2C1B1B]/90 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row md:items-start md:justify-between relative overflow-hidden">
+  <div className="bg-[#2C1B1B]/90 rounded-3xl p-12 md:p-24 flex flex-col md:flex-row md:items-start md:justify-between relative overflow-hidden min-h-[520px] md:min-h-[490px]">
           {/* Left: Join Community */}
           <div className="mb-10 md:mb-0 md:w-1/3 flex flex-col justify-center">
             <h2 className="text-white text-4xl md:text-5xl font-extrabold mb-6 leading-tight">Want to join our<br />community?</h2>
