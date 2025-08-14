@@ -270,13 +270,13 @@ export default function STEvents() {
                 {infiniteImages.map((image, index) => (
                   <div
                     key={`top-infinite-${index}`}
-                    className="relative flex-shrink-0 flex justify-center"
+                    className="relative flex-shrink-0 flex justify-center overflow-visible"
                     style={{ width: `calc(100vw / ${sliderImages.length})` }}
                   >
                     <img
                       src={image}
                       alt={`Event ${(index % sliderImages.length) + 1}`}
-                      className="w-48 h-32 sm:w-64 sm:h-48 lg:w-80 lg:h-60 rounded-lg object-cover opacity-80 hover:opacity-100 transition-opacity duration-300 mx-auto"
+                      className="w-48 h-32 sm:w-64 sm:h-48 lg:w-80 lg:h-60 rounded-lg object-cover opacity-80 hover:opacity-100 transition-all duration-300 mx-auto hover:scale-105 z-10"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg"></div>
                   </div>
@@ -316,13 +316,13 @@ export default function STEvents() {
                 {infiniteImages.map((image, index) => (
                   <div
                     key={`bottom-infinite-${index}`}
-                    className="relative flex-shrink-0 flex justify-center"
+                    className="relative flex-shrink-0 flex justify-center overflow-visible"
                     style={{ width: `calc(100vw / ${sliderImages.length})` }}
                   >
                     <img
                       src={image}
                       alt={`Bottom event ${(index % sliderImages.length) + 1}`}
-                      className="w-48 h-32 sm:w-64 sm:h-48 lg:w-80 lg:h-60 rounded-lg object-cover opacity-80 hover:opacity-100 transition-opacity duration-300 mx-auto"
+                      className="w-48 h-32 sm:w-64 sm:h-48 lg:w-80 lg:h-60 rounded-lg object-cover opacity-80 hover:opacity-100 transition-all duration-300 mx-auto hover:scale-105 z-10"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg"></div>
                   </div>

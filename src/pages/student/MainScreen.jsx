@@ -1,3 +1,7 @@
+// Prevent browser from restoring scroll position on reload
+if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+  window.history.scrollRestoration = 'manual';
+}
 // // import React, { useRef, useEffect, useState } from "react";
 // // import { useNavigate } from "react-router-dom";
 // // import { gsap } from "gsap";
@@ -987,6 +991,15 @@ function getFixedStyle(index) {
 }
 
 const MainScreen = ({ onNavigateToSection }) => {
+  // Always scroll to main-section on mount (reload)
+  useEffect(() => {
+    const el = document.getElementById('main-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'auto' });
+    } else {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    }
+  }, []);
   const navigate = useNavigate();
   const logoRef = useRef(null);
   const backgroundRef = useRef(null);
