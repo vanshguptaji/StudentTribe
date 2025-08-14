@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import banner from "../../assets/stschool/banner.svg";
+import banner from "../../assets/Stschool/banner.svg";
 import stlogo from "../../assets/Red logo.png"
 // import Footer from './components/Footer';
 
