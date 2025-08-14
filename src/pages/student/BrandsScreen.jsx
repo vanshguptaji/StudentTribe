@@ -7,6 +7,7 @@ import stlogo from "../../assets/Red logo.png"
 export default function BrandsScreen() {
   const [isVisible, setIsVisible] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
+  const [hoveredButton, setHoveredButton] = useState('students');
   const containerRef = useRef(null);
   const imagesRef = useRef([]);
   const logoRef = useRef(null);
@@ -98,6 +99,15 @@ export default function BrandsScreen() {
     }
   };
 
+  // Button hover handlers
+  const handleButtonHover = (buttonType) => {
+    setHoveredButton(buttonType);
+  };
+
+  const handleButtonLeave = () => {
+    setHoveredButton('students');
+  };
+
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -151,14 +161,26 @@ export default function BrandsScreen() {
               onMouseLeave={handleLogoOrButtonsMouseLeave}
             >
               <button
-                className="flex-1 py-2 md:py-4 text-center rounded-full transition-all duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white border-none cursor-pointer text-sm md:text-lg hover:scale-105"
+                className={`flex-1 py-2 md:py-4 text-center rounded-full transition-all duration-300 border-none cursor-pointer text-sm md:text-lg hover:scale-105 ${
+                  hoveredButton === 'students'
+                    ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white'
+                    : 'bg-transparent text-gray-300 hover:text-white'
+                }`}
                 onClick={() => scrollToSection('main-section')}
+                onMouseEnter={() => handleButtonHover('students')}
+                onMouseLeave={handleButtonLeave}
               >
                 Students
               </button>
               <button
-                className="flex-1 py-2 md:py-4 text-center rounded-full transition-all duration-300 bg-transparent text-gray-300 border-none cursor-pointer text-sm md:text-lg hover:bg-[#b8001f] hover:text-white hover:scale-105"
+                className={`flex-1 py-2 md:py-4 text-center rounded-full transition-all duration-300 border-none cursor-pointer text-sm md:text-lg hover:scale-105 ${
+                  hoveredButton === 'brands'
+                    ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white'
+                    : 'bg-transparent text-gray-300 hover:text-white'
+                }`}
                 onClick={() => scrollToSection('brands-section')}
+                onMouseEnter={() => handleButtonHover('brands')}
+                onMouseLeave={handleButtonLeave}
               >
                 Brands
               </button>

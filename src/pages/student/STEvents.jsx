@@ -13,6 +13,7 @@ export default function STEvents() {
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showButtons, setShowButtons] = useState(false);
+  const [hoveredButton, setHoveredButton] = useState('students');
   const hideButtonsTimeoutRef = useRef(null);
 
   // Refs for GSAP animations
@@ -151,6 +152,23 @@ export default function STEvents() {
     setCurrentSlide((prev) => prev - 1);
   };
 
+  // Button hover handlers
+  const handleButtonHover = (buttonType) => {
+    setHoveredButton(buttonType);
+  };
+
+  const handleButtonLeave = () => {
+    setHoveredButton(null);
+  };
+
+  // Scroll to section function (if needed)
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div
       ref={containerRef}
@@ -193,14 +211,26 @@ export default function STEvents() {
               }}
             >
               <button
-                className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white border-none cursor-pointer text-lg hover:scale-105"
-                onClick={() => navigate("/")}
+                className={`flex-1 py-4 text-center rounded-full transition-all duration-300 border-none cursor-pointer text-lg hover:scale-105 ${
+                  hoveredButton === 'students'
+                    ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white'
+                    : 'bg-transparent text-gray-300 hover:text-white'
+                }`}
+                onClick={() => scrollToSection("main-section")}
+                onMouseEnter={() => handleButtonHover('students')}
+                onMouseLeave={() => setHoveredButton('students')}
               >
                 Students
               </button>
               <button
-                className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-transparent text-gray-300 border-none cursor-pointer text-lg hover:bg-[#b8001f] hover:text-white hover:scale-105"
+                className={`flex-1 py-4 text-center rounded-full transition-all duration-300 border-none cursor-pointer text-lg hover:scale-105 ${
+                  hoveredButton === 'brands'
+                    ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white'
+                    : 'bg-transparent text-gray-300 hover:text-white'
+                }`}
                 onClick={() => navigate("/brands")}
+                onMouseEnter={() => handleButtonHover('brands')}
+                onMouseLeave={() => setHoveredButton('students')}
               >
                 Brands
               </button>
