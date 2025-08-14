@@ -227,7 +227,7 @@ export default function STEvents() {
             </p>
           </div>
 
-          {/* Image Slider */}
+          {/* Top Image Slider */}
           <div ref={mainSliderRef} className="relative mb-8 w-full overflow-x-hidden">
             <div className="flex justify-center items-center space-x-2 sm:space-x-4 w-full overflow-hidden px-0">
               <div
@@ -237,37 +237,20 @@ export default function STEvents() {
                   width: `${infiniteImages.length * (100 / sliderImages.length)}vw`,
                 }}
               >
-                {infiniteImages.map((image, index) => {
-                  const relativeIndex = index - currentSlide;
-                  let className =
-                    "rounded-lg object-cover transition-all duration-500 ease-in-out flex-shrink-0 mx-auto ";
-                  // Each image should take full viewport width divided by number of visible images
-                  className += "w-[100vw] sm:w-[20vw] h-28 sm:h-40 ";
-                  if (relativeIndex === 0) {
-                    className += "scale-100 opacity-100 z-10";
-                  } else if (Math.abs(relativeIndex) === 1) {
-                    className += "scale-90 opacity-80 z-5";
-                  } else if (Math.abs(relativeIndex) === 2) {
-                    className += "scale-75 opacity-60 z-0";
-                  } else {
-                    className += "scale-50 opacity-30 z-0";
-                  }
-                  return (
-                    <div
-                      key={`infinite-${index}`}
-                      className="relative flex-shrink-0 flex justify-center"
-                      style={{ width: `calc(100vw / ${sliderImages.length})` }}
-                    >
-                      <img
-                        src={image}
-                        alt={`Event ${(index % sliderImages.length) + 1}`}
-                        className={className}
-                      />
-                      {/* Red overlay for some images to match the design */}
-                      <div className="absolute inset-0 bg-red-600 bg-opacity-20 rounded-lg"></div>
-                    </div>
-                  );
-                })}
+                {infiniteImages.map((image, index) => (
+                  <div
+                    key={`top-infinite-${index}`}
+                    className="relative flex-shrink-0 flex justify-center"
+                    style={{ width: `calc(100vw / ${sliderImages.length})` }}
+                  >
+                    <img
+                      src={image}
+                      alt={`Event ${(index % sliderImages.length) + 1}`}
+                      className="w-48 h-32 sm:w-64 sm:h-48 lg:w-80 lg:h-60 rounded-lg object-cover opacity-80 hover:opacity-100 transition-opacity duration-300 mx-auto"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg"></div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -287,24 +270,35 @@ export default function STEvents() {
             </button>
           </div>
 
-          {/* Bottom Image Row */}
+          {/* Bottom Image Slider - slides in opposite direction */}
           <div
             ref={bottomSliderRef}
-            className="mt-16 flex justify-center items-center space-x-2 sm:space-x-4 overflow-hidden px-4"
+            className="mt-16 relative w-full overflow-x-hidden"
           >
-            {sliderImages.slice(0, 5).map((image, index) => (
+            <div className="flex justify-center items-center space-x-2 sm:space-x-4 w-full overflow-hidden px-0">
               <div
-                key={`bottom-${index}`}
-                className="relative flex justify-center"
+                className="flex items-center space-x-2 sm:space-x-4 transition-transform duration-500 ease-in-out w-full"
+                style={{
+                  transform: `translateX(${(currentSlide % sliderImages.length) * (100 / sliderImages.length)}vw)`,
+                  width: `${infiniteImages.length * (100 / sliderImages.length)}vw`,
+                }}
               >
-                <img
-                  src={image}
-                  alt={`Bottom event ${index + 1}`}
-                  className="w-28 h-20 sm:w-48 sm:h-32 rounded-lg object-cover opacity-80 hover:opacity-100 transition-opacity duration-300 mx-auto"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg"></div>
+                {infiniteImages.map((image, index) => (
+                  <div
+                    key={`bottom-infinite-${index}`}
+                    className="relative flex-shrink-0 flex justify-center"
+                    style={{ width: `calc(100vw / ${sliderImages.length})` }}
+                  >
+                    <img
+                      src={image}
+                      alt={`Bottom event ${(index % sliderImages.length) + 1}`}
+                      className="w-48 h-32 sm:w-64 sm:h-48 lg:w-80 lg:h-60 rounded-lg object-cover opacity-80 hover:opacity-100 transition-opacity duration-300 mx-auto"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg"></div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
 

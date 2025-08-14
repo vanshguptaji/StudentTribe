@@ -308,6 +308,13 @@
 
 
 
+
+
+
+
+
+
+
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import stlogo from "../../assets/White logo.png";
@@ -365,6 +372,12 @@ const StOpportunities = () => {
           transformOrigin: "center center"
         });
         
+        // Initially set left and right image cards to span full height (same as center)
+        gsap.set([leftImageRef.current, rightImageRef.current], {
+          gridRow: "1 / span 2",
+          height: "100%"
+        });
+        
         // Step 1: Show center image first
         tl.to(centerImageRef.current, {
           opacity: 1,
@@ -373,11 +386,7 @@ const StOpportunities = () => {
           ease: "back.out(1.7)",
         }, 0.3)
         
-        // Step 2: Show left and right image cards at full height (spanning both rows)
-        .set([leftImageRef.current, rightImageRef.current], {
-          height: "100%",
-          gridRow: "1 / span 2",
-        }, 0.8)
+        // Step 2: Show left and right image cards at same height as center (no space for text cards yet)
         .to([leftImageRef.current, rightImageRef.current], {
           opacity: 1,
           scale: 1,
@@ -386,22 +395,25 @@ const StOpportunities = () => {
           stagger: 0.1,
         }, 0.8)
         
-        // Step 3: Show text cards and resize image cards to original size
+        // Step 3: Shrink image cards to half height to make space for text cards
+        .to([leftImageRef.current, rightImageRef.current], {
+          duration: 0.6,
+          ease: "power2.out",
+          onComplete: function() {
+            // Reset grid properties to allow text cards to appear
+            gsap.set([leftImageRef.current, rightImageRef.current], {
+              gridRow: "1",
+              height: "auto"
+            });
+          }
+        }, 1.8)
         .to([leftTextRef.current, rightTextRef.current], {
           opacity: 1,
           scale: 1,
           duration: 0.6,
           ease: "back.out(1.7)",
           stagger: 0.1,
-        }, 1.8)
-        .set([leftImageRef.current, rightImageRef.current], {
-          gridRow: "1",
-          height: "auto",
-        }, 1.8)
-        .to([leftImageRef.current, rightImageRef.current], {
-          duration: 0.6,
-          ease: "power2.out",
-        }, 1.8);
+        }, 2.0);
         
       } else {
         // Mobile animation (simpler)
