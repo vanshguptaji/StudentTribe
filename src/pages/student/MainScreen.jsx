@@ -805,6 +805,7 @@ const MainScreen = ({ onNavigateToSection }) => {
             className="text-white text-lg sm:text-lg md:text-lg lg:text-2xl xl:text-3xl text-center mt-20 drop-shadow-lg max-w-3xl px-4 transition-transform duration-500"
             style={{
               transform: "translateY(80px)",
+              letterSpacing: "0.08em",
             }}
           >
             {(() => {
