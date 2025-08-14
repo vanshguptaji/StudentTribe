@@ -33,13 +33,14 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
       const targetY = -window.innerHeight / 2 + 60; // Top position with some margin
       const targetScale = 0.4; // Smaller size like in MainScreen (h-8 md:h-12 lg:h-16)
 
-      // Animate logo to target position
+      // Animate logo to target position - logo stays visible during transition
       tl.to(logoRef.current, {
         x: targetX,
         y: targetY,
         scale: targetScale,
-        duration: 1.2,
-        ease: "power3.inOut",
+        duration: 1.0,
+        ease: "power3.in",
+        zIndex: 50, // Ensure logo stays on top during transition
       })
       // Fade out fist and people simultaneously
       .to([fistRef.current, ...peopleRef.current.filter(Boolean)], {
@@ -55,7 +56,13 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
         duration: 0.6,
         ease: "power2.inOut",
         stagger: 0.05,
-      }, "-=0.6");
+      }, "-=0.6")
+      // Finally fade out the logo after it reaches its position
+      .to(logoRef.current, {
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.inOut",
+      }, "+=0.2"); // Small delay after reaching position
     }
   }, [fade, onTransitionComplete]);
 

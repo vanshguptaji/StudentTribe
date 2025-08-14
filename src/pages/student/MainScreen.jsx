@@ -518,6 +518,7 @@ const MainScreen = ({ onNavigateToSection }) => {
   const backgroundImagesRef = useRef([]);
   const containerRef = useRef(null);
   const logoContainerRef = useRef(null);
+  const buttonsContainerRef = useRef(null);
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
@@ -532,137 +533,169 @@ const MainScreen = ({ onNavigateToSection }) => {
 
 
   useEffect(() => {
-    const runAnimation = () => {
-      if (logoRef.current && containerRef.current) {
-        // Initially hide all elements
-        gsap.set([backgroundRef.current], {
-          opacity: 0,
-        });
+    // Add a small delay to ensure all refs are populated
+    const timer = setTimeout(() => {
+      const runAnimation = () => {
+        if (logoRef.current && containerRef.current && buttonsContainerRef.current) {
+          // Initially hide all elements
+          gsap.set([backgroundRef.current], {
+            opacity: 0,
+          });
 
-        gsap.set(descriptionWordsRef.current, {
-          opacity: 0,
-          rotateX: 90,
-          transformOrigin: "left bottom",
-          display: "inline-block",
-        });
+          // Filter out null refs and set initial state for text animations
+          const validDescriptionRefs = descriptionWordsRef.current.filter(ref => ref !== null && ref !== undefined);
+          const validSecondaryRefs = secondaryDescriptionWordsRef.current.filter(ref => ref !== null && ref !== undefined);
 
-        gsap.set(secondaryDescriptionWordsRef.current, {
-          opacity: 0,
-          rotateX: 90,
-          transformOrigin: "left bottom",
-          display: "inline-block",
-        });
+          console.log("Valid description refs:", validDescriptionRefs.length);
+          console.log("Valid secondary refs:", validSecondaryRefs.length);
 
-        // Set logo initial state
-        gsap.set(logoRef.current, {
-          scale: 2.5,
-          x: 0,
-          y: 0,
-          opacity: 1,
-        });
+          if (validDescriptionRefs.length > 0) {
+            gsap.set(validDescriptionRefs, {
+              opacity: 0,
+              rotateX: 90,
+              transformOrigin: "left bottom",
+              display: "inline-block",
+            });
+          }
 
-        // Create timeline for sequence
-        const tl = gsap.timeline();
-        tl.to(
-          logoRef.current,
-          {
-            duration: 1.2,
-            scale: 1,
-            ease: "power3.out",
-          },
-          "+=0.3"
-        )
-          .to(
-            backgroundRef.current,
-            {
-              duration: 0.8,
-              opacity: 1,
-              ease: "power2.out",
-            },
-            "-=0.6"
-          )
-          .to(descriptionWordsRef.current, {
+          if (validSecondaryRefs.length > 0) {
+            gsap.set(validSecondaryRefs, {
+              opacity: 0,
+              rotateX: 90,
+              transformOrigin: "left bottom",
+              display: "inline-block",
+            });
+          }
+
+          // Initially hide buttons and position them above their final position
+          gsap.set(buttonsContainerRef.current, {
+            opacity: 0,
+            y: -100,
+          });
+
+          // Set logo initial state
+          gsap.set(logoRef.current, {
+            scale: 2.5,
+            x: 0,
+            y: 0,
             opacity: 1,
-            rotateX: 0,
-            duration: 0.5,
-            ease: "back.out(1.7)",
-            stagger: 0.12,
-          })
-          .to(
-            secondaryDescriptionWordsRef.current,
+          });
+
+          // Create timeline for sequence
+          const tl = gsap.timeline();
+          tl.to(
+            logoRef.current,
             {
+              duration: 1.2,
+              scale: 1,
+              ease: "power3.out",
+            },
+            "+=0.3"
+          )
+            .to(
+              backgroundRef.current,
+              {
+                duration: 0.8,
+                opacity: 1,
+                ease: "power2.out",
+              },
+              "-=0.6"
+            )
+            .to(
+              buttonsContainerRef.current,
+              {
+                duration: 0.8,
+                opacity: 1,
+                y: 0,
+                ease: "back.out(1.2)",
+              },
+              "-=0.4"
+            );
+
+          // Add text animations if refs are available
+          if (validDescriptionRefs.length > 0) {
+            tl.to(validDescriptionRefs, {
+              opacity: 1,
+              rotateX: 0,
+              duration: 0.5,
+              ease: "back.out(1.7)",
+              stagger: 0.12,
+            }, "+=0.3");
+          }
+
+          if (validSecondaryRefs.length > 0) {
+            tl.to(validSecondaryRefs, {
               opacity: 1,
               rotateX: 0,
               duration: 0.4,
               ease: "back.out(1.7)",
               stagger: 0.08,
-            },
-            "+=0.3"
-          );
-
-        // Animate background images similar to motivational words
-        backgroundImagesRef.current.forEach((image, index) => {
-          if (image) {
-            const position = imagePositions[index % imagePositions.length];
-
-            if (position.animationType === "vertical") {
-              // Up/down animation
-              gsap.to(image, {
-                y: position.direction * 20,
-                duration: 3 + index * 0.2,
-                ease: "power2.inOut",
-                repeat: -1,
-                yoyo: true,
-                delay: 1.5, // Start after main animation
-              });
-            } else {
-              // Left/right animation
-              gsap.to(image, {
-                x: position.direction * 30,
-                duration: 4 + index * 0.3,
-                ease: "power2.inOut",
-                repeat: -1,
-                yoyo: true,
-                delay: 1.5, // Start after main animation
-              });
-            }
+            }, "+=0.3");
           }
-        });
-      }
-    };
 
-    if (logoRef.current && containerRef.current) {
-      // Create scroll trigger for main screen animation
-      ScrollTrigger.create({
-        trigger: containerRef.current,
-        start: "top 80%",
-        onEnter: runAnimation,
-      });
+          // Animate background images similar to motivational words
+          backgroundImagesRef.current.forEach((image, index) => {
+            if (image) {
+              const position = imagePositions[index % imagePositions.length];
 
-      // Listen for manual animation triggers
-      const handleAnimationTrigger = (event) => {
-        if (event.detail?.sectionName === "main") {
-          runAnimation();
+              if (position.animationType === "vertical") {
+                // Up/down animation
+                gsap.to(image, {
+                  y: position.direction * 20,
+                  duration: 3 + index * 0.2,
+                  ease: "power2.inOut",
+                  repeat: -1,
+                  yoyo: true,
+                  delay: 1.5, // Start after main animation
+                });
+              } else {
+                // Left/right animation
+                gsap.to(image, {
+                  x: position.direction * 30,
+                  duration: 4 + index * 0.3,
+                  ease: "power2.inOut",
+                  repeat: -1,
+                  yoyo: true,
+                  delay: 1.5, // Start after main animation
+                });
+              }
+            }
+          });
         }
       };
 
-      window.addEventListener(
-        "triggerSectionAnimation",
-        handleAnimationTrigger
-      );
+      if (logoRef.current && containerRef.current && buttonsContainerRef.current) {
+        // Create scroll trigger for main screen animation
+        ScrollTrigger.create({
+          trigger: containerRef.current,
+          start: "top 80%",
+          onEnter: runAnimation,
+        });
 
-      return () => {
-        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-        window.removeEventListener(
+        // Listen for manual animation triggers
+        const handleAnimationTrigger = (event) => {
+          if (event.detail?.sectionName === "main") {
+            runAnimation();
+          }
+        };
+
+        window.addEventListener(
           "triggerSectionAnimation",
           handleAnimationTrigger
         );
-  // No timeout cleanup needed
-      };
-    }
-  }, []);
 
-  return (
+        return () => {
+          ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+          window.removeEventListener(
+            "triggerSectionAnimation",
+            handleAnimationTrigger
+          );
+          // Clean up timer
+          clearTimeout(timer);
+        };
+      }
+    }, 100); // Small delay to ensure refs are populated
+  }, []);  return (
     <>
       <div
         ref={containerRef}
@@ -703,7 +736,8 @@ const MainScreen = ({ onNavigateToSection }) => {
               />
               {/* Buttons appear below logo on hover */}
               <div
-                className="absolute left-1/2 -translate-x-1/2 w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 opacity-100 pointer-events-auto"
+                ref={buttonsContainerRef}
+                className="absolute -left-40 -translate-x-1/2 w-[400px] max-w-[90vw] flex  bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300"
                 style={{
                   top: "calc(100% + 8px)",
                 }}
@@ -787,7 +821,10 @@ const MainScreen = ({ onNavigateToSection }) => {
                     {words.map((word, i) => (
                       <span
                         key={`natural-${i}`}
-                        ref={(el) => (descriptionWordsRef.current[i] = el)}
+                        ref={(el) => {
+                          // Use different indices to avoid conflicts with the three-line layout
+                          if (el) descriptionWordsRef.current[i + 100] = el;
+                        }}
                         style={{ display: "inline-block", whiteSpace: "pre" }}
                       >
                         {word + (i < words.length - 1 ? " " : "")}
@@ -802,7 +839,7 @@ const MainScreen = ({ onNavigateToSection }) => {
           {/* Secondary description text */}
           <div
             ref={secondaryDescriptionRef}
-            className="text-white text-base sm:text-lg md:text-lg lg:text-2xl xl:text-3xl text-center drop-shadow-lg max-w-3xl px-4 transition-transform duration-500"
+            className="text-white text-base sm:text-lg md:text-lg lg:text-xl xl:text-2xl text-center drop-shadow-lg max-w-3xl px-4 transition-transform duration-500"
             style={{
               transform: "translateY(80px)",
               letterSpacing: "0.08em",
@@ -848,7 +885,10 @@ const MainScreen = ({ onNavigateToSection }) => {
                     {words.map((word, i) => (
                       <span
                         key={`secn-${i}`}
-                        ref={(el) => (secondaryDescriptionWordsRef.current[i] = el)}
+                        ref={(el) => {
+                          // Use different indices to avoid conflicts with the two-line layout
+                          if (el) secondaryDescriptionWordsRef.current[i + 100] = el;
+                        }}
                         style={{ display: "inline-block", whiteSpace: "pre" }}
                       >
                         {word + (i < words.length - 1 ? " " : "")}
