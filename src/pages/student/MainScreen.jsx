@@ -573,24 +573,27 @@ const MainScreen = ({ onNavigateToSection }) => {
             y: -100,
           });
 
-          // Set logo initial state
+          // Set logo initial state - center of screen, scaled up
           gsap.set(logoRef.current, {
-            scale: 2.5,
+            scale: 3,
             x: 0,
-            y: 0,
+            y: window.innerHeight * 0.2, // Move down from top to center
             opacity: 1,
           });
 
           // Create timeline for sequence
           const tl = gsap.timeline();
+          
+          // First animation: Logo moves from center to final position and scales down
           tl.to(
             logoRef.current,
             {
-              duration: 1.2,
+              duration: 1.5,
               scale: 1,
+              y: 0, // Move to final position (top)
               ease: "power3.out",
             },
-            "+=0.3"
+            "+=0.5"
           )
             .to(
               backgroundRef.current,

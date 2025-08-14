@@ -363,7 +363,7 @@ export default function BrandsScreen() {
           <div className="text-center relative">
             <button 
               ref={addToRefs}
-              className="px-6 md:px-10 py-3 md:py-3 rounded-full bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white font-bold text-base md:text-lg shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+              className="relative -top-20 px-6 md:px-10 py-3 md:py-3 rounded-full bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white font-bold text-base md:text-lg shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl"
             >
               Explore Now →
             </button>

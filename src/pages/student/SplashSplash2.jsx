@@ -28,27 +28,13 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
         }
       });
 
-      // Calculate target position (top-center like MainScreen)
-      const targetX = 0; // Keep centered horizontally
-      const targetY = -window.innerHeight / 2 + 60; // Top position with some margin
-      const targetScale = 0.4; // Smaller size like in MainScreen (h-8 md:h-12 lg:h-16)
-
-      // Animate logo to target position - logo stays visible during transition
-      tl.to(logoRef.current, {
-        x: targetX,
-        y: targetY,
-        scale: targetScale,
-        duration: 0.9,
-        ease: "power3.in",
-        zIndex: 50, // Ensure logo stays on top during transition
-      })
       // Fade out fist and people simultaneously
-      .to([fistRef.current, ...peopleRef.current.filter(Boolean)], {
+      tl.to([fistRef.current, ...peopleRef.current.filter(Boolean)], {
         opacity: 0,
         scale: 0.8,
         duration: 0.8,
         ease: "power2.inOut",
-      }, "-=0.8")
+      })
       // Fade out words
       .to(wordsRef.current.filter(Boolean), {
         opacity: 0,
@@ -56,13 +42,7 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
         duration: 0.6,
         ease: "power2.inOut",
         stagger: 0.05,
-      }, "-=0.6")
-      // Finally fade out the logo after it reaches its position
-      .to(logoRef.current, {
-        opacity: 0,
-        duration: 0.3,
-        ease: "power2.inOut",
-      }, "+=0.2"); // Small delay after reaching position
+      });
     }
   }, [fade, onTransitionComplete]);
 
