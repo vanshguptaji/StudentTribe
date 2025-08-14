@@ -67,19 +67,45 @@ const StOpportunities = () => {
     }
   }, []);
 
+  // Logo hover handlers (copied from StudentApp)
+  const handleLogoOrButtonsMouseEnter = () => {
+    if (hideButtonsTimeoutRef.current) {
+      clearTimeout(hideButtonsTimeoutRef.current);
+      hideButtonsTimeoutRef.current = null;
+    }
+    setShowButtons(true);
+  };
+
+  const handleLogoOrButtonsMouseLeave = (e) => {
+    const relatedTarget = e.relatedTarget;
+    const currentTarget = e.currentTarget;
+    if (!relatedTarget || !currentTarget.contains(relatedTarget)) {
+      hideButtonsTimeoutRef.current = setTimeout(() => {
+        setShowButtons(false);
+      }, 300);
+    }
+  };
+
   return (
     <div ref={containerRef} id="opportunities-section" className="min-h-screen bg-gradient-to-bl to-[#b8001f] from-[#7a0015] text-white relative overflow-hidden">
-      {/* ST Logo at Top */}
+      {/* ST Logo at Top - hover to show buttons */}
       <div className="absolute top-6 md:top-8 left-1/2 transform -translate-x-1/2 z-20">
-        <div className="logo-container group inline-block cursor-pointer relative mb-8">
+        <div
+          className="logo-container group inline-block cursor-pointer relative mb-8"
+          onMouseEnter={handleLogoOrButtonsMouseEnter}
+          onMouseLeave={handleLogoOrButtonsMouseLeave}
+        >
           <img
             ref={logoRef}
             src={stlogo}
             alt="Student Tribe Logo"
             className="h-8 md:h-12 lg:h-16 w-auto drop-shadow-lg mb-4"
           />
+          {/* Buttons appear below logo on hover */}
           <div
-            className="absolute left-1/2 -translate-x-1/2 w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 opacity-100 pointer-events-auto"
+            className={`absolute left-1/2 -translate-x-1/2 w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
+              showButtons ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+            }`}
             style={{
               top: "calc(100% + 8px)",
             }}
@@ -104,7 +130,7 @@ const StOpportunities = () => {
       <div
         className="flex items-center justify-center min-h-screen px-4 md:px-8 transition-transform duration-500"
         style={{
-          transform: "translateY(80px)",
+          transform: showButtons ? "translateY(80px)" : "translateY(0)",
         }}
       >
         {/* Mobile Layout */}
