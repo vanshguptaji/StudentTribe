@@ -1032,9 +1032,6 @@ const MainScreen = ({ onNavigateToSection }) => {
           const validDescriptionRefs = descriptionWordsRef.current.filter(ref => ref !== null && ref !== undefined);
           const validSecondaryRefs = secondaryDescriptionWordsRef.current.filter(ref => ref !== null && ref !== undefined);
 
-          console.log("Valid description refs:", validDescriptionRefs.length);
-          console.log("Valid secondary refs:", validSecondaryRefs.length);
-
           if (validDescriptionRefs.length > 0) {
             gsap.set(validDescriptionRefs, {
               opacity: 0,
@@ -1069,7 +1066,8 @@ const MainScreen = ({ onNavigateToSection }) => {
 
           // Create timeline for sequence
           const tl = gsap.timeline();
-          
+          // Add a delay before starting the logo animation
+          tl.to({}, { duration: 0.8 }); // 0.8s delay before logo animates
           // First animation: Logo moves from center to final position and scales down
           tl.to(
             logoRef.current,
@@ -1079,7 +1077,7 @@ const MainScreen = ({ onNavigateToSection }) => {
               y: 0, // Move to final position (top)
               ease: "power3.out",
             },
-            "+=0.5"
+            "+=0"
           )
             .to(
               backgroundRef.current,
