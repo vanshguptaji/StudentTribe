@@ -77,7 +77,7 @@ export default function Footer() {
           </div>
           {/* Large Student Tribe watermark - full width, centered */}
           <div className="absolute inset-0 w-full h-full flex items-end justify-center pointer-events-none select-none" style={{zIndex:0}}>
-            <span className="w-full text-center text-[12vw] md:text-[8vw] font-black text-[#b8001f] opacity-20 leading-none" style={{letterSpacing:'-0.04em'}}>
+            <span className="absolute -bottom-12 w-full text-center text-[12vw] md:text-[12vw] font-black text-[#b8001f] opacity-20 leading-none" style={{letterSpacing:'-0.04em'}}>
               Student Tribe
             </span>
           </div>
