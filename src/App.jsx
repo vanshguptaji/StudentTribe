@@ -22,11 +22,15 @@ function App() {
     // Start fade out animation after 6 seconds
     const fadeTimer = setTimeout(() => {
       setFadeOut(true);
+      // Dispatch event when splash starts fading
+      window.dispatchEvent(new CustomEvent('splashScreenFadeStart'));
     }, 6000);
 
     // Hide splash screen completely after fade animation (6.5 seconds total)
     const hideTimer = setTimeout(() => {
       setShowSplash(false);
+      // Dispatch event when splash ends
+      window.dispatchEvent(new CustomEvent('splashScreenEnd'));
     }, 6700);
 
     // Cleanup timers on component unmount
@@ -39,8 +43,12 @@ function App() {
   // Handler to immediately end splash on click
   const handleSplashClick = () => {
     setFadeOut(true);
+    // Dispatch event when user clicks to skip splash
+    window.dispatchEvent(new CustomEvent('splashScreenFadeStart'));
     setTimeout(() => {
       setShowSplash(false);
+      // Dispatch event when splash ends
+      window.dispatchEvent(new CustomEvent('splashScreenEnd'));
     }, 700); // match fade duration
   };
 

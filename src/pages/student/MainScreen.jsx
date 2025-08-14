@@ -74,6 +74,8 @@ const MainScreen = ({ onNavigateToSection }) => {
   const backgroundRef = useRef(null);
   const descriptionRef = useRef(null);
   const descriptionWordsRef = useRef([]);
+  const secondaryDescriptionRef = useRef(null);
+  const secondaryDescriptionWordsRef = useRef([]);
   const backgroundImagesRef = useRef([]);
   const containerRef = useRef(null);
   const logoContainerRef = useRef(null);
@@ -133,6 +135,13 @@ const MainScreen = ({ onNavigateToSection }) => {
           display: "inline-block",
         });
 
+        gsap.set(secondaryDescriptionWordsRef.current, {
+          opacity: 0,
+          rotateX: 90,
+          transformOrigin: "left bottom",
+          display: "inline-block",
+        });
+
         // Set logo initial state
         gsap.set(logoRef.current, {
           scale: 2.5,
@@ -167,7 +176,14 @@ const MainScreen = ({ onNavigateToSection }) => {
             duration: 0.5,
             ease: "back.out(1.7)",
             stagger: 0.12,
-          });
+          })
+          .to(secondaryDescriptionWordsRef.current, {
+            opacity: 1,
+            rotateX: 0,
+            duration: 0.4,
+            ease: "back.out(1.7)",
+            stagger: 0.08,
+          }, "+=0.3");
 
         // Animate background images similar to motivational words
         backgroundImagesRef.current.forEach((image, index) => {
@@ -317,6 +333,30 @@ const MainScreen = ({ onNavigateToSection }) => {
                 <span
                   key={i}
                   ref={(el) => (descriptionWordsRef.current[i] = el)}
+                  style={{ display: "inline-block", whiteSpace: "pre" }}
+                >
+                  {word + (i < words.length - 1 ? " " : "")}
+                </span>
+              ));
+            })()}
+          </div>
+          
+          {/* Secondary description text */}
+          <div
+            ref={secondaryDescriptionRef}
+            className="text-white text-lg sm:text-lg md:text-xl lg:text-xl xl:text-2xl text-center mt-56 drop-shadow-lg max-w-3xl px-4 transition-transform duration-500"
+            style={{
+              transform: showButtons ? 'translateY(80px)' : 'translateY(0)',
+            }}
+          >
+            {(() => {
+              // The secondary text to animate
+              const secondaryText = "From classrooms to career moves. We're the tribe that's with you all the way.";
+              const words = secondaryText.split(" ");
+              return words.map((word, i) => (
+                <span
+                  key={i}
+                  ref={(el) => (secondaryDescriptionWordsRef.current[i] = el)}
                   style={{ display: "inline-block", whiteSpace: "pre" }}
                 >
                   {word + (i < words.length - 1 ? " " : "")}

@@ -1,322 +1,96 @@
-// import React, { useState, useEffect, useRef } from 'react';
-// import { gsap } from 'gsap';
-// import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-// // Register ScrollTrigger plugin
-// gsap.registerPlugin(ScrollTrigger);
-// // import Footer from './components/Footer';
-
-// export default function BrandsScreen() {
-//   const [isVisible, setIsVisible] = useState(false);
-//   const containerRef = useRef(null);
-//   const imagesRef = useRef([]);
-
-//   useEffect(() => {
-//     if (containerRef.current) {
-//       // Set initial state for images
-//       gsap.set(imagesRef.current, {
-//         y: window.innerHeight + 200,
-//         opacity: 0,
-//         scale: 0.8
-//       });
-
-//       // Create scroll-triggered timeline
-//       const tl = gsap.timeline({
-//         scrollTrigger: {
-//           trigger: containerRef.current,
-//           start: "top bottom",
-//           end: "bottom top",
-//           scrub: 1,
-//           invalidateOnRefresh: true,
-//           onUpdate: () => setIsVisible(true)
-//         }
-//       });
-
-//       tl.to(imagesRef.current, {
-//         y: 0,
-//         opacity: 1,
-//         scale: 1,
-//         duration: 1.2,
-//         ease: "power3.out",
-//         stagger: {
-//           amount: 1.5,
-//           from: "random"
-//         }
-//       });
-
-//       return () => {
-//         ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-//       };
-//     }
-//   }, []);
-
-//   // Function to add image refs
-//   const addToRefs = (el) => {
-//     if (el && !imagesRef.current.includes(el)) {
-//       imagesRef.current.push(el);
-//     }
-//   };
-
-//   const scrollToSection = (sectionId) => {
-//     const element = document.getElementById(sectionId);
-//     if (element) {
-//       element.scrollIntoView({ behavior: 'smooth' });
-//     }
-//   };
-
-//   return (
-//     <div ref={containerRef} className="relative w-screen min-h-screen flex flex-col items-center justify-start bg-gradient-to-br from-[#fff6f6] to-[#FFF8F8] overflow-hidden"
-//          id="brands-section">
-//       {/* Main content */}
-//       <div className="relative z-10 flex flex-col items-center w-full px-4 pt-16">
-//         <div className="mb-8 text-center">
-//           <div className="logo-container">
-//             <div className="text-[#b8001f] font-black text-6xl leading-none drop-shadow-lg tracking-tight">
-//               st.
-//             </div>
-//             <div className="text-[#b8001f] text-lg font-medium drop-shadow mb-4">
-//               Student Tribe
-//             </div>
-//           </div>
-//           <div className="mx-auto mt-8 w-[400px] max-w-[90vw] bg-[#2d000a] rounded-full flex overflow-hidden shadow-lg text-xl font-bold">
-//             <button
-//               className="flex-1 py-4 text-center rounded-l-full transition-colors duration-300 text-gray-300 bg-transparent"
-//               onClick={() => scrollToSection('main-section')}
-//             >
-//               Students
-//             </button>
-//             <button
-//               className="flex-1 py-4 text-center rounded-r-full transition-colors duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white"
-//               onClick={() => scrollToSection('brands-section')}
-//             >
-//               Brands
-//             </button>
-//           </div>
-//         </div>
-
-//       {/* Content Area */}
-//       <div className="relative z-20 px-8 w-full">
-//         {/* Title and Description */}
-//         <div className="text-center mb-12">
-//           <h1 className="text-6xl font-extrabold text-[#2d1c1c] mb-6 leading-tight">
-//             Discover career paths you never know!
-//           </h1>
-//           <p className="text-2xl text-[#2d1c1c] mb-8 leading-relaxed">
-//             Workshops that don't bore. Webinars with no-zoom fatigue.<br/>
-//             Courses that actually upskill. Dive into learning with vibe.
-//           </p>
-//         </div>
-
-//         {/* Image Grid Layout */}
-//         <div className="relative max-w-6xl mx-auto" ref={containerRef}>
-//           {/* Main Photo Grid - 4 columns on large screens, 2x2 grid on smaller screens */}
-//           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-//             {/* Column 1 - First image tall, second image below */}
-//             <div className="flex flex-col gap-6">
-//               <div>
-//                 <img 
-//                   ref={addToRefs}
-//                   src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-//                   alt="Team Meeting"
-//                   className="w-full h-80 mt-10 object-cover rounded-3xl shadow-xl"
-//                   style={{ 
-//                     transform: 'perspective(500px) rotateX(0deg) rotateY(12deg)',
-//                     transformOrigin: 'bottom center'
-//                   }}
-//                 />
-//               </div>
-//               <div>
-//                 <img 
-//                   ref={addToRefs}
-//                   src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-//                   alt="Team Collaboration"
-//                   className="w-full h-28 object-cover rounded-3xl shadow-xl"
-//                   style={{ 
-//                     transform: 'perspective(1000px) rotateX(8deg) rotateY(-3deg)',
-//                     transformOrigin: 'top center'
-//                   }}
-//                 />
-//               </div>
-//             </div>
-            
-//             {/* Column 2 - Just one tall image */}
-//             <div>
-//               <img 
-//                 ref={addToRefs}
-//                 src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-//                 alt="Professional Woman"
-//                 className="w-full h-5/6 object-cover rounded-3xl shadow-xl mt-18"
-//                 style={{ 
-//                   transform: 'perspective(1000px) rotateX(5deg) rotateY(12deg)',
-//                   transformOrigin: 'bottom center'
-//                 }}
-//               />
-//             </div>
-
-//             <div>
-//               <img 
-//                 ref={addToRefs}
-//                 src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-//                 alt="Professional Woman"
-//                 className="w-full h-76 object-cover rounded-3xl shadow-xl mt-28"
-//                 style={{ 
-//                   transform: 'perspective(500px) rotateX(2deg) rotateY(0deg)',
-//                   transformOrigin: 'top center'
-//                 }}
-//               />
-//             </div>
-            
-//             {/* Column 3 - Just one tall image */}
-//             <div>
-//               <img 
-//                 ref={addToRefs}
-//                 src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-//                 alt="Tech Team"
-//                 className="w-full h-5/6 object-cover rounded-3xl shadow-xl mt-18"
-//                 style={{ 
-//                   transform: 'perspective(1000px) rotateX(5deg) rotateY(-12deg)',
-//                   transformOrigin: 'bottom center'
-//                 }}
-//               />
-//             </div>
-            
-//             {/* Column 4 - First image tall, second image below */}
-//             <div className="flex flex-col gap-6">
-//               <div>
-//                 <img 
-//                   ref={addToRefs}
-//                   src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-//                   alt="University Campus"
-//                   className="w-full h-80 object-cover rounded-3xl shadow-xl mt-10"
-//                   style={{ 
-//                   transform: 'perspective(500px) rotateX(0deg) rotateY(-12deg)',
-//                   transformOrigin: 'bottom center'
-//                 }}
-//                 />
-//               </div>
-//               <div>
-//                 <img 
-//                   ref={addToRefs}
-//                   src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-//                   alt="Business Meeting"
-//                   className="w-full h-28 object-cover rounded-3xl shadow-xl"
-//                 />
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* Central Button */}
-//           <div className={`text-center transition-all duration-1000 delay-700 ${
-//             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-//           }`}>
-//             <button 
-//               ref={addToRefs}
-//               className="absolute bottom-10 left-2/5 transform -translate-x-1/2 px-10 py-3 rounded-full bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white font-bold text-lg shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-//             >
-//               Explore Now →
-//             </button>
-//           </div>
-//         </div>
-
-//         {/* Additional spacing for content below */}
-//         <div className="h-32"></div>
-//       </div>
-//       </div>
-
-//       {/* Right Side Label */}
-//       <div className="absolute right-0 top-1/2 -translate-y-1/2 bg-[#2d1c1c] text-white font-bold text-xl px-4 py-8 rounded-l-xl tracking-widest flex items-center justify-center shadow-lg z-30" 
-//            style={{writingMode: 'vertical-rl', textOrientation: 'mixed'}}>
-//         ST SCHOOL
-//       </div>
-
-//       {/* Bottom Right Small Images */}
-//       <div className="absolute bottom-8 right-8 z-20">
-//         <div className="grid grid-cols-2 gap-2">
-//           <div className="w-16 h-16 bg-gray-300 rounded-lg overflow-hidden">
-//             <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Thumb 1" className="w-full h-full object-cover" />
-//           </div>
-//           <div className="w-16 h-16 bg-gray-300 rounded-lg overflow-hidden">
-//             <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Thumb 2" className="w-full h-full object-cover" />
-//           </div>
-//           <div className="w-16 h-16 bg-gray-300 rounded-lg overflow-hidden">
-//             <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Thumb 3" className="w-full h-full object-cover" />
-//           </div>
-//           <div className="w-16 h-16 bg-gray-300 rounded-lg overflow-hidden">
-//             <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Thumb 4" className="w-full h-full object-cover" />
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-
-
-
-
-
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from "react-router-dom";
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-// Register ScrollTrigger plugin
-gsap.registerPlugin(ScrollTrigger);
+// import Footer from './components/Footer';
 
 export default function BrandsScreen() {
-  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
   const containerRef = useRef(null);
   const imagesRef = useRef([]);
+  const logoRef = useRef(null);
+  const logoContainerRef = useRef(null);
   const hideButtonsTimeoutRef = useRef(null);
+  // Logo hover logic (copied from MainScreen)
+  const handleLogoOrButtonsMouseEnter = () => {
+    if (hideButtonsTimeoutRef.current) {
+      clearTimeout(hideButtonsTimeoutRef.current);
+      hideButtonsTimeoutRef.current = null;
+    }
+    setShowButtons(true);
+  };
 
-  useEffect(() => {
+  const handleLogoOrButtonsMouseLeave = (e) => {
+    const relatedTarget = e.relatedTarget;
+    const currentTarget = e.currentTarget;
+    if (!relatedTarget || !currentTarget.contains(relatedTarget)) {
+      hideButtonsTimeoutRef.current = setTimeout(() => {
+        setShowButtons(false);
+      }, 300);
+    }
+  };
+
+  // Animation function
+  const runAnimation = () => {
     if (containerRef.current) {
-      // Set initial state for images
       gsap.set(imagesRef.current, {
         y: window.innerHeight + 200,
         opacity: 0,
         scale: 0.8
       });
-
-      // Create scroll-triggered timeline
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1,
-          invalidateOnRefresh: true,
-          onUpdate: () => setIsVisible(true)
-        }
-      });
-
-      tl.to(imagesRef.current, {
+      gsap.to(imagesRef.current, {
         y: 0,
         opacity: 1,
         scale: 1,
         duration: 1.2,
         ease: "power3.out",
-        stagger: {
-          amount: 1.5,
-          from: "random"
-        }
+        stagger: 0.08, // quick burst, not scroll-based
+        onStart: () => setIsVisible(true)
       });
-
-      return () => {
-        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-        // Clean up timeout on unmount
-        if (hideButtonsTimeoutRef.current) {
-          clearTimeout(hideButtonsTimeoutRef.current);
-        }
-      };
     }
+  };
+
+  useEffect(() => {
+    // Clear refs before collecting again (prevents duplicate refs)
+    imagesRef.current = [];
+    setTimeout(runAnimation, 0); // Run after refs are attached
+
+    // Listen for custom event to re-trigger animation
+    const handleTrigger = (event) => {
+      if (event.detail?.sectionName === 'brands') {
+        setIsVisible(false);
+        imagesRef.current = [];
+        setTimeout(runAnimation, 50); // Small delay to allow for reset
+      }
+    };
+    window.addEventListener('triggerSectionAnimation', handleTrigger);
+
+    // Intersection Observer to re-trigger animation when section enters viewport
+    let observer;
+    if (containerRef.current) {
+      observer = new window.IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              setIsVisible(false);
+              imagesRef.current = [];
+              setTimeout(runAnimation, 50);
+            }
+          });
+        },
+        { threshold: 0.5 }
+      );
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      window.removeEventListener('triggerSectionAnimation', handleTrigger);
+      if (observer && containerRef.current) observer.unobserve(containerRef.current);
+    };
   }, []);
 
   // Function to add image refs
   const addToRefs = (el) => {
-    if (el && !imagesRef.current.includes(el)) {
+    if (el) {
       imagesRef.current.push(el);
     }
   };
@@ -328,49 +102,36 @@ export default function BrandsScreen() {
     }
   };
 
-  // Hover handlers for logo/buttons
-  const handleLogoOrButtonsMouseEnter = () => {
-    // Clear any pending hide timeout
-    if (hideButtonsTimeoutRef.current) {
-      clearTimeout(hideButtonsTimeoutRef.current);
-      hideButtonsTimeoutRef.current = null;
-    }
-    setShowButtons(true);
-  };
-  
-  const handleLogoOrButtonsMouseLeave = (e) => {
-    // Check if the mouse is leaving to go to a related element within the same container
-    const relatedTarget = e.relatedTarget;
-    const currentTarget = e.currentTarget;
-    
-    // If there's no related target (mouse left the window) or the related target 
-    // is not within our logo container, hide the buttons with a delay
-    if (!relatedTarget || !currentTarget.contains(relatedTarget)) {
-      // Add a small delay before hiding to allow smooth movement to buttons
-      hideButtonsTimeoutRef.current = setTimeout(() => {
-        setShowButtons(false);
-      }, 300); // 300ms delay
-    }
-  };
+
+
+  // Clean up timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (hideButtonsTimeoutRef.current) {
+        clearTimeout(hideButtonsTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full min-h-screen flex flex-col items-center justify-start bg-gradient-to-br from-[#fff6f6] to-[#FFF8F8] overflow-hidden"
+    <div ref={containerRef} className="relative w-screen min-h-screen flex flex-col items-center justify-start bg-gradient-to-br from-[#fff6f6] to-[#FFF8F8] overflow-hidden"
          id="brands-section">
       {/* Main content */}
-      <div className="relative z-10 flex flex-col items-center w-full px-4 pt-8 sm:pt-12 lg:pt-16">
-        <div className="mb-8 sm:mb-12 text-center">
-          <div 
+      <div className="relative z-10 flex flex-col items-center w-full px-4 pt-4">
+        <div className="mb-8 text-center">
+          <div
+            ref={el => { logoRef.current = el; logoContainerRef.current = el; }}
             className="logo-container group inline-block cursor-pointer relative"
             onMouseEnter={handleLogoOrButtonsMouseEnter}
             onMouseLeave={handleLogoOrButtonsMouseLeave}
           >
-            <div className="text-[#b8001f] font-black text-4xl sm:text-5xl lg:text-6xl leading-none drop-shadow-lg tracking-tight group-hover:scale-105 transition-transform duration-300">
+            <div className="text-[#b8001f] font-black text-6xl leading-none drop-shadow-lg tracking-tight">
               st.
             </div>
-            <div className="text-[#b8001f] text-base sm:text-lg font-medium drop-shadow mb-4 group-hover:scale-105 transition-transform duration-300">
+            <div className="text-[#b8001f] text-lg font-medium drop-shadow mb-4">
               Student Tribe
             </div>
-            {/* Buttons appear below text on hover */}
+            {/* Buttons appear above text on hover */}
             <div
               className={`absolute left-1/2 -translate-x-1/2 w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
                 showButtons ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
@@ -378,15 +139,17 @@ export default function BrandsScreen() {
               style={{
                 top: 'calc(100% + 8px)',
               }}
+              onMouseEnter={handleLogoOrButtonsMouseEnter}
+              onMouseLeave={handleLogoOrButtonsMouseLeave}
             >
               <button
-                className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-transparent text-gray-300 border-none cursor-pointer text-lg hover:bg-[#b8001f] hover:text-white hover:scale-105"
-                onClick={() => navigate('/')}
+                className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white border-none cursor-pointer text-lg hover:scale-105"
+                onClick={() => scrollToSection('main-section')}
               >
                 Students
               </button>
               <button
-                className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white border-none cursor-pointer text-lg hover:scale-105"
+                className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-transparent text-gray-300 border-none cursor-pointer text-lg hover:bg-[#b8001f] hover:text-white hover:scale-105"
                 onClick={() => scrollToSection('brands-section')}
               >
                 Brands
@@ -394,207 +157,159 @@ export default function BrandsScreen() {
             </div>
           </div>
         </div>
+      {/* Clean up timeout on unmount */}
 
-        {/* Content Area with shifting */}
-        <div 
-          className="relative z-20 px-4 sm:px-6 lg:px-8 w-full transition-transform duration-500"
-          style={{
-            transform: showButtons ? 'translateY(80px)' : 'translateY(0)',
-          }}
-        >
-          {/* Title and Description */}
-          <div className="text-center mb-8 sm:mb-12">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-[#2d1c1c] mb-4 sm:mb-6 leading-tight">
-              Discover career paths you never knew!
-            </h1>
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-[#2d1c1c] mb-6 sm:mb-8 leading-relaxed">
-              Workshops that don't bore. Webinars with no-zoom fatigue.
-              <br className="hidden sm:block"/>
-              Courses that actually upskill. Dive into learning with vibe.
-            </p>
-          </div>
+      {/* Content Area with translateY on logo hover */}
+      <div
+        className="relative z-20 px-8 w-full transition-transform duration-500"
+        style={{ transform: showButtons ? 'translateY(80px)' : 'translateY(0)' }}
+      >
+        {/* Title and Description */}
+        <div className="text-center mb-12">
+          <h1 className="text-6xl font-extrabold text-[#2d1c1c] mb-6 leading-tight">
+            Discover career paths you never know!
+          </h1>
+          <p className="text-2xl text-[#2d1c1c] mb-0 leading-relaxed">
+            Workshops that don't bore. Webinars with no-zoom fatigue.<br/>
+            Courses that actually upskill. Dive into learning with vibe.
+          </p>
+        </div>
 
-          {/* Image Grid Layout */}
-          <div className="relative max-w-6xl mx-auto">
-            {/* Mobile Layout (< md) */}
-            <div className="block md:hidden mb-8">
-              <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                {/* Left Column */}
-                <div className="flex flex-col gap-3">
-                  <div className="relative">
-                    <img 
-                      ref={addToRefs}
-                      src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                      alt="Team Meeting"
-                      className="w-full h-40 sm:h-48 object-cover rounded-xl shadow-lg"
-                    />
-                  </div>
-                  <div className="relative">
-                    <img 
-                      ref={addToRefs}
-                      src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                      alt="Team Collaboration"
-                      className="w-full h-28 sm:h-32 object-cover rounded-xl shadow-lg"
-                    />
-                  </div>
-                </div>
-                
-                {/* Right Column */}
-                <div className="flex flex-col gap-3">
-                  <div className="relative">
-                    <img 
-                      ref={addToRefs}
-                      src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                      alt="Professional Woman"
-                      className="w-full h-28 sm:h-32 object-cover rounded-xl shadow-lg"
-                    />
-                  </div>
-                  <div className="relative">
-                    <img 
-                      ref={addToRefs}
-                      src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                      alt="Tech Team"
-                      className="w-full h-40 sm:h-48 object-cover rounded-xl shadow-lg"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Desktop/Tablet Layout (md+) - Original GSAP animations preserved */}
-            <div className="hidden md:grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-              {/* Column 1 - First image tall, second image below */}
-              <div className="flex flex-col gap-6">
-                <div>
-                  <img 
-                    ref={addToRefs}
-                    src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                    alt="Team Meeting"
-                    className="w-full h-64 lg:h-80 mt-10 object-cover rounded-3xl shadow-xl"
-                    style={{ 
-                      transform: 'perspective(500px) rotateX(0deg) rotateY(12deg)',
-                      transformOrigin: 'bottom center'
-                    }}
-                  />
-                </div>
-                <div>
-                  <img 
-                    ref={addToRefs}
-                    src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                    alt="Team Collaboration"
-                    className="w-full h-20 lg:h-28 object-cover rounded-3xl shadow-xl"
-                    style={{ 
-                      transform: 'perspective(1000px) rotateX(8deg) rotateY(-3deg)',
-                      transformOrigin: 'top center'
-                    }}
-                  />
-                </div>
-              </div>
-              
-              {/* Column 2 - Just one tall image */}
+        {/* Image Grid Layout */}
+        <div className="relative max-w-6xl mx-auto">
+          {/* Main Photo Grid - 4 columns on large screens, 2x2 grid on smaller screens */}
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+            {/* Column 1 - First image tall, second image below */}
+            <div className="flex flex-col gap-6">
               <div>
                 <img 
                   ref={addToRefs}
-                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                  alt="Professional Woman"
-                  className="w-full h-80 lg:h-5/6 object-cover rounded-3xl shadow-xl mt-8 lg:mt-18"
+                  src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  alt="Team Meeting"
+                  className="w-full h-80 mt-10 object-cover rounded-3xl shadow-xl"
                   style={{ 
-                    transform: 'perspective(1000px) rotateX(5deg) rotateY(12deg)',
+                    transform: 'perspective(500px) rotateX(0deg) rotateY(12deg)',
                     transformOrigin: 'bottom center'
                   }}
                 />
               </div>
-
-              <div className="hidden lg:block">
+              <div>
                 <img 
                   ref={addToRefs}
-                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                  alt="Professional Woman"
-                  className="w-full h-76 object-cover rounded-3xl shadow-xl mt-28"
+                  src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  alt="Team Collaboration"
+                  className="w-full h-28 object-cover rounded-3xl shadow-xl"
                   style={{ 
-                    transform: 'perspective(500px) rotateX(2deg) rotateY(0deg)',
+                    transform: 'perspective(1000px) rotateX(8deg) rotateY(-3deg)',
                     transformOrigin: 'top center'
                   }}
                 />
               </div>
-              
-              {/* Column 3 - Just one tall image */}
-              <div className="hidden lg:block">
-                <img 
-                  ref={addToRefs}
-                  src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                  alt="Tech Team"
-                  className="w-full h-5/6 object-cover rounded-3xl shadow-xl mt-18"
-                  style={{ 
-                    transform: 'perspective(1000px) rotateX(5deg) rotateY(-12deg)',
-                    transformOrigin: 'bottom center'
-                  }}
-                />
-              </div>
-              
-              {/* Column 4 - First image tall, second image below */}
-              <div className="hidden lg:flex flex-col gap-6">
-                <div>
-                  <img 
-                    ref={addToRefs}
-                    src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                    alt="University Campus"
-                    className="w-full h-80 object-cover rounded-3xl shadow-xl mt-10"
-                    style={{ 
-                      transform: 'perspective(500px) rotateX(0deg) rotateY(-12deg)',
-                      transformOrigin: 'bottom center'
-                    }}
-                  />
-                </div>
-                <div>
-                  <img 
-                    ref={addToRefs}
-                    src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                    alt="Business Meeting"
-                    className="w-full h-28 object-cover rounded-3xl shadow-xl"
-                  />
-                </div>
-              </div>
+            </div>
+            
+            {/* Column 2 - Just one tall image */}
+            <div>
+              <img 
+                ref={addToRefs}
+                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Professional Woman"
+                className="w-full h-5/6 object-cover rounded-3xl shadow-xl mt-18"
+                style={{ 
+                  transform: 'perspective(1000px) rotateX(5deg) rotateY(12deg)',
+                  transformOrigin: 'bottom center'
+                }}
+              />
             </div>
 
-            {/* Central Button */}
-            <div className="text-center mt-6 mb-8 md:mb-0">
-              <button 
+            <div>
+              <img 
                 ref={addToRefs}
-                className={`relative md:absolute md:bottom-10 md:left-2/5 md:transform md:-translate-x-1/2 px-6 sm:px-8 lg:px-10 py-3 rounded-full bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white font-bold text-sm sm:text-base lg:text-lg shadow-xl transition-all duration-1000 delay-700 hover:scale-105 hover:shadow-2xl ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                }`}
-                onClick={() => scrollToSection('app-section')}
-              >
-                Explore Now →
-              </button>
+                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Professional Woman"
+                className="w-full h-76 object-cover rounded-3xl shadow-xl mt-28"
+                style={{ 
+                  transform: 'perspective(500px) rotateX(2deg) rotateY(0deg)',
+                  transformOrigin: 'top center'
+                }}
+              />
+            </div>
+            
+            {/* Column 3 - Just one tall image */}
+            <div>
+              <img 
+                ref={addToRefs}
+                src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Tech Team"
+                className="w-full h-5/6 object-cover rounded-3xl shadow-xl mt-18"
+                style={{ 
+                  transform: 'perspective(1000px) rotateX(5deg) rotateY(-12deg)',
+                  transformOrigin: 'bottom center'
+                }}
+              />
+            </div>
+            
+            {/* Column 4 - First image tall, second image below */}
+            <div className="flex flex-col gap-6">
+              <div>
+                <img 
+                  ref={addToRefs}
+                  src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  alt="University Campus"
+                  className="w-full h-80 object-cover rounded-3xl shadow-xl mt-10"
+                  style={{ 
+                  transform: 'perspective(500px) rotateX(0deg) rotateY(-12deg)',
+                  transformOrigin: 'bottom center'
+                }}
+                />
+              </div>
+              <div>
+                <img 
+                  ref={addToRefs}
+                  src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  alt="Business Meeting"
+                  className="w-full h-28 object-cover rounded-3xl shadow-xl"
+                />
+              </div>
             </div>
           </div>
 
-          {/* Additional spacing for content below */}
-          <div className="h-16 sm:h-24 lg:h-32"></div>
+          {/* Central Button */}
+          <div className={`text-center transition-all duration-1000 delay-700 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}>
+            <button 
+              ref={addToRefs}
+              className="absolute bottom-10 right-2/5 transform -translate-x-1/2 px-10 py-3 rounded-full bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white font-bold text-lg shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+            >
+              Explore Now →
+            </button>
+          </div>
         </div>
+
+        {/* Additional spacing for content below */}
+        <div className="h-32"></div>
+      </div>
       </div>
 
-      {/* Right Side Label - Hidden on mobile */}
-      <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 bg-[#2d1c1c] text-white font-bold text-lg lg:text-xl px-3 lg:px-4 py-6 lg:py-8 rounded-l-xl tracking-widest flex items-center justify-center shadow-lg z-30" 
+      {/* Right Side Label */}
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 bg-[#2d1c1c] text-white font-bold text-xl px-4 py-8 rounded-l-xl tracking-widest flex items-center justify-center shadow-lg z-30" 
            style={{writingMode: 'vertical-rl', textOrientation: 'mixed'}}>
         ST SCHOOL
       </div>
 
       {/* Bottom Right Small Images */}
-      <div className="absolute bottom-4 sm:bottom-6 lg:bottom-8 right-4 sm:right-6 lg:right-8 z-20">
-        <div className="grid grid-cols-2 gap-1 sm:gap-2">
-          <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gray-300 rounded-lg overflow-hidden">
+      <div className="absolute bottom-8 right-8 z-20">
+        <div className="grid grid-cols-2 gap-2">
+          <div className="w-16 h-16 bg-gray-300 rounded-lg overflow-hidden">
             <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Thumb 1" className="w-full h-full object-cover" />
           </div>
-          <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gray-300 rounded-lg overflow-hidden">
+          <div className="w-16 h-16 bg-gray-300 rounded-lg overflow-hidden">
             <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Thumb 2" className="w-full h-full object-cover" />
           </div>
-          <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gray-300 rounded-lg overflow-hidden">
+          <div className="w-16 h-16 bg-gray-300 rounded-lg overflow-hidden">
             <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Thumb 3" className="w-full h-full object-cover" />
           </div>
-          <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gray-300 rounded-lg overflow-hidden">
+          <div className="w-16 h-16 bg-gray-300 rounded-lg overflow-hidden">
             <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Thumb 4" className="w-full h-full object-cover" />
           </div>
         </div>

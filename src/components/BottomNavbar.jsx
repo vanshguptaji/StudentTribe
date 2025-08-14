@@ -120,7 +120,41 @@ const BottomNavbar = () => {
   const [activeTab, setActiveTab] = useState(null);
   const [footerVisible, setFooterVisible] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [splashActive, setSplashActive] = useState(true);
   const observerRef = useRef(null);
+
+  // Hide navbar during splash screen animation
+  useEffect(() => {
+    // Hide navbar initially (splash screen is active)
+    setSplashActive(true);
+    
+    // Show navbar after splash screen duration (6.7 seconds)
+    const splashTimer = setTimeout(() => {
+      setSplashActive(false);
+    }, 6700);
+
+    // Listen for custom splash screen events (in case user clicks to skip)
+    const handleSplashEnd = () => {
+      setSplashActive(false);
+    };
+
+    // Listen for when splash screen starts fading out
+    const handleSplashFadeStart = () => {
+      // Keep navbar hidden during fade animation
+      setTimeout(() => {
+        setSplashActive(false);
+      }, 700); // Match the fade duration
+    };
+
+    window.addEventListener('splashScreenEnd', handleSplashEnd);
+    window.addEventListener('splashScreenFadeStart', handleSplashFadeStart);
+
+    return () => {
+      clearTimeout(splashTimer);
+      window.removeEventListener('splashScreenEnd', handleSplashEnd);
+      window.removeEventListener('splashScreenFadeStart', handleSplashFadeStart);
+    };
+  }, []);
 
   // Hide navbar when footer is visible
   useEffect(() => {
@@ -173,24 +207,48 @@ const BottomNavbar = () => {
   // Track scroll position to update active tab
   useEffect(() => {
     const handleScroll = () => {
-      const brandsSection = document.getElementById('brands-section');
-      if (brandsSection) {
-        const scrollPosition = window.scrollY + 100;
-        const sectionTop = brandsSection.offsetTop;
-        const sectionBottom = sectionTop + brandsSection.offsetHeight;
-        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-          setActiveTab('ST School');
-          return;
+      const sections = navItems.map(item => ({
+        id: item.id,
+        element: document.getElementById(item.sectionId)
+      }));
+
+      const scrollPosition = window.scrollY + 100; // Add offset for better detection
+      let currentActiveTab = null; // Default to no highlighting
+
+      // Check each section to see which one is currently in view
+      sections.forEach((section) => {
+        if (section.element) {
+          const sectionTop = section.element.offsetTop;
+          const sectionHeight = section.element.offsetHeight;
+          const sectionBottom = sectionTop + sectionHeight;
+          
+          // Check if the current scroll position is within this section
+          if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+            currentActiveTab = section.id;
+          }
+        }
+      });
+
+      // Special case: Don't highlight anything when on main-section
+      const mainSection = document.getElementById('main-section');
+      if (mainSection) {
+        const mainSectionTop = mainSection.offsetTop;
+        const mainSectionHeight = mainSection.offsetHeight;
+        const mainSectionBottom = mainSectionTop + mainSectionHeight;
+        
+        if (scrollPosition >= mainSectionTop && scrollPosition < mainSectionBottom) {
+          currentActiveTab = null; // No highlighting on main screen
         }
       }
-      setActiveTab(null);
+
+      setActiveTab(currentActiveTab);
     };
 
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // Call once to set initial state
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [navItems]);
 
   // Close mobile menu when clicking outside
   useEffect(() => {
@@ -204,23 +262,28 @@ const BottomNavbar = () => {
     return () => document.removeEventListener('click', handleClickOutside);
   }, [isOpen]);
 
-  if (footerVisible) return null;
+  if (footerVisible || splashActive) return null;
 
   return (
     <>
       {/* Desktop Navbar (hidden on mobile) */}
       <div className="fixed justify-center items-center bottom-0 left-0 right-0 z-50 hidden lg:flex">
-        <div className="max-w-7xl bg-black/90 backdrop-blur-sm rounded-full mx-4 mb-2 overflow-hidden shadow-2xl p-2">
+        <div className="max-w-7xl bg-black/90 rounded-full mx-4 mb-2 overflow-hidden shadow-2xl p-2" style={{ backdropFilter: 'blur(61.83246994018555px)' }}>
           <div className="flex justify-between gap-2 items-center px-2">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleTabClick(item)}
                 className={`px-4 py-2 rounded-full text-base font-medium transition-all duration-300 whitespace-nowrap ${
-                  activeTab === item.id && item.id === 'ST School'
-                    ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white shadow-lg scale-105 backdrop-blur-md'
+                  activeTab === item.id
+                    ? 'text-white shadow-lg scale-105'
                     : 'text-gray-300 hover:text-white hover:bg-white/10'
                 }`}
+                style={activeTab === item.id ? {
+                  background: 'linear-gradient(90deg, rgba(206, 32, 47, 0.2) 0%, rgba(206, 32, 47, 0.6) 50%, rgba(206, 32, 47, 0.2) 100%)',
+                  backdropFilter: 'blur(61.83246994018555px)',
+                  boxShadow: '0 0 20px rgba(206, 32, 47, 0.4), 0 0 40px rgba(206, 32, 47, 0.2), inset 0 0 10px rgba(206, 32, 47, 0.1)'
+                } : {}}
               >
                 {item.label}
               </button>
@@ -231,17 +294,22 @@ const BottomNavbar = () => {
 
       {/* Tablet Navbar (medium screens) */}
       <div className="fixed justify-center items-center bottom-0 left-0 right-0 z-50 hidden md:flex lg:hidden">
-        <div className="max-w-4xl bg-black/90 backdrop-blur-sm rounded-full mx-4 mb-2 overflow-hidden shadow-2xl p-2">
+        <div className="max-w-4xl bg-black/90 rounded-full mx-4 mb-2 overflow-hidden shadow-2xl p-2" style={{ backdropFilter: 'blur(61.83246994018555px)' }}>
           <div className="flex justify-between gap-1 items-center px-1">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleTabClick(item)}
                 className={`px-2 py-1 rounded-full text-xs font-medium transition-all duration-300 whitespace-nowrap ${
-                  activeTab === item.id && item.id === 'ST School'
-                    ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white shadow-lg scale-105 backdrop-blur-md'
+                  activeTab === item.id
+                    ? 'text-white shadow-lg scale-105'
                     : 'text-gray-300 hover:text-white hover:bg-white/10'
                 }`}
+                style={activeTab === item.id ? {
+                  background: 'linear-gradient(90deg, rgba(206, 32, 47, 0.2) 0%, rgba(206, 32, 47, 0.6) 50%, rgba(206, 32, 47, 0.2) 100%)',
+                  backdropFilter: 'blur(61.83246994018555px)',
+                  boxShadow: '0 0 15px rgba(206, 32, 47, 0.4), 0 0 30px rgba(206, 32, 47, 0.2), inset 0 0 8px rgba(206, 32, 47, 0.1)'
+                } : {}}
               >
                 {item.label}
               </button>
@@ -258,17 +326,22 @@ const BottomNavbar = () => {
             ? 'translate-y-0 opacity-100 scale-100' 
             : 'translate-y-full opacity-0 scale-95 pointer-events-none'
         }`}>
-          <div className="bg-black/95 backdrop-blur-md rounded-2xl mb-2 overflow-hidden shadow-2xl border border-gray-800">
+          <div className="bg-black/95 rounded-2xl mb-2 overflow-hidden shadow-2xl border border-gray-800" style={{ backdropFilter: 'blur(61.83246994018555px)' }}>
             <div className="p-1">
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleTabClick(item)}
                   className={`w-full text-left px-3 py-2 rounded-xl text-xs font-medium transition-all duration-300 mb-1 last:mb-0 ${
-                    activeTab === item.id && item.id === 'ST School'
-                      ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white shadow-lg'
+                    activeTab === item.id
+                      ? 'text-white shadow-lg'
                       : 'text-gray-300 hover:text-white hover:bg-white/10'
                   }`}
+                  style={activeTab === item.id ? {
+                    background: 'linear-gradient(90deg, rgba(206, 32, 47, 0.2) 0%, rgba(206, 32, 47, 0.6) 50%, rgba(206, 32, 47, 0.2) 100%)',
+                    backdropFilter: 'blur(61.83246994018555px)',
+                    boxShadow: '0 0 12px rgba(206, 32, 47, 0.4), 0 0 25px rgba(206, 32, 47, 0.2), inset 0 0 6px rgba(206, 32, 47, 0.1)'
+                  } : {}}
                 >
                   {item.label}
                 </button>
