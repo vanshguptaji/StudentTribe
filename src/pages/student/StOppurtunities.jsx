@@ -34,16 +34,16 @@ const StOpportunities = () => {
   return (
     <div className="min-h-screen bg-gradient-to-bl to-[#b8001f] from-[#7a0015] text-white relative overflow-hidden">
       {/* ST Logo at Top */}
-      <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-20">
+      <div className="absolute top-6 md:top-8 left-1/2 transform -translate-x-1/2 z-20">
         <div 
-          className="logo-container group inline-block cursor-pointer relative"
+          className="logo-container group inline-block cursor-pointer relative mb-8"
           onMouseEnter={handleLogoOrButtonsMouseEnter}
           onMouseLeave={handleLogoOrButtonsMouseLeave}
         >
-          <div className="text-white font-black text-4xl leading-none drop-shadow-lg tracking-tight group-hover:scale-105 transition-transform duration-300 text-center">
+          <div className="text-white font-black text-3xl md:text-4xl lg:text-5xl leading-none drop-shadow-lg tracking-tight group-hover:scale-105 transition-transform duration-300 text-center">
             st.
           </div>
-          <div className="text-white text-lg font-medium drop-shadow group-hover:scale-105 transition-transform duration-300 text-center">
+          <div className="text-white text-base md:text-lg font-medium drop-shadow group-hover:scale-105 transition-transform duration-300 text-center">
             Student Tribe
           </div>
           {/* Buttons appear below text on hover */}
@@ -56,13 +56,13 @@ const StOpportunities = () => {
             }}
           >
             <button
-              className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white border-none cursor-pointer text-lg hover:scale-105"
+              className="flex-1 py-3 md:py-4 text-center rounded-full transition-all duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white border-none cursor-pointer text-base md:text-lg hover:scale-105"
               onClick={() => navigate('/')}
             >
               Students
             </button>
             <button
-              className="flex-1 py-4 text-center rounded-full transition-all duration-300 bg-transparent text-gray-300 border-none cursor-pointer text-lg hover:bg-[#b8001f] hover:text-white hover:scale-105"
+              className="flex-1 py-3 md:py-4 text-center rounded-full transition-all duration-300 bg-transparent text-gray-300 border-none cursor-pointer text-base md:text-lg hover:bg-[#b8001f] hover:text-white hover:scale-105"
               onClick={() => navigate('/brands')}
             >
               Brands
@@ -73,12 +73,88 @@ const StOpportunities = () => {
 
       {/* Main Content Grid with shifting */}
       <div 
-        className="flex items-center justify-center min-h-screen px-8 transition-transform duration-500"
+        className="flex items-center justify-center min-h-screen px-4 md:px-8 transition-transform duration-500"
         style={{
           transform: showButtons ? 'translateY(80px)' : 'translateY(0)',
         }}
       >
-        <div className="grid grid-cols-3 gap-6 max-w-7xl w-full" style={{ height: '500px' }}>
+        {/* Mobile Layout */}
+        <div className="lg:hidden w-full max-w-md mx-auto">
+          {/* Title */}
+          
+
+          {/* Mobile Grid - 2x2 */}
+          <div className="grid grid-cols-1 gap-4 mb-6">
+            {/* INTERNSHIPS Card */}
+            <div className="relative h-48 rounded-2xl overflow-hidden shadow-lg">
+              <img
+                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80"
+                alt="Internships"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/30"></div>
+              <div className="absolute bottom-4 left-4">
+                <h3 className="text-white text-xl font-bold">
+                  INTERNSHIPS
+                </h3>
+              </div>
+            </div>
+
+            {/* JOB OPENINGS Card */}
+            <div className="relative h-48 rounded-2xl overflow-hidden shadow-lg">
+              <img
+                src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80"
+                alt="Job Openings"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/20"></div>
+              <div className="absolute bottom-4 left-4">
+                <h3 className="text-white text-xl font-bold">
+                  JOB OPENINGS
+                </h3>
+              </div>
+            </div>
+
+            {/* VOLUNTEER WORKS Card */}
+            <div className="relative h-48 rounded-2xl overflow-hidden shadow-lg">
+              <img
+                src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=600&q=80"
+                alt="Volunteer Works"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/30"></div>
+              <div className="absolute bottom-4 left-4">
+                <h3 className="text-white text-xl font-bold">
+                  VOLUNTEER WORKS
+                </h3>
+              </div>
+            </div>
+
+            {/* Testimonial Card */}
+            <div className="bg-gray-900/80 backdrop-blur-sm rounded-2xl p-6">
+              <div className="flex items-center mb-4">
+                <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
+                  <img
+                    src="https://images.unsplash.com/photo-1494790108755-2616b612b390?auto=format&fit=crop&w=100&q=80"
+                    alt="Dharma"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <h4 className="text-white text-base font-medium">Dharma</h4>
+              </div>
+              <div className="relative">
+                <span className="text-3xl text-white/30 absolute -top-1 -left-1">"</span>
+                <p className="text-white text-sm leading-relaxed ml-3">
+                  Find it all here — workshops, internships, and job openings that kick-start your career.
+                </p>
+                <span className="text-3xl text-white/30 absolute -bottom-3 -right-1">"</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop Layout */}
+        <div className="hidden lg:grid grid-cols-3 gap-6 max-w-7xl w-full" style={{ height: '500px' }}>
           {/* Left Column */}
           <div className="flex flex-col gap-6">
             {/* Top Left Card - INTERNSHIPS */}
@@ -163,7 +239,7 @@ const StOpportunities = () => {
       </div>
 
       {/* Right side vertical text */}
-      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-10">
+      <div className="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-10">
         <div className="bg-black/80 backdrop-blur-sm px-3 py-6 transform rotate-90 origin-center">
           <span className="text-white text-lg font-bold tracking-widest">
             ST APP
