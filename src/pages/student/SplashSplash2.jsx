@@ -9,9 +9,55 @@ import person8 from "../../assets/splashscreen/Rectangle 3463964.svg";
 import fist from "../../assets/splashscreen/Rectangle 3463918.svg";
 import stlogo from "../../assets/White logo.png";
 
-const SplashSplash2 = ({ fade }) => {
+const SplashSplash2 = ({ fade, onTransitionComplete }) => {
   const peopleRef = useRef([]);
   const wordsRef = useRef([]);
+  const logoRef = useRef(null);
+  const fistRef = useRef(null);
+
+  // Add transition animation when fade is true
+  useEffect(() => {
+    if (fade && logoRef.current && fistRef.current) {
+      // Create timeline for transition animation
+      const tl = gsap.timeline({
+        onComplete: () => {
+          // Call the completion callback after animation
+          if (onTransitionComplete) {
+            onTransitionComplete();
+          }
+        }
+      });
+
+      // Calculate target position (top-center like MainScreen)
+      const targetX = 0; // Keep centered horizontally
+      const targetY = -window.innerHeight / 2 + 60; // Top position with some margin
+      const targetScale = 0.4; // Smaller size like in MainScreen (h-8 md:h-12 lg:h-16)
+
+      // Animate logo to target position
+      tl.to(logoRef.current, {
+        x: targetX,
+        y: targetY,
+        scale: targetScale,
+        duration: 1.2,
+        ease: "power3.inOut",
+      })
+      // Fade out fist and people simultaneously
+      .to([fistRef.current, ...peopleRef.current.filter(Boolean)], {
+        opacity: 0,
+        scale: 0.8,
+        duration: 0.8,
+        ease: "power2.inOut",
+      }, "-=0.8")
+      // Fade out words
+      .to(wordsRef.current.filter(Boolean), {
+        opacity: 0,
+        scale: 0.8,
+        duration: 0.6,
+        ease: "power2.inOut",
+        stagger: 0.05,
+      }, "-=0.6");
+    }
+  }, [fade, onTransitionComplete]);
 
   useEffect(() => {
     if (!fade) {
@@ -264,6 +310,7 @@ const SplashSplash2 = ({ fade }) => {
         {/* Fist Icon - Preloaded and rendered first */}
         <div className="relative mb-4 w-3xl h-auto">
           <img
+            ref={fistRef}
             src={fist}
             alt="Fist Icon"
             className="w-full h-full object-contain"
@@ -273,6 +320,7 @@ const SplashSplash2 = ({ fade }) => {
           {/* ST Text Overlay on Fist */}
           <div className="absolute inset-0 mt-24 flex flex-col items-center justify-center">
             <img
+              ref={logoRef}
               src={stlogo}
               alt="Student Tribe Logo"
               className="h-16 md:h-20 lg:h-32 w-auto drop-shadow-lg mb-4 mt-20"

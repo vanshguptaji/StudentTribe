@@ -26,17 +26,9 @@ function App() {
       window.dispatchEvent(new CustomEvent('splashScreenFadeStart'));
     }, 6000);
 
-    // Hide splash screen completely after fade animation (6.5 seconds total)
-    const hideTimer = setTimeout(() => {
-      setShowSplash(false);
-      // Dispatch event when splash ends
-      window.dispatchEvent(new CustomEvent('splashScreenEnd'));
-    }, 6700);
-
     // Cleanup timers on component unmount
     return () => {
       clearTimeout(fadeTimer);
-      clearTimeout(hideTimer);
     };
   }, []);
 
@@ -45,11 +37,13 @@ function App() {
     setFadeOut(true);
     // Dispatch event when user clicks to skip splash
     window.dispatchEvent(new CustomEvent('splashScreenFadeStart'));
-    setTimeout(() => {
-      setShowSplash(false);
-      // Dispatch event when splash ends
-      window.dispatchEvent(new CustomEvent('splashScreenEnd'));
-    }, 700); // match fade duration
+  };
+
+  // Handler called when the transition animation completes
+  const handleTransitionComplete = () => {
+    setShowSplash(false);
+    // Dispatch event when splash ends
+    window.dispatchEvent(new CustomEvent('splashScreenEnd'));
   };
 
   return (
@@ -58,12 +52,13 @@ function App() {
         showSplash={showSplash}
         fadeOut={fadeOut}
         handleSplashClick={handleSplashClick}
+        onTransitionComplete={handleTransitionComplete}
       />
     </Router>
   );
 }
 
-function AppContent({ showSplash, fadeOut, handleSplashClick }) {
+function AppContent({ showSplash, fadeOut, handleSplashClick, onTransitionComplete }) {
   const location = useLocation();
   const isBrandsRoute = location.pathname.startsWith('/brands');
   const isBrandsHome = location.pathname === '/brands';
@@ -126,7 +121,7 @@ function AppContent({ showSplash, fadeOut, handleSplashClick }) {
             msUserSelect: 'none',
           }}
         >
-          <SplashSplash2 fade={fadeOut} />
+          <SplashSplash2 fade={fadeOut} onTransitionComplete={onTransitionComplete} />
         </div>
       )}
     </>
