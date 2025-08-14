@@ -1,20 +1,40 @@
 @import "tailwindcss";
 
-/* Custom utility for 2560px breakpoint */
-@media (min-width: 2560px) {
-  .screen-4k\:block {
+/* Custom utility for screens above 768px (md breakpoint) */
+@media (min-width: 768px) {
+  .screen-md\:block {
     display: block;
   }
-  .screen-4k\:hidden {
+  .screen-md\:hidden {
     display: none;
   }
 }
 
-@media (max-width: 2559px) {
-  .max-screen-4k\:block {
+@media (max-width: 767px) {
+  .max-screen-md\:block {
     display: block;
   }
-  .max-screen-4k\:hidden {
+  .max-screen-md\:hidden {
     display: none;
+  }
+}
+
+/* Custom utility for screens between 756px and 2556px - EXACTLY 3 LINES */
+@media (min-width: 756px) and (max-width: 2556px) {
+  .screen-three-lines\:block {
+    display: block;
+  }
+  .screen-three-lines\:hidden {
+    display: none;
+  }
+}
+
+/* Hide three-lines version outside the range */
+@media (max-width: 755px), (min-width: 2557px) {
+  .screen-three-lines\:hidden {
+    display: none;
+  }
+  .screen-natural\:block {
+    display: block;
   }
 }

@@ -175,11 +175,12 @@ const BottomNavbar = () => {
   }, []);
 
   const navItems = [
-    { id: 'ST School', label: 'ST School', sectionId: 'brands-section' },
-    { id: 'ST App', label: 'ST App', sectionId: 'app-section' },
-    { id: 'ST Events', label: 'ST Events', sectionId: 'events-section' },
-    { id: 'ST Beast', label: 'ST Beast', sectionId: 'beast-section' },
-    { id: 'ST Care', label: 'ST Care', sectionId: 'care-section' },
+    { id: 'ST School', label: 'st.school', sectionId: 'brands-section' },
+    { id: 'ST App', label: 'st.app', sectionId: 'app-section' },
+  { id: 'ST Opportunities', label: 'st.opportunities', sectionId: 'opportunities-section' },
+    { id: 'ST Events', label: 'st.events', sectionId: 'events-section' },
+    { id: 'ST Beast', label: 'st.beast', sectionId: 'beast-section' },
+    { id: 'ST Care', label: 'st.care', sectionId: 'care-section' },
     { id: 'Who We Are', label: 'Who We Are', sectionId: 'about-section' }
   ];
 

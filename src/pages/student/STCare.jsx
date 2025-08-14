@@ -357,7 +357,7 @@ const STCare = () => {
                   </div>
                   <button
                     ref={buttonRef}
-                    className="lg:flex hidden bg-red-800 text-white px-4 py-3 sm:px-8 sm:py-4 rounded-full font-bold items-center gap-2 hover:bg-red-700 transition-all duration-300 text-sm sm:text-base shadow-xl w-full justify-center opacity-0 min-h-[50px]"
+                    className="lg:flex hidden bg-red-800 text-white px-4 py-3 sm:px-2 sm:py-4 rounded-full font-bold items-center gap-0 hover:bg-red-700 transition-all duration-300 text-sm sm:text-base shadow-xl w-full justify-center opacity-0 min-h-[30px]"
                     style={{ boxShadow: "0 4px 24px rgba(184,0,31,0.15)" }}
                   >
                     <span className="text-center flex-1">

@@ -247,14 +247,6 @@ const StOpportunities = () => {
         </div>
       </div>
 
-      {/* Right side vertical text */}
-      <div className="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 z-10">
-        <div className="bg-black/80 backdrop-blur-sm px-3 py-6 transform rotate-90 origin-center">
-          <span className="text-white text-lg font-bold tracking-widest">
-            ST APP
-          </span>
-        </div>
-      </div>
     </div>
   );
 };
