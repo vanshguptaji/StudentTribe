@@ -118,13 +118,11 @@ const CurvedCarousel = () => {
           onMouseEnter={handleLogoOrButtonsMouseEnter}
           onMouseLeave={handleLogoOrButtonsMouseLeave}
         >
-          {/* Replace manual logo with image logo */}
           <img 
             src={stlogo} 
             alt="Student Tribe Logo"
             className="h-16 md:h-20 lg:h-24 w-auto drop-shadow-lg group-hover:scale-105 transition-transform duration-300"
           />
-          {/* Buttons appear below logo on hover */}
           <div
             className={`absolute left-1/2 -translate-x-1/2 w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
               showButtons ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'

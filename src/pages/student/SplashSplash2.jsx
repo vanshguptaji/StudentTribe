@@ -35,7 +35,6 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
         duration: 0.8,
         ease: "power2.inOut",
       })
-      // Fade out words
       .to(wordsRef.current.filter(Boolean), {
         opacity: 0,
         scale: 0.8,
