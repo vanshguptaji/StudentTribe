@@ -202,7 +202,7 @@ function WhoweAre() {
       className="min-h-screen bg- relative overflow-hidden"
       id="about-section"
       style={{
-        backgroundImage: `url(${bg})`,
+        backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url(${bg})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
