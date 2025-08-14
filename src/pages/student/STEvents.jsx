@@ -166,8 +166,8 @@ export default function STEvents() {
         loading="eager"
       />
 
-      {/* Main Content Container */}
-      <div className="max-w-6xl mx-auto px-4 py-8">
+  {/* Main Content Container */}
+  <div className="w-full px-0 py-8">
         {/* Header with Logo */}
         <div className="text-center mb-8">
           <div
@@ -228,22 +228,21 @@ export default function STEvents() {
           </div>
 
           {/* Image Slider */}
-          <div ref={mainSliderRef} className="relative mb-8">
-            <div className="flex justify-center items-center space-x-2 sm:space-x-4 overflow-hidden px-4 sm:px-0">
+          <div ref={mainSliderRef} className="relative mb-8 w-full overflow-x-hidden">
+            <div className="flex justify-center items-center space-x-2 sm:space-x-4 w-full overflow-hidden px-0">
               <div
-                className="flex items-center space-x-2 sm:space-x-4 transition-transform duration-500 ease-in-out"
+                className="flex items-center space-x-2 sm:space-x-4 transition-transform duration-500 ease-in-out w-full"
                 style={{
-                  transform: `translateX(-${
-                    (currentSlide % sliderImages.length) * 200
-                  }px)`,
-                  width: `${infiniteImages.length * 200}px`,
+                  transform: `translateX(-${(currentSlide % sliderImages.length) * (100 / sliderImages.length)}vw)`,
+                  width: `${infiniteImages.length * (100 / sliderImages.length)}vw`,
                 }}
               >
                 {infiniteImages.map((image, index) => {
                   const relativeIndex = index - currentSlide;
                   let className =
-                    "w-44 h-28 sm:w-64 sm:h-40 rounded-lg object-cover transition-all duration-500 ease-in-out flex-shrink-0 mx-auto ";
-
+                    "rounded-lg object-cover transition-all duration-500 ease-in-out flex-shrink-0 mx-auto ";
+                  // Each image should take full viewport width divided by number of visible images
+                  className += "w-[100vw] sm:w-[20vw] h-28 sm:h-40 ";
                   if (relativeIndex === 0) {
                     className += "scale-100 opacity-100 z-10";
                   } else if (Math.abs(relativeIndex) === 1) {
@@ -253,11 +252,11 @@ export default function STEvents() {
                   } else {
                     className += "scale-50 opacity-30 z-0";
                   }
-
                   return (
                     <div
                       key={`infinite-${index}`}
                       className="relative flex-shrink-0 flex justify-center"
+                      style={{ width: `calc(100vw / ${sliderImages.length})` }}
                     >
                       <img
                         src={image}
@@ -270,36 +269,6 @@ export default function STEvents() {
                   );
                 })}
               </div>
-            </div>
-
-            {/* Navigation Arrows - Desktop */}
-            <button
-              onClick={prevSlide}
-              className="hidden sm:block absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 shadow-lg transition-all duration-200"
-            >
-              <ChevronLeft className="w-6 h-6 text-gray-800" />
-            </button>
-            <button
-              onClick={nextSlide}
-              className="hidden sm:block absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 shadow-lg transition-all duration-200"
-            >
-              <ChevronRight className="w-6 h-6 text-gray-800" />
-            </button>
-
-            {/* Navigation Arrows - Mobile (Bottom) */}
-            <div className="flex sm:hidden justify-center space-x-4 mt-4">
-              <button
-                onClick={prevSlide}
-                className="bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-200"
-              >
-                <ChevronLeft className="w-6 h-6 text-gray-800" />
-              </button>
-              <button
-                onClick={nextSlide}
-                className="bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-200"
-              >
-                <ChevronRight className="w-6 h-6 text-gray-800" />
-              </button>
             </div>
           </div>
 
