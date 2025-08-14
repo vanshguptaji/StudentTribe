@@ -38,7 +38,7 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
         x: targetX,
         y: targetY,
         scale: targetScale,
-        duration: 1.0,
+        duration: 0.9,
         ease: "power3.in",
         zIndex: 50, // Ensure logo stays on top during transition
       })
