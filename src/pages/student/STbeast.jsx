@@ -203,6 +203,29 @@ const CurvedCarousel = ({ products }) => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 </div>
                 
+                {/* Product Description - Shows on hover */}
+                <AnimatePresence>
+                  {hoveredIndex === index && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                      className="absolute inset-0 flex items-center justify-center z-50"
+                      style={{
+                        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                        backdropFilter: 'blur(4px)',
+                        transform: 'scaleX(-1)',
+                      }}
+                    >
+                      <div className="text-center px-6 py-4 max-w-sm" style={{ transform: 'scaleX(-1)' }}>
+                        <h3 className="text-4xl font-bold mb-3 text-white">{product.title}</h3>
+                        <p className="text-3xl text-white leading-relaxed">{product.description}</p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                
                 {/* Reflection effect */}
                 <div 
                   className="absolute top-full left-0 w-full h-24 mt-4"
@@ -253,71 +276,69 @@ const StBeast = () => {
       image:
         "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop",
       title: "Oversized Hoodie",
-      description: "Comfortable cotton blend hoodie",
+      description: "Ultimate comfort meets street style. Perfect for those late-night study sessions or casual hangouts with friends.",
     },
     {
       id: 2,
       image:
         "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=500&fit=crop",
       title: "Vintage Tee",
-      description: "Classic vintage style t-shirt",
+      description: "Classic vibes with a modern twist. This vintage-inspired tee brings retro coolness to your everyday wardrobe.",
     },
     {
       id: 3,
       image:
         "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=500&fit=crop",
       title: "Royal Blue Sweatshirt",
-      description:
-        "Unisex oversized t-shirt in bold royal blue with puff print detailing.",
+      description: "Bold royal blue with premium puff print detailing. Unisex oversized fit that makes a statement wherever you go.",
     },
     {
       id: 4,
       image:
         "https://images.unsplash.com/photo-1562157873-818bc0726f68?w=400&h=500&fit=crop",
       title: "Casual Shirt",
-      description: "Premium cotton casual wear",
+      description: "Premium cotton casual wear that transitions from classroom to coffee shop. Effortlessly stylish and comfortable.",
     },
     {
       id: 5,
       image:
         "https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=500&fit=crop",
       title: "Crop Top",
-      description: "Stylish casual crop top",
+      description: "Trendy crop top perfect for layering or wearing solo. Designed for confidence and comfort in equal measure.",
     },{
       id: 6,
       image:
         "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop",
-      title: "Oversized Hoodie",
-      description: "Comfortable cotton blend hoodie",
+      title: "Beast Mode Hoodie",
+      description: "Channel your inner beast with this bold hoodie. Premium fabric meets aggressive design for the ultimate power look.",
     },
     {
       id: 7,
       image:
         "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=500&fit=crop",
-      title: "Vintage Tee",
-      description: "Classic vintage style t-shirt",
+      title: "Rebel Tee",
+      description: "Break the rules with style. This rebel-inspired tee features edgy graphics and superior comfort for fearless individuals.",
     },
     {
       id: 8,
       image:
         "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=500&fit=crop",
-      title: "Royal Blue Sweatshirt",
-      description:
-        "Unisex oversized t-shirt in bold royal blue with puff print detailing.",
+      title: "Thunder Sweatshirt",
+      description: "Strike like thunder in this electric design. Bold colors and premium materials create the perfect storm of style and comfort.",
     },
     {
       id: 9,
       image:
         "https://images.unsplash.com/photo-1562157873-818bc0726f68?w=400&h=500&fit=crop",
-      title: "Casual Shirt",
-      description: "Premium cotton casual wear",
+      title: "Alpha Shirt",
+      description: "Lead the pack with this alpha-inspired shirt. Designed for leaders who aren't afraid to stand out from the crowd.",
     },
     {
       id: 10,
       image:
         "https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=400&h=500&fit=crop",
-      title: "Crop Top",
-      description: "Stylish casual crop top",
+      title: "Fierce Crop Top",
+      description: "Unleash your fierce side with this statement crop top. Bold design meets feminine power in this must-have piece.",
     },
   ];
 
@@ -506,7 +527,7 @@ const StBeast = () => {
         </div>
 
         {/* 3D Curved Carousel */}
-        <div ref={carouselRef} className="relative flex items-center justify-center min-h-[500px] px-8">
+        <div ref={carouselRef} className="relative flex items-center justify-center min-h-[700px] px-8 pb-32">
           <CurvedCarousel products={products} />
         </div>
       </div>
