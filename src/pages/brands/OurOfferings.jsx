@@ -140,34 +140,48 @@ function OurOfferings() {
   };
 
   return (
-    <div ref={containerRef} className="relative">
-      {/* Fixed Header */}
-      <div className="fixed top-8 left-8 z-50">
-        <h1 className="text-4xl lg:text-5xl font-bold text-white mb-2">OUR OFFERINGS</h1>
+    <div ref={containerRef} className="relative bg-gradient-to-br from-[#8B0000] to-[#DC143C] min-h-screen lg:bg-none">
+      {/* Mobile/Desktop Header - Mobile hamburger menu, desktop title */}
+      <div className="fixed top-8 left-8 z-50 lg:block">
+        <div className="lg:hidden">
+          <button className="text-white p-2">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        <div className="hidden lg:block">
+          <h1 className="text-4xl lg:text-5xl font-bold text-white mb-2">OUR OFFERINGS</h1>
+        </div>
       </div>
 
       {/* Fixed Center Logo */}
       <div className="fixed top-8 left-1/2 transform -translate-x-1/2 z-50">
         <div className="flex flex-col items-center">
-          <span className="text-6xl font-black text-white mb-1">st.</span>
-          <span className="text-lg font-semibold text-white tracking-wider">Student Tribe</span>
+          <span className="text-4xl lg:text-6xl font-black text-white mb-1">st.</span>
+          <span className="text-sm lg:text-lg font-semibold text-white tracking-wider">Student Tribe</span>
         </div>
       </div>
 
       {/* Fixed Toggle Buttons */}
-      <div className="fixed top-32 left-1/2 transform -translate-x-1/2 z-50">
+      <div className="fixed top-24 lg:top-32 left-1/2 transform -translate-x-1/2 z-50">
         <div className="bg-black/40 backdrop-blur-sm rounded-full p-1 flex shadow-2xl">
-          <button className="px-6 py-3 text-white/70 font-medium transition-all duration-300 rounded-full hover:text-white">
+          <button className="px-4 py-2 lg:px-6 lg:py-3 text-white/70 font-medium transition-all duration-300 rounded-full hover:text-white text-sm lg:text-base">
             Students
           </button>
-          <button className="px-6 py-3 bg-[#b8001f] text-white font-medium rounded-full shadow-lg">
+          <button className="px-4 py-2 lg:px-6 lg:py-3 bg-[#b8001f] text-white font-medium rounded-full shadow-lg text-sm lg:text-base">
             Brands
           </button>
         </div>
       </div>
 
-      {/* Left Side Navigation */}
-      <div ref={leftNavRef} className="fixed left-8 top-1/2 transform -translate-y-1/2 rotate-90 z-40">
+      {/* Mobile Title */}
+      <div className="lg:hidden fixed top-0 right-0 text-sm sm:text-2xl sm:top-32 sm:left-1/2 transform -translate-x-1/2 z-50">
+        <h1 className="text-2xl font-bold text-white text-center">OUR OFFERINGS</h1>
+      </div>
+
+      {/* Left Side Navigation - Desktop only */}
+      <div ref={leftNavRef} className="hidden lg:block fixed left-8 top-1/2 transform -translate-y-1/2 rotate-90 z-40">
         <div className="flex items-center gap-8 font-medium tracking-wider text-sm transition-all duration-300">
           <span className="text-white font-bold text-lg scale-110 transition-all duration-300">COLLEGES</span>
           <div className="w-8 h-px bg-white/30"></div>
@@ -185,34 +199,34 @@ function OurOfferings() {
           <div
             key={card.id}
             ref={el => cardsRef.current[index] = el}
-            className="absolute inset-0 flex items-center justify-center p-8 transition-all duration-300 ease-out"
+            className="absolute inset-0 flex items-center justify-center p-4 lg:p-8 transition-all duration-300 ease-out"
             style={{ 
               zIndex: 20 + index,
               transformOrigin: 'center center'
             }}
           >
-            <div className="bg-black/80 backdrop-blur-sm rounded-2xl p-8 max-w-5xl w-full shadow-2xl">
-              <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8">
+            <div className="bg-black/80 backdrop-blur-sm rounded-2xl p-4 lg:p-8 max-w-sm lg:max-w-5xl w-full shadow-2xl">
+              <div className="flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-8">
                 
                 {/* Left Side - Image */}
-                <div className="flex-1">
-                  <h2 className="text-2xl lg:text-3xl font-bold text-white mb-6">{card.title}</h2>
+                <div className="w-full lg:flex-1">
+                  <h2 className="text-lg lg:text-3xl font-bold text-white mb-4 lg:mb-6 text-center lg:text-left">{card.title}</h2>
                   <div className="rounded-xl overflow-hidden shadow-lg">
                     <img
                       src={card.image}
                       alt={card.alt}
-                      className="w-full h-64 lg:h-80 object-cover"
+                      className="w-full h-40 lg:h-80 object-cover"
                     />
                   </div>
                 </div>
 
                 {/* Right Side - Content */}
-                <div className="flex-1 text-white">
-                  <div className="space-y-6">
+                <div className="w-full lg:flex-1 text-white">
+                  <div className="space-y-3 lg:space-y-6">
                     {card.points.map((point, pointIndex) => (
-                      <div key={pointIndex} className="flex items-start gap-3">
-                        <div className="w-2 h-2 bg-white rounded-full mt-3 flex-shrink-0"></div>
-                        <p className="text-lg lg:text-xl leading-relaxed">
+                      <div key={pointIndex} className="flex items-start gap-2 lg:gap-3">
+                        <div className="w-1.5 h-1.5 lg:w-2 lg:h-2 bg-white rounded-full mt-1.5 lg:mt-3 flex-shrink-0"></div>
+                        <p className="text-xs lg:text-xl leading-relaxed">
                           {point}
                         </p>
                       </div>
@@ -220,9 +234,9 @@ function OurOfferings() {
                   </div>
 
                   {/* Arrow Button */}
-                  <div className="flex justify-end mt-8">
-                    <button className="bg-[#b8001f] hover:bg-[#9a0019] p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-lg">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex justify-center lg:justify-end mt-4 lg:mt-8">
+                    <button className="bg-[#b8001f] hover:bg-[#9a0019] p-2 lg:p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-lg">
+                      <svg className="w-4 h-4 lg:w-6 lg:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </button>
