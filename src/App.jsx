@@ -11,9 +11,6 @@ import OurOfferings from './pages/brands/OurOfferings';
 import Clients from './pages/brands/Clients';
 import Testimonials from './pages/brands/Testimonials';
 
-
-
-
 function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
@@ -129,4 +126,3 @@ function AppContent({ showSplash, fadeOut, handleSplashClick, onTransitionComple
 }
 
 export default App;
-
