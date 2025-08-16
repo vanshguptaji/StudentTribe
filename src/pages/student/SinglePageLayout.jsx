@@ -13,7 +13,7 @@ import StOpportunities from "./StOppurtunities";
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
-const SinglePageLayout = () => {
+const SinglePageLayout = ({ splashCompleted = false, startMainAnimation = false }) => {
   const containerRef = useRef(null);
   const mainRef = useRef(null);
   const brandsRef = useRef(null);
@@ -86,9 +86,9 @@ const SinglePageLayout = () => {
 
   return (
     <div ref={containerRef} className="w-full">
-      {/* Main/Landing Section */}
+      {/* Main/Landing Section - Pass splashCompleted prop */}
       <section ref={mainRef} className="min-h-screen w-full" id="main-section">
-        <MainScreen />
+        <MainScreen splashCompleted={splashCompleted} startMainAnimation={startMainAnimation} />
       </section>
 
       {/* Brands Section */}

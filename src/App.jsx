@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import SinglePageLayout from './pages/student/SinglePageLayout';
@@ -14,6 +13,8 @@ import Testimonials from './pages/brands/Testimonials';
 function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
+  const [splashCompleted, setSplashCompleted] = useState(false);
+  const [startMainAnimation, setStartMainAnimation] = useState(false);
 
   useEffect(() => {
     // Start fade out animation after 6 seconds
@@ -21,6 +22,11 @@ function App() {
       setFadeOut(true);
       // Dispatch event when splash starts fading
       window.dispatchEvent(new CustomEvent('splashScreenFadeStart'));
+      
+      // Start main screen animation slightly after fade begins
+      setTimeout(() => {
+        setStartMainAnimation(true);
+      }, -2000); // Start MainScreen animation 300ms after fade begins
     }, 6000);
 
     // Cleanup timers on component unmount
@@ -34,11 +40,17 @@ function App() {
     setFadeOut(true);
     // Dispatch event when user clicks to skip splash
     window.dispatchEvent(new CustomEvent('splashScreenFadeStart'));
+    
+    // Start main screen animation slightly after fade begins
+    setTimeout(() => {
+      setStartMainAnimation(true);
+    }, 300); // Start MainScreen animation 300ms after fade begins
   };
 
   // Handler called when the transition animation completes
   const handleTransitionComplete = () => {
     setShowSplash(false);
+    setSplashCompleted(true); // Set splash as completed
     // Dispatch event when splash ends
     window.dispatchEvent(new CustomEvent('splashScreenEnd'));
   };
@@ -50,12 +62,14 @@ function App() {
         fadeOut={fadeOut}
         handleSplashClick={handleSplashClick}
         onTransitionComplete={handleTransitionComplete}
+        splashCompleted={splashCompleted}
+        startMainAnimation={startMainAnimation}
       />
     </Router>
   );
 }
 
-function AppContent({ showSplash, fadeOut, handleSplashClick, onTransitionComplete }) {
+function AppContent({ showSplash, fadeOut, handleSplashClick, onTransitionComplete, splashCompleted, startMainAnimation }) {
   const location = useLocation();
   const isBrandsRoute = location.pathname.startsWith('/brands');
   const isBrandsHome = location.pathname === '/brands';
@@ -93,11 +107,11 @@ function AppContent({ showSplash, fadeOut, handleSplashClick, onTransitionComple
       >
         <div className="flex-1">
           <Routes>
-            <Route path="/" element={<SinglePageLayout />} />
+            <Route path="/" element={<SinglePageLayout splashCompleted={splashCompleted} startMainAnimation={startMainAnimation} />} />
             <Route path="/brands" element={<Home />} />
             <Route path="/brands/offerings" element={<OurOfferings />} />
-              <Route path="/brands/clients" element={<Clients />} />
-              <Route path="/brands/testimonials" element={<Testimonials />} />
+            <Route path="/brands/clients" element={<Clients />} />
+            <Route path="/brands/testimonials" element={<Testimonials />} />
           </Routes>
         </div>
         {!isBrandsRoute && <Footer />}
