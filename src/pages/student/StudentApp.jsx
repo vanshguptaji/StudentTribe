@@ -16,6 +16,11 @@ export default function StudentApp() {
   const [isVisible, setIsVisible] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
   const [hoveredButton, setHoveredButton] = useState('students');
+  
+  // Carousel states
+  const [quizIndex, setQuizIndex] = useState(0);
+  const [gigsIndex, setGigsIndex] = useState(0);
+  
   const hideButtonsTimeoutRef = useRef(null);
   const containerRef = useRef(null);
   const phoneRef = useRef(null);
@@ -35,6 +40,47 @@ export default function StudentApp() {
   const topRightContentRef = useRef(null);
   const bottomLeftContentRef = useRef(null);
   const bottomRightContentRef = useRef(null);
+
+  // Image arrays
+  const quizImages = [quizImg, robot, quizImg, robot];
+  const gigsImages = [robot, quizImg, robot, quizImg];
+
+  // Auto slider for quiz images
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setQuizIndex(prev => (prev + 1) % quizImages.length);
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Auto slider for gigs images  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setGigsIndex(prev => (prev + 1) % gigsImages.length);
+    }, 2500);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Simple Slider Component
+  const AutoSlider = ({ images, currentIndex, className }) => (
+    <div className={`relative overflow-hidden ${className}`}>
+      <div 
+        className="flex transition-transform duration-500 ease-in-out"
+        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+      >
+        {images.map((img, index) => (
+          <img
+            key={index}
+            src={img}
+            alt={`Slide ${index}`}
+            className="min-w-full h-full object-cover flex-shrink-0"
+          />
+        ))}
+      </div>
+    </div>
+  );
 
   useEffect(() => {
     const runAnimation = () => {
@@ -346,10 +392,10 @@ export default function StudentApp() {
                   Communities & Daily Quizzes
                 </h3>
                 <div className="w-full mb-3">
-                  <img
-                    src={quizImg}
-                    alt="Quiz"
-                    className="w-full h-20 object-cover rounded-xl shadow-lg"
+                  <AutoSlider
+                    images={quizImages}
+                    currentIndex={quizIndex}
+                    className="w-full h-20 rounded-xl shadow-lg"
                   />
                 </div>
                 <p className="text-white/90 text-xs text-center leading-relaxed">
@@ -434,10 +480,10 @@ export default function StudentApp() {
                   Gigs & Star Connects
                 </h3>
                 <div className="w-full mb-3">
-                  <img
-                    src={quizImg}
-                    alt="Gigs"
-                    className="w-full h-20 object-cover rounded-xl shadow-lg"
+                  <AutoSlider
+                    images={gigsImages}
+                    currentIndex={gigsIndex}
+                    className="w-full h-20 rounded-xl shadow-lg"
                   />
                 </div>
                 <p className="text-white/90 text-xs text-center leading-relaxed">
@@ -484,10 +530,10 @@ export default function StudentApp() {
                   Communities & Daily Quizzes
                 </h3>
                 <div className="w-full mb-6">
-                  <img
-                    src={quizImg}
-                    alt="Quiz"
-                    className="w-full h-48 object-cover rounded-2xl shadow-lg"
+                  <AutoSlider
+                    images={quizImages}
+                    currentIndex={quizIndex}
+                    className="w-full h-48 rounded-2xl shadow-lg"
                   />
                 </div>
                 <p className="text-white/90 text-lg text-center leading-relaxed">
@@ -610,10 +656,10 @@ export default function StudentApp() {
                   Gigs & Star Connects
                 </h3>
                 <div className="w-full mb-6">
-                  <img
-                    src={quizImg}
-                    alt="Gigs"
-                    className="w-full h-48 object-cover rounded-2xl shadow-lg"
+                  <AutoSlider
+                    images={gigsImages}
+                    currentIndex={gigsIndex}
+                    className="w-full h-48 rounded-2xl shadow-lg"
                   />
                 </div>
                 <p className="text-white/90 text-lg text-center leading-relaxed">
