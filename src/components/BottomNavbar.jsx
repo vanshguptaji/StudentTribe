@@ -1,119 +1,3 @@
-// import React, { useState, useEffect, useRef } from 'react';
-
-// const BottomNavbar = () => {
-//   const [activeTab, setActiveTab] = useState('ST School');
-//   const [footerVisible, setFooterVisible] = useState(false);
-//   const observerRef = useRef(null);
-//   // Hide navbar when footer is visible
-//   useEffect(() => {
-//     const footer = document.querySelector('footer');
-//     if (!footer) return;
-//     if (observerRef.current) observerRef.current.disconnect();
-//     observerRef.current = new window.IntersectionObserver(
-//       ([entry]) => {
-//         setFooterVisible(entry.isIntersecting);
-//       },
-//       {
-//         root: null,
-//         threshold: 0.1,
-//       }
-//     );
-//     observerRef.current.observe(footer);
-//     return () => observerRef.current && observerRef.current.disconnect();
-//   }, []);
-
-//   const navItems = [
-//     { id: 'ST School', label: 'ST School', sectionId: 'main-section' },
-//     { id: 'ST App', label: 'ST App', sectionId: 'app-section' },
-//     { id: 'ST Events', label: 'ST Events', sectionId: 'events-section' },
-//     { id: 'ST Beast', label: 'ST Beast', sectionId: 'beast-section' },
-//     { id: 'ST Care', label: 'ST Care', sectionId: 'care-section' },
-//     { id: 'Who We Are', label: 'Who We Are', sectionId: 'about-section' }
-//   ];
-
-//   const scrollToSection = (sectionId) => {
-//     const element = document.getElementById(sectionId);
-//     if (element) {
-//       element.scrollIntoView({ 
-//         behavior: 'smooth',
-//         block: 'start'
-//       });
-//     }
-//   };
-
-//   const handleTabClick = (item) => {
-//     setActiveTab(item.id);
-//     scrollToSection(item.sectionId);
-    
-//     // Dispatch custom event to trigger section animations
-//     const event = new CustomEvent('navbarClick', { 
-//       detail: { sectionId: item.sectionId } 
-//     });
-//     window.dispatchEvent(event);
-//   };
-
-//   // Track scroll position to update active tab
-//   useEffect(() => {
-//     const handleScroll = () => {
-//       const sections = navItems.map(item => ({
-//         id: item.id,
-//         element: document.getElementById(item.sectionId)
-//       }));
-
-//       const scrollPosition = window.scrollY + 100; // Add offset for better detection
-
-//       let currentActiveTab = 'ST School'; // Default to first section
-
-//       sections.forEach((section) => {
-//         if (section.element) {
-//           const sectionTop = section.element.offsetTop;
-//           const sectionBottom = sectionTop + section.element.offsetHeight;
-          
-//           if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-//             currentActiveTab = section.id;
-//           }
-//         }
-//       });
-
-//       setActiveTab(currentActiveTab);
-//     };
-
-//     window.addEventListener('scroll', handleScroll);
-//     handleScroll(); // Call once to set initial state
-
-//     return () => window.removeEventListener('scroll', handleScroll);
-//   }, [navItems]);
-
-//   if (footerVisible) return null;
-
-//   return (
-//     <div className="fixed flex justify-center items-center bottom-0 left-0 right-0 z-50">
-//       <div className="max-w-5xl bg-black/90 backdrop-blur-sm rounded-full mx-4 mb-4 overflow-hidden shadow-2xl p-4">
-//         <div className="flex justify-between gap-2 items-center px-2">
-//           {navItems.map((item) => (
-//             <button
-//               key={item.id}
-//               onClick={() => handleTabClick(item)}
-//               className={`px-4 py-3 rounded-full text-lg font-semibold transition-all duration-300 ${
-//                 activeTab === item.id
-//                   ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white shadow-lg scale-105 backdrop-blur-md'
-//                   : 'text-gray-300 hover:text-white hover:bg-white/10'
-//               }`}
-//             >
-//               {item.label}
-//             </button>
-//           ))}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default BottomNavbar;
-
-
-
-
 import React, { useState, useEffect, useRef } from 'react';
 
 const BottomNavbar = () => {
@@ -122,28 +6,24 @@ const BottomNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [splashActive, setSplashActive] = useState(true);
   const observerRef = useRef(null);
+  const scrollTimeoutRef = useRef(null);
 
   // Hide navbar during splash screen animation
   useEffect(() => {
-    // Hide navbar initially (splash screen is active)
     setSplashActive(true);
     
-    // Show navbar after splash screen duration (6.7 seconds)
     const splashTimer = setTimeout(() => {
       setSplashActive(false);
     }, 6700);
 
-    // Listen for custom splash screen events (in case user clicks to skip)
     const handleSplashEnd = () => {
       setSplashActive(false);
     };
 
-    // Listen for when splash screen starts fading out
     const handleSplashFadeStart = () => {
-      // Keep navbar hidden during fade animation
       setTimeout(() => {
         setSplashActive(false);
-      }, 700); // Match the fade duration
+      }, 700);
     };
 
     window.addEventListener('splashScreenEnd', handleSplashEnd);
@@ -174,10 +54,11 @@ const BottomNavbar = () => {
     return () => observerRef.current && observerRef.current.disconnect();
   }, []);
 
+  // Navigation items matching your actual page structure
   const navItems = [
     { id: 'ST School', label: 'st.school', sectionId: 'brands-section' },
     { id: 'ST App', label: 'st.app', sectionId: 'app-section' },
-  { id: 'ST Opportunities', label: 'st.opportunities', sectionId: 'opportunities-section' },
+    { id: 'ST Opportunities', label: 'st.opportunities', sectionId: 'app-section' },
     { id: 'ST Events', label: 'st.events', sectionId: 'events-section' },
     { id: 'ST Beast', label: 'st.beast', sectionId: 'beast-section' },
     { id: 'ST Care', label: 'st.care', sectionId: 'care-section' },
@@ -197,59 +78,73 @@ const BottomNavbar = () => {
   const handleTabClick = (item) => {
     setActiveTab(item.id);
     scrollToSection(item.sectionId);
-    setIsOpen(false); // Close mobile menu after selection
-    // Dispatch custom event to trigger section animations
+    setIsOpen(false);
+    
+    // Dispatch custom event to trigger section animations (preserve existing functionality)
     const event = new CustomEvent('navbarClick', { 
       detail: { sectionId: item.sectionId } 
     });
     window.dispatchEvent(event);
   };
 
-  // Track scroll position to update active tab
+  // Simple scroll tracking - highlight the section that's most visible
   useEffect(() => {
     const handleScroll = () => {
-      const sections = navItems.map(item => ({
-        id: item.id,
-        element: document.getElementById(item.sectionId)
-      }));
-
-      const scrollPosition = window.scrollY + 100; // Add offset for better detection
-      let currentActiveTab = null; // Default to no highlighting
-
-      // Check each section to see which one is currently in view
-      sections.forEach((section) => {
-        if (section.element) {
-          const sectionTop = section.element.offsetTop;
-          const sectionHeight = section.element.offsetHeight;
-          const sectionBottom = sectionTop + sectionHeight;
-          
-          // Check if the current scroll position is within this section
-          if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-            currentActiveTab = section.id;
-          }
-        }
-      });
-
-      // Special case: Don't highlight anything when on main-section
-      const mainSection = document.getElementById('main-section');
-      if (mainSection) {
-        const mainSectionTop = mainSection.offsetTop;
-        const mainSectionHeight = mainSection.offsetHeight;
-        const mainSectionBottom = mainSectionTop + mainSectionHeight;
-        
-        if (scrollPosition >= mainSectionTop && scrollPosition < mainSectionBottom) {
-          currentActiveTab = null; // No highlighting on main screen
-        }
+      // Clear any pending timeout
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
       }
 
-      setActiveTab(currentActiveTab);
+      // Debounce scroll events
+      scrollTimeoutRef.current = setTimeout(() => {
+        const scrollY = window.scrollY;
+        
+        // If we're at the very top, don't highlight anything
+        if (scrollY < 150) {
+          setActiveTab(null);
+          return;
+        }
+
+        let mostVisibleSection = null;
+        let highestVisibleArea = 0;
+
+        // Find the section with the most visible area
+        navItems.forEach(item => {
+          const element = document.getElementById(item.sectionId);
+          if (!element) return;
+
+          const rect = element.getBoundingClientRect();
+          const windowHeight = window.innerHeight;
+          
+          // Calculate how much of the section is visible
+          const visibleTop = Math.max(0, -rect.top);
+          const visibleBottom = Math.min(rect.height, windowHeight - rect.top);
+          const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+
+          // This section wins if it has the most visible pixels
+          if (visibleHeight > highestVisibleArea && visibleHeight > 100) {
+            highestVisibleArea = visibleHeight;
+            mostVisibleSection = item.id;
+          }
+        });
+
+        // Update active tab to the most visible section
+        setActiveTab(mostVisibleSection);
+      }, 50);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Call once to set initial state
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Initial check
+    handleScroll();
 
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [navItems]);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Close mobile menu when clicking outside
   useEffect(() => {

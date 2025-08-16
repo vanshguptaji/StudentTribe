@@ -52,36 +52,35 @@ export default function STEvents() {
     }
   }, [currentSlide, sliderImages.length]);
 
-  // GSAP Animation Timeline with ScrollTrigger
+  // GSAP Animation Timeline with entrance animations
   useEffect(() => {
-    if (containerRef.current) {
-      // Set initial positions
+    if (containerRef.current && mainSliderRef.current && bottomSliderRef.current && textContentRef.current && buttonsRef.current) {
+      // Set initial positions for entrance animation
       gsap.set(mainSliderRef.current, { x: -window.innerWidth, opacity: 0 });
       gsap.set(bottomSliderRef.current, { x: window.innerWidth, opacity: 0 });
-      gsap.set(textContentRef.current, { y: -100, opacity: 0 });
-      gsap.set(buttonsRef.current, { y: -50, opacity: 0 });
+      gsap.set(textContentRef.current, { y: 50, opacity: 0 });
+      gsap.set(buttonsRef.current, { y: 50, opacity: 0 });
 
-      // Create scroll-triggered timeline
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      tl.to(
-        mainSliderRef.current,
-        {
-          x: 0,
+      // Create entrance timeline that plays immediately
+      const entranceTl = gsap.timeline({ delay: 0.3 });
+      
+      entranceTl
+        .to(textContentRef.current, {
+          y: 0,
           opacity: 1,
-          duration: 1.2,
+          duration: 1,
           ease: "power3.out",
-        },
-        0
-      )
+        })
+        .to(
+          mainSliderRef.current,
+          {
+            x: 0,
+            opacity: 1,
+            duration: 1.2,
+            ease: "power3.out",
+          },
+          "-=0.5" // Start 0.5s before the previous animation ends
+        )
         .to(
           bottomSliderRef.current,
           {
@@ -90,27 +89,17 @@ export default function STEvents() {
             duration: 1.2,
             ease: "power3.out",
           },
-          0
-        )
-        .to(
-          textContentRef.current,
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            ease: "power2.out",
-          },
-          0
+          "-=1" // Start at the same time as the top slider
         )
         .to(
           buttonsRef.current,
           {
             y: 0,
             opacity: 1,
-            duration: 1,
-            ease: "power2.out",
+            duration: 0.8,
+            ease: "power3.out",
           },
-          0.2
+          "-=0.3"
         );
 
       return () => {
@@ -182,6 +171,9 @@ export default function STEvents() {
         className="absolute top-0 right-4 md:top-0 md:right-8 lg:top-0 lg:right-12 w-[20px] md:w-[30px] lg:w-[56px] h-auto select-none pointer-events-none"
         style={{ minWidth: "20px" }}
         loading="eager"
+        onError={(e) => {
+          e.target.style.display = 'none';
+        }}
       />
 
   {/* Main Content Container */}
@@ -198,6 +190,9 @@ export default function STEvents() {
               src={stlogo}
               alt="Student Tribe Logo"
               className="h-8 md:h-12 lg:h-16 w-auto drop-shadow-lg mb-4"
+              onError={(e) => {
+                e.target.style.display = 'none';
+              }}
             />
             {/* Buttons appear below logo on hover */}
             <div
