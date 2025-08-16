@@ -321,6 +321,7 @@ import stlogo from "../../assets/White logo.png";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+
 gsap.registerPlugin(ScrollTrigger);
 
 const StOpportunities = () => {
@@ -340,6 +341,8 @@ const StOpportunities = () => {
   const rightImageRef = useRef(null);
   const leftTextRef = useRef(null);
   const rightTextRef = useRef(null);
+
+  // No floating background images, just gradient
 
   useEffect(() => {
     const runAnimation = () => {
@@ -430,6 +433,7 @@ const StOpportunities = () => {
           }
         });
       }
+
     };
 
     if (containerRef.current) {
@@ -479,9 +483,17 @@ const StOpportunities = () => {
   };
 
   return (
-    <div ref={containerRef} id="opportunities-section" className="min-h-screen bg-gradient-to-bl to-[#b8001f] from-[#7a0015] text-white relative overflow-hidden">
-      {/* ST Logo at Top - hover to show buttons */}
-      <div className="absolute top-6 md:top-8 left-1/2 transform -translate-x-1/2 z-20">
+    <div
+      ref={containerRef}
+      id="opportunities-section"
+      className="min-h-screen text-white relative overflow-hidden"
+      style={{
+        background:
+          "radial-gradient(circle at center 10%, #b8001f 0%, #8b0016 20%, #5e000f 40%, #310008 60%, #2d0a0e 85%)",
+      }}
+    >
+  {/* ST Logo at Top - hover to show buttons */}
+  <div className="absolute top-6 md:top-8 left-1/2 transform -translate-x-1/2 z-20">
         <div
           className="logo-container group inline-block cursor-pointer relative mb-8"
           onMouseEnter={handleLogoOrButtonsMouseEnter}
