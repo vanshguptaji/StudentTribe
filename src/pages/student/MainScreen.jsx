@@ -380,84 +380,40 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
           }
         }
 
-        /* Height-responsive text sizing - Primary text */
+        /* Mobile-first approach: Start with larger text for small screens */
         .primary-text {
-          font-size: clamp(1.25rem, 4vw, 6rem);
+          font-size: clamp(2.5rem, 8vw, 6rem);
+          line-height: 1.1;
         }
 
-        /* Responsive text sizing based on viewport height for primary text */
-        @media (max-height: 800px) {
-          .primary-text {
-            font-size: clamp(1rem, 3.5vw, 4rem);
-          }
-        }
-
-        @media (max-height: 700px) {
-          .primary-text {
-            font-size: clamp(0.9rem, 3vw, 3rem);
-          }
-        }
-
-        @media (max-height: 600px) {
-          .primary-text {
-            font-size: clamp(0.8rem, 2.5vw, 2.5rem);
-          }
-        }
-
-        @media (max-height: 500px) {
-          .primary-text {
-            font-size: clamp(0.7rem, 2vw, 2rem);
-          }
-        }
-
-        @media (max-height: 400px) {
-          .primary-text {
-            font-size: clamp(0.6rem, 1.8vw, 1.5rem);
-          }
-        }
-
-        /* Height-responsive text sizing - Secondary text */
         .secondary-text {
-          font-size: clamp(1rem, 2vw, 2rem);
+          font-size: clamp(1.5rem, 4vw, 2rem);
+          line-height: 1.3;
         }
 
-        @media (max-height: 800px) {
+        /* For medium screens (tablets) - slightly smaller */
+        @media (min-width: 768px) {
+          .primary-text {
+            font-size: clamp(2rem, 6vw, 5rem);
+          }
           .secondary-text {
-            font-size: clamp(0.9rem, 1.8vw, 1.5rem);
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
           }
         }
-
-        @media (max-height: 700px) {
-          .secondary-text {
-            font-size: clamp(0.8rem, 1.6vw, 1.3rem);
-          }
-        }
-
-        @media (max-height: 600px) {
-          .secondary-text {
-            font-size: clamp(0.75rem, 1.4vw, 1.1rem);
-          }
-        }
-
-        @media (max-height: 500px) {
-          .secondary-text {
-            font-size: clamp(0.7rem, 1.2vw, 1rem);
-          }
-        }
-
-        @media (max-height: 400px) {
-          .secondary-text {
-            font-size: clamp(0.65rem, 1vw, 0.9rem);
-          }
-        }
-
-        /* Adjust margins and spacing for smaller heights */
+        /* Height-responsive adjustments - maintain bigger text on shorter screens */
         @media (max-height: 800px) {
           .text-container {
             margin-top: 6rem !important;
           }
           .secondary-spacing {
             margin-top: clamp(1rem, 4vh, 6rem) !important;
+          }
+          /* Keep text larger on short screens */
+          .primary-text {
+            font-size: clamp(2rem, 7vw, 5rem);
+          }
+          .secondary-text {
+            font-size: clamp(1.2rem, 3.5vw, 1.8rem);
           }
         }
 
@@ -468,6 +424,13 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
           .secondary-spacing {
             margin-top: clamp(0.5rem, 2vh, 3rem) !important;
           }
+          /* Still keep reasonable size on very short screens */
+          .primary-text {
+            font-size: clamp(1.8rem, 6vw, 4rem);
+          }
+          .secondary-text {
+            font-size: clamp(1.1rem, 3vw, 1.6rem);
+          }
         }
 
         @media (max-height: 500px) {
@@ -476,6 +439,23 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
           }
           .secondary-spacing {
             margin-top: clamp(0.3rem, 1.5vh, 2rem) !important;
+          }
+          .primary-text {
+            font-size: clamp(1.5rem, 5vw, 3.5rem);
+          }
+          .secondary-text {
+            font-size: clamp(0.9rem, 2.5vw, 1.4rem);
+          }
+        }
+
+        /* For very small screens (phones in portrait), maximize text size */
+        @media (max-width: 480px) {
+          .primary-text {
+            font-size: clamp(2.3rem, 9vw, 4rem);
+            line-height: 1.05;
+          }
+          .secondary-text {
+            font-size: clamp(0.6rem, 4.5vw, 2rem);
           }
         }
 
