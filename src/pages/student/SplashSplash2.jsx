@@ -180,7 +180,7 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
 
   return (
     <div
-      className={`fixed inset-0 flex flex-col items-center justify-center z-20 bg-gradient-to-br from-[#b8001f] to-[#7a0015] transition-opacity duration-700 ${
+      className={`overflow-hidden height: '100vh', width: '100vw fixed inset-0 flex flex-col items-center justify-center z-20 bg-gradient-to-br from-[#b8001f] to-[#7a0015] transition-opacity duration-700 ${
         fade ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
@@ -188,21 +188,21 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
       {!imagesLoaded && (
         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#b8001f] to-[#7a0015]">
           <div className="flex space-x-2">
-            <div className="w-3 h-3 bg-white/60 rounded-full animate-pulse"></div>
-            <div className="w-3 h-3 bg-white/60 rounded-full animate-pulse" style={{ animationDelay: "0.2s" }}></div>
-            <div className="w-3 h-3 bg-white/60 rounded-full animate-pulse" style={{ animationDelay: "0.4s" }}></div>
+            <div className="w-3 h-3 bg-white/60 rounded-full"></div>
+            <div className="w-3 h-3 bg-white/60 rounded-full" style={{ animationDelay: "0.2s" }}></div>
+            <div className="w-3 h-3 bg-white/60 rounded-full" style={{ animationDelay: "0.4s" }}></div>
           </div>
         </div>
       )}
 
       {/* Main content - only show when images are loaded */}
-      <div className={`w-full h-full ${imagesLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
+      <div className={`w-full h-full overflow-hidden ${imagesLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
         {/* Motivational Words Scattered Around - matching Figma design exactly */}
         <div className="absolute inset-0 w-full h-full overflow-hidden">
           {/* Transform - Top Left */}
           <div
             ref={(el) => (wordsRef.current[0] = el)}
-            className="absolute top-16 left-40 animate-pulse"
+            className="absolute top-16 left-40"
             style={{
               fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
               fontWeight: "900",
@@ -221,7 +221,7 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
           {/* Connect - Top Right */}
           <div
             ref={(el) => (wordsRef.current[1] = el)}
-            className="absolute top-42 right-36 animate-pulse"
+            className="absolute top-42 right-36"
             style={{
               fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
               fontWeight: "900",
@@ -241,7 +241,7 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
           {/* Trust - Middle Left */}
           <div
             ref={(el) => (wordsRef.current[2] = el)}
-            className="absolute top-4/12 left-45 transform -translate-y-1/2 animate-pulse"
+            className="absolute top-4/12 left-45 transform -translate-y-1/2"
             style={{
               fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
               fontWeight: "900",
@@ -261,7 +261,7 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
           {/* Create - Middle Right */}
           <div
             ref={(el) => (wordsRef.current[3] = el)}
-            className="absolute top-1/2 right-12 transform -translate-y-1/2 animate-pulse"
+            className="absolute top-1/2 right-12 transform -translate-y-1/2"
             style={{
               fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
               fontWeight: "900",
@@ -281,7 +281,7 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
           {/* Dreams - Top Right Lower */}
           <div
             ref={(el) => (wordsRef.current[4] = el)}
-            className="absolute bottom-2/5 right-88 animate-pulse"
+            className="absolute bottom-2/5 right-88"
             style={{
               fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
               fontWeight: "900",
@@ -301,7 +301,7 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
           {/* Achieve - Bottom Left */}
           <div
             ref={(el) => (wordsRef.current[5] = el)}
-            className="absolute bottom-1/3 left-75 animate-pulse"
+            className="absolute bottom-1/3 left-75"
             style={{
               fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
               fontWeight: "900",
@@ -321,7 +321,7 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
           {/* Grow - Bottom Left Lower */}
           <div
             ref={(el) => (wordsRef.current[6] = el)}
-            className="absolute bottom-1/8 left-12 animate-pulse"
+            className="absolute bottom-1/8 left-12"
             style={{
               fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
               fontWeight: "900",
@@ -341,7 +341,7 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
           {/* Community - Bottom Right */}
           <div
             ref={(el) => (wordsRef.current[7] = el)}
-            className="absolute bottom-1/8 right-8 animate-pulse"
+            className="absolute bottom-1/8 right-8"
             style={{
               fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
               fontWeight: "900",
@@ -1079,27 +1079,6 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
           />
         </div>
         {/* Close the central logo/people wrapper */}
-        </div>
-
-        {/* Subtle loading indicator */}
-        <div className="flex space-x-1 mt-6">
-          <div className="w-1 h-1 bg-white/60 rounded-full animate-pulse"></div>
-          <div
-            className="w-1 h-1 bg-white/60 rounded-full animate-pulse"
-            style={{ animationDelay: "0.2s" }}
-          ></div>
-          <div
-            className="w-1 h-1 bg-white/60 rounded-full animate-pulse"
-            style={{ animationDelay: "0.4s" }}
-          ></div>
-          <div
-            className="w-1 h-1 bg-white/60 rounded-full animate-pulse"
-            style={{ animationDelay: "0.6s" }}
-          ></div>
-          <div
-            className="w-1 h-1 bg-white/60 rounded-full animate-pulse"
-            style={{ animationDelay: "0.8s" }}
-          ></div>
         </div>
       </div>
 
