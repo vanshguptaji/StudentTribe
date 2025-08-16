@@ -169,9 +169,9 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
 
       // Set logo initial state - center of screen, scaled up
       gsap.set(logoRef.current, {
-        scale: 3,
+        scale: 2,
         x: 0,
-        y: window.innerHeight * 0.2, // Move down from top to center
+        y: window.innerHeight * 0.35, // Move down from top to center
         opacity: 1,
       });
 
