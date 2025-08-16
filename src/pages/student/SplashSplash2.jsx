@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import person1 from "../../assets/splashscreen/Rectangle 3463928.svg";
 import person2 from "../../assets/splashscreen/Rectangle 3463931.svg";
@@ -14,10 +14,78 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
   const wordsRef = useRef([]);
   const logoRef = useRef(null);
   const fistRef = useRef(null);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [loadedImages, setLoadedImages] = useState({
+    fist: false,
+    logo: false
+  });
+
+  // Preload critical images immediately
+  useEffect(() => {
+    const preloadImages = async () => {
+      const imagePromises = [
+        // Create promises for critical images
+        new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => {
+            setLoadedImages(prev => ({ ...prev, fist: true }));
+            resolve(img);
+          };
+          img.onerror = reject;
+          img.src = fist;
+        }),
+        new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => {
+            setLoadedImages(prev => ({ ...prev, logo: true }));
+            resolve(img);
+          };
+          img.onerror = reject;
+          img.src = stlogo;
+        })
+      ];
+
+      try {
+        await Promise.all(imagePromises);
+        setImagesLoaded(true);
+      } catch (error) {
+        console.error('Failed to preload images:', error);
+        // Still set as loaded to prevent infinite loading
+        setImagesLoaded(true);
+      }
+    };
+
+    preloadImages();
+
+    // Add preload link tags for even faster loading
+    const preloadLinks = [
+      { href: fist, as: 'image' },
+      { href: stlogo, as: 'image' }
+    ];
+
+    const linkElements = preloadLinks.map(({ href, as }) => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = as;
+      link.href = href;
+      link.crossOrigin = 'anonymous';
+      document.head.appendChild(link);
+      return link;
+    });
+
+    return () => {
+      // Cleanup preload links
+      linkElements.forEach(link => {
+        if (document.head.contains(link)) {
+          document.head.removeChild(link);
+        }
+      });
+    };
+  }, []);
 
   // Add transition animation when fade is true
   useEffect(() => {
-    if (fade && logoRef.current && fistRef.current) {
+    if (fade && logoRef.current && fistRef.current && imagesLoaded) {
       // Create timeline for transition animation
       const tl = gsap.timeline({
         onComplete: () => {
@@ -43,10 +111,10 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
         stagger: 0.05,
       });
     }
-  }, [fade, onTransitionComplete]);
+  }, [fade, onTransitionComplete, imagesLoaded]);
 
   useEffect(() => {
-    if (!fade) {
+    if (!fade && imagesLoaded) {
       peopleRef.current.forEach((person, index) => {
         if (person) {
           gsap.fromTo(
@@ -108,19 +176,7 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
         }
       });
     }
-  }, [fade]);
-
-  // Preload the fist image
-  useEffect(() => {
-    const link = document.createElement("link");
-    link.rel = "preload";
-    link.as = "image";
-    link.href = fist;
-    document.head.appendChild(link);
-    return () => {
-      document.head.removeChild(link);
-    };
-  }, []);
+  }, [fade, imagesLoaded]);
 
   return (
     <div
@@ -128,190 +184,212 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
         fade ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
-      {/* Motivational Words Scattered Around - matching Figma design exactly */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden">
-        {/* Transform - Top Left */}
-        <div
-          ref={(el) => (wordsRef.current[0] = el)}
-          className="absolute top-16 left-40 animate-pulse"
-          style={{
-            fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
-            fontWeight: "900",
-            fontStyle: "normal",
-            fontSize: "64px",
-            lineHeight: "71%",
-            letterSpacing: "-5.6px",
-            color: "transparent",
-            WebkitTextStroke: "2px rgba(255, 255, 255, 0.2)",
-            textStroke: "2px rgba(255, 255, 255, 0.2)",
-          }}
-        >
-          transform
-        </div>
-
-        {/* Connect - Top Right */}
-        <div
-          ref={(el) => (wordsRef.current[1] = el)}
-          className="absolute top-42 right-36 animate-pulse"
-          style={{
-            fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
-            fontWeight: "900",
-            fontStyle: "normal",
-            fontSize: "64px",
-            lineHeight: "71%",
-            letterSpacing: "-5.6px",
-            color: "transparent",
-            WebkitTextStroke: "2px rgba(255, 255, 255, 0.2)",
-            textStroke: "2px rgba(255, 255, 255, 0.2)",
-            animationDelay: "1s",
-          }}
-        >
-          Connect
-        </div>
-
-        {/* Trust - Middle Left */}
-        <div
-          ref={(el) => (wordsRef.current[2] = el)}
-          className="absolute top-4/12 left-45 transform -translate-y-1/2 animate-pulse"
-          style={{
-            fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
-            fontWeight: "900",
-            fontStyle: "normal",
-            fontSize: "64px",
-            lineHeight: "71%",
-            letterSpacing: "-5.6px",
-            color: "transparent",
-            WebkitTextStroke: "2px rgba(255, 255, 255, 0.2)",
-            textStroke: "2px rgba(255, 255, 255, 0.2)",
-            animationDelay: "2s",
-          }}
-        >
-          trust
-        </div>
-
-        {/* Create - Middle Right */}
-        <div
-          ref={(el) => (wordsRef.current[3] = el)}
-          className="absolute top-1/2 right-12 transform -translate-y-1/2 animate-pulse"
-          style={{
-            fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
-            fontWeight: "900",
-            fontStyle: "normal",
-            fontSize: "64px",
-            lineHeight: "71%",
-            letterSpacing: "-5.6px",
-            color: "transparent",
-            WebkitTextStroke: "2px rgba(255, 255, 255, 0.2)",
-            textStroke: "2px rgba(255, 255, 255, 0.2)",
-            animationDelay: "0.5s",
-          }}
-        >
-          create
-        </div>
-
-        {/* Dreams - Top Right Lower */}
-        <div
-          ref={(el) => (wordsRef.current[4] = el)}
-          className="absolute bottom-2/5 right-88 animate-pulse"
-          style={{
-            fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
-            fontWeight: "900",
-            fontStyle: "normal",
-            fontSize: "64px",
-            lineHeight: "71%",
-            letterSpacing: "-5.6px",
-            color: "transparent",
-            WebkitTextStroke: "2px rgba(255, 255, 255, 0.2)",
-            textStroke: "2px rgba(255, 255, 255, 0.2)",
-            animationDelay: "1.5s",
-          }}
-        >
-          dreams
-        </div>
-
-        {/* Achieve - Bottom Left */}
-        <div
-          ref={(el) => (wordsRef.current[5] = el)}
-          className="absolute bottom-1/3 left-75 animate-pulse"
-          style={{
-            fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
-            fontWeight: "900",
-            fontStyle: "normal",
-            fontSize: "64px",
-            lineHeight: "71%",
-            letterSpacing: "-5.6px",
-            color: "transparent",
-            WebkitTextStroke: "2px rgba(255, 255, 255, 0.2)",
-            textStroke: "2px rgba(255, 255, 255, 0.2)",
-            animationDelay: "2.5s",
-          }}
-        >
-          Achieve
-        </div>
-
-        {/* Grow - Bottom Left Lower */}
-        <div
-          ref={(el) => (wordsRef.current[6] = el)}
-          className="absolute bottom-1/8 left-12 animate-pulse"
-          style={{
-            fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
-            fontWeight: "900",
-            fontStyle: "normal",
-            fontSize: "64px",
-            lineHeight: "71%",
-            letterSpacing: "-5.6px",
-            color: "transparent",
-            WebkitTextStroke: "2px rgba(255, 255, 255, 0.2)",
-            textStroke: "2px rgba(255, 255, 255, 0.2)",
-            animationDelay: "3s",
-          }}
-        >
-          grow
-        </div>
-
-        {/* Community - Bottom Right */}
-        <div
-          ref={(el) => (wordsRef.current[7] = el)}
-          className="absolute bottom-1/8 right-8 animate-pulse"
-          style={{
-            fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
-            fontWeight: "900",
-            fontStyle: "normal",
-            fontSize: "64px",
-            lineHeight: "71%",
-            letterSpacing: "-5.6px",
-            color: "transparent",
-            WebkitTextStroke: "2px rgba(255, 255, 255, 0.2)",
-            textStroke: "2px rgba(255, 255, 255, 0.2)",
-            animationDelay: "0.8s",
-          }}
-        >
-          community
-        </div>
-      </div>
-
-      {/* Central Fist Logo with ST Text */}
-      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10 flex flex-col items-center justify-center">
-        {/* Fist Icon - Preloaded and rendered first */}
-        <div className="relative mb-4 w-3xl h-auto">
-          <img
-            ref={fistRef}
-            src={fist}
-            alt="Fist Icon"
-            className="w-full h-full object-contain"
-            loading="eager"
-          />
-
-          {/* ST Text Overlay on Fist */}
-          <div className="absolute inset-0 mt-24 flex flex-col items-center justify-center">
-            <img
-              ref={logoRef}
-              src={stlogo}
-              alt="Student Tribe Logo"
-              className="h-16 md:h-20 lg:h-32 w-auto drop-shadow-lg mb-4 mt-20"
-            />
+      {/* Loading indicator while images load */}
+      {!imagesLoaded && (
+        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#b8001f] to-[#7a0015]">
+          <div className="flex space-x-2">
+            <div className="w-3 h-3 bg-white/60 rounded-full animate-pulse"></div>
+            <div className="w-3 h-3 bg-white/60 rounded-full animate-pulse" style={{ animationDelay: "0.2s" }}></div>
+            <div className="w-3 h-3 bg-white/60 rounded-full animate-pulse" style={{ animationDelay: "0.4s" }}></div>
           </div>
         </div>
+      )}
+
+      {/* Main content - only show when images are loaded */}
+      <div className={`w-full h-full ${imagesLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
+        {/* Motivational Words Scattered Around - matching Figma design exactly */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden">
+          {/* Transform - Top Left */}
+          <div
+            ref={(el) => (wordsRef.current[0] = el)}
+            className="absolute top-16 left-40 animate-pulse"
+            style={{
+              fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
+              fontWeight: "900",
+              fontStyle: "normal",
+              fontSize: "64px",
+              lineHeight: "71%",
+              letterSpacing: "-5.6px",
+              color: "transparent",
+              WebkitTextStroke: "2px rgba(255, 255, 255, 0.2)",
+              textStroke: "2px rgba(255, 255, 255, 0.2)",
+            }}
+          >
+            transform
+          </div>
+
+          {/* Connect - Top Right */}
+          <div
+            ref={(el) => (wordsRef.current[1] = el)}
+            className="absolute top-42 right-36 animate-pulse"
+            style={{
+              fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
+              fontWeight: "900",
+              fontStyle: "normal",
+              fontSize: "64px",
+              lineHeight: "71%",
+              letterSpacing: "-5.6px",
+              color: "transparent",
+              WebkitTextStroke: "2px rgba(255, 255, 255, 0.2)",
+              textStroke: "2px rgba(255, 255, 255, 0.2)",
+              animationDelay: "1s",
+            }}
+          >
+            Connect
+          </div>
+
+          {/* Trust - Middle Left */}
+          <div
+            ref={(el) => (wordsRef.current[2] = el)}
+            className="absolute top-4/12 left-45 transform -translate-y-1/2 animate-pulse"
+            style={{
+              fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
+              fontWeight: "900",
+              fontStyle: "normal",
+              fontSize: "64px",
+              lineHeight: "71%",
+              letterSpacing: "-5.6px",
+              color: "transparent",
+              WebkitTextStroke: "2px rgba(255, 255, 255, 0.2)",
+              textStroke: "2px rgba(255, 255, 255, 0.2)",
+              animationDelay: "2s",
+            }}
+          >
+            trust
+          </div>
+
+          {/* Create - Middle Right */}
+          <div
+            ref={(el) => (wordsRef.current[3] = el)}
+            className="absolute top-1/2 right-12 transform -translate-y-1/2 animate-pulse"
+            style={{
+              fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
+              fontWeight: "900",
+              fontStyle: "normal",
+              fontSize: "64px",
+              lineHeight: "71%",
+              letterSpacing: "-5.6px",
+              color: "transparent",
+              WebkitTextStroke: "2px rgba(255, 255, 255, 0.2)",
+              textStroke: "2px rgba(255, 255, 255, 0.2)",
+              animationDelay: "0.5s",
+            }}
+          >
+            create
+          </div>
+
+          {/* Dreams - Top Right Lower */}
+          <div
+            ref={(el) => (wordsRef.current[4] = el)}
+            className="absolute bottom-2/5 right-88 animate-pulse"
+            style={{
+              fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
+              fontWeight: "900",
+              fontStyle: "normal",
+              fontSize: "64px",
+              lineHeight: "71%",
+              letterSpacing: "-5.6px",
+              color: "transparent",
+              WebkitTextStroke: "2px rgba(255, 255, 255, 0.2)",
+              textStroke: "2px rgba(255, 255, 255, 0.2)",
+              animationDelay: "1.5s",
+            }}
+          >
+            dreams
+          </div>
+
+          {/* Achieve - Bottom Left */}
+          <div
+            ref={(el) => (wordsRef.current[5] = el)}
+            className="absolute bottom-1/3 left-75 animate-pulse"
+            style={{
+              fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
+              fontWeight: "900",
+              fontStyle: "normal",
+              fontSize: "64px",
+              lineHeight: "71%",
+              letterSpacing: "-5.6px",
+              color: "transparent",
+              WebkitTextStroke: "2px rgba(255, 255, 255, 0.2)",
+              textStroke: "2px rgba(255, 255, 255, 0.2)",
+              animationDelay: "2.5s",
+            }}
+          >
+            Achieve
+          </div>
+
+          {/* Grow - Bottom Left Lower */}
+          <div
+            ref={(el) => (wordsRef.current[6] = el)}
+            className="absolute bottom-1/8 left-12 animate-pulse"
+            style={{
+              fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
+              fontWeight: "900",
+              fontStyle: "normal",
+              fontSize: "64px",
+              lineHeight: "71%",
+              letterSpacing: "-5.6px",
+              color: "transparent",
+              WebkitTextStroke: "2px rgba(255, 255, 255, 0.2)",
+              textStroke: "2px rgba(255, 255, 255, 0.2)",
+              animationDelay: "3s",
+            }}
+          >
+            grow
+          </div>
+
+          {/* Community - Bottom Right */}
+          <div
+            ref={(el) => (wordsRef.current[7] = el)}
+            className="absolute bottom-1/8 right-8 animate-pulse"
+            style={{
+              fontFamily: "Figtree, system-ui, -apple-system, sans-serif",
+              fontWeight: "900",
+              fontStyle: "normal",
+              fontSize: "64px",
+              lineHeight: "71%",
+              letterSpacing: "-5.6px",
+              color: "transparent",
+              WebkitTextStroke: "2px rgba(255, 255, 255, 0.2)",
+              textStroke: "2px rgba(255, 255, 255, 0.2)",
+              animationDelay: "0.8s",
+            }}
+          >
+            community
+          </div>
+        </div>
+
+        {/* Central Fist Logo with ST Text */}
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10 flex flex-col items-center justify-center">
+          {/* Fist Icon - Optimized loading */}
+          <div className="relative mb-4 w-3xl h-auto">
+            <img
+              ref={fistRef}
+              src={fist}
+              alt="Fist Icon"
+              className={`w-full h-full object-contain transition-opacity duration-300 ${
+                loadedImages.fist ? 'opacity-100' : 'opacity-0'
+              }`}
+              loading="eager"
+              decoding="sync"
+              fetchPriority="high"
+            />
+
+            {/* ST Text Overlay on Fist */}
+            <div className="absolute inset-0 mt-24 flex flex-col items-center justify-center">
+              <img
+                ref={logoRef}
+                src={stlogo}
+                alt="Student Tribe Logo"
+                className={`h-16 md:h-20 lg:h-32 w-auto drop-shadow-lg mb-4 mt-20 transition-opacity duration-300 ${
+                  loadedImages.logo ? 'opacity-100' : 'opacity-0'
+                }`}
+                loading="eager"
+                decoding="sync"
+                fetchPriority="high"
+              />
+            </div>
+          </div>
 
         {/* Group of people entering the fist - funnel formation with gaps */}
         <div
@@ -999,6 +1077,8 @@ const SplashSplash2 = ({ fade, onTransitionComplete }) => {
             style={{ transform: "translate(-50%, 0)" }}
             loading="lazy"
           />
+        </div>
+        {/* Close the central logo/people wrapper */}
         </div>
 
         {/* Subtle loading indicator */}

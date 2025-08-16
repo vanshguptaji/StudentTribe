@@ -380,7 +380,7 @@ const MainScreen = ({ onNavigateToSection }) => {
           </div>
           <div
             ref={descriptionRef}
-            className="description-container text-white text-2xl sm:text-3xl md:text-4xl leading-relaxed lg:text-5xl xl:text-6xl 2xl:text-7xl font-extrabold text-center mt-32 drop-shadow-lg max-w-4xl px-4 transition-transform duration-500"
+            className="description-container text-white text-xl sm:text-2xl md:text-3xl leading-relaxed lg:text-4xl xl:text-5xl 2xl:text-6xl font-extrabold text-center mt-32 drop-shadow-lg max-w-4xl px-4 transition-transform duration-500"
             style={{
               transform: "translateY(80px)",
             }}
