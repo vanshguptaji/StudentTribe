@@ -292,7 +292,7 @@ export default function StudentApp() {
       // Add a small delay before hiding to allow smooth movement to buttons
       hideButtonsTimeoutRef.current = setTimeout(() => {
         setShowButtons(false);
-      }, 300); // 300ms delay
+      }, 300);
     }
   };
 

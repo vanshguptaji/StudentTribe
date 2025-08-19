@@ -23,7 +23,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="w-full bg-[#FCE6EA]">
+    <footer className="w-full bg-[#efd1d6]">
       <div className="max-w-7xl mx-auto px-4 py-4 sm:py-8 md:py-12 relative">
         {/* Footer navigation buttons */}
         <div className="flex flex-wrap justify-center gap-2 mb-4 sm:mb-6 md:mb-8">
@@ -77,7 +77,7 @@ export default function Footer() {
           </div>
           {/* Large Student Tribe watermark - full width, centered */}
           <div className="absolute inset-0 w-full h-full flex items-end justify-center pointer-events-none select-none" style={{zIndex:0}}>
-            <span className="absolute -bottom-12 w-full text-center text-[12vw] md:text-[12vw] font-black text-[#7a0015] opacity-30 leading-none" style={{letterSpacing:'-0.04em'}}>
+            <span className="absolute -bottom-12 w-full text-center text-[12vw] md:text-[12vw] font-black text-[#840000] leading-none" style={{letterSpacing:'0.12em'}}>
                           Student Tribe
                         </span>
           </div>

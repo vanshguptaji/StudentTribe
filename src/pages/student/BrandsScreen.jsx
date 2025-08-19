@@ -157,7 +157,7 @@ export default function BrandsScreen() {
           <img
                   src={banner}
                   alt="ST Care Banner"
-                  className="absolute top-0 right-4 md:top-0 md:right-8 lg:top-0 lg:right-12 w-[20px] md:w-[30px] lg:w-[56px] h-auto select-none pointer-events-none"
+                  className="absolute top-0 right-4 md:top-0 md:right-8 lg:top-0 lg:right-2 w-[20px] md:w-[30px] lg:w-[56px] h-auto select-none pointer-events-none"
                   style={{ minWidth: "20px" }}
                   loading="eager"
                 />
@@ -421,7 +421,7 @@ export default function BrandsScreen() {
           <div className="text-center relative">
             <button 
               ref={addToRefs}
-              className="relative -top-20 px-6 md:px-10 py-3 md:py-3 rounded-full bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white font-bold text-base md:text-lg shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl opacity-0"
+              className="relative -top-2 sm:-top-8 lg:-top-16 px-6 md:px-10 py-3 md:py-3 rounded-full bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white font-bold text-base md:text-lg shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl opacity-0"
               style={{ transform: 'translateY(100vh)' }}
             >
               Explore Now →

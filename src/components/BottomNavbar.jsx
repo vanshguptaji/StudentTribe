@@ -58,7 +58,7 @@ const BottomNavbar = () => {
   const navItems = [
     { id: 'ST School', label: 'St. School', sectionId: 'brands-section' },
     { id: 'ST App', label: 'St. App', sectionId: 'app-section' },
-    { id: 'ST Opportunities', label: 'St. Opportunities', sectionId: 'app-section' },
+    { id: 'ST Opportunities', label: 'St. Opportunities', sectionId: 'opportunity-section' },
     { id: 'ST Events', label: 'St. Events', sectionId: 'events-section' },
     { id: 'ST Beast', label: 'St. Beast', sectionId: 'beast-section' },
     { id: 'ST Care', label: 'St. Care', sectionId: 'care-section' },

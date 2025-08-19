@@ -13,7 +13,10 @@ import StOpportunities from "./StOppurtunities";
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
-const SinglePageLayout = ({ splashCompleted = false, startMainAnimation = false }) => {
+const SinglePageLayout = ({
+  splashCompleted = false,
+  startMainAnimation = false,
+}) => {
   const containerRef = useRef(null);
   const mainRef = useRef(null);
   const brandsRef = useRef(null);
@@ -22,13 +25,14 @@ const SinglePageLayout = ({ splashCompleted = false, startMainAnimation = false 
   const beastRef = useRef(null);
   const careRef = useRef(null);
   const aboutRef = useRef(null);
+  const opportunityRef = useRef(null);
 
   // Function to trigger section animation
   const triggerSectionAnimation = (sectionRef, sectionName) => {
     if (sectionRef.current) {
       // Trigger specific animations for each section
-      const event = new CustomEvent('triggerSectionAnimation', { 
-        detail: { sectionName } 
+      const event = new CustomEvent("triggerSectionAnimation", {
+        detail: { sectionName },
       });
       window.dispatchEvent(event);
     }
@@ -41,26 +45,29 @@ const SinglePageLayout = ({ splashCompleted = false, startMainAnimation = false 
       if (sectionId) {
         setTimeout(() => {
           switch (sectionId) {
-            case 'main-section':
-              triggerSectionAnimation(mainRef, 'main');
+            case "main-section":
+              triggerSectionAnimation(mainRef, "main");
               break;
-            case 'brands-section':
-              triggerSectionAnimation(brandsRef, 'brands');
+            case "brands-section":
+              triggerSectionAnimation(brandsRef, "brands");
               break;
-            case 'app-section':
-              triggerSectionAnimation(appRef, 'app');
+            case "app-section":
+              triggerSectionAnimation(appRef, "app");
               break;
-            case 'events-section':
-              triggerSectionAnimation(eventsRef, 'events');
+            case "opportunity-section":
+              triggerSectionAnimation(opportunityRef, "opportunities");
               break;
-            case 'beast-section':
-              triggerSectionAnimation(beastRef, 'beast');
+            case "events-section":
+              triggerSectionAnimation(eventsRef, "events");
               break;
-            case 'care-section':
-              triggerSectionAnimation(careRef, 'care');
+            case "beast-section":
+              triggerSectionAnimation(beastRef, "beast");
               break;
-            case 'about-section':
-              triggerSectionAnimation(aboutRef, 'about');
+            case "care-section":
+              triggerSectionAnimation(careRef, "care");
+              break;
+            case "about-section":
+              triggerSectionAnimation(aboutRef, "about");
               break;
           }
         }, 500); // Small delay to ensure scroll is complete
@@ -74,13 +81,13 @@ const SinglePageLayout = ({ splashCompleted = false, startMainAnimation = false 
       ScrollTrigger.refresh();
     };
 
-    window.addEventListener('navbarClick', handleNavbarClick);
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("navbarClick", handleNavbarClick);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('navbarClick', handleNavbarClick);
-      window.removeEventListener('resize', handleResize);
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      window.removeEventListener("navbarClick", handleNavbarClick);
+      window.removeEventListener("resize", handleResize);
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
 
@@ -88,27 +95,45 @@ const SinglePageLayout = ({ splashCompleted = false, startMainAnimation = false 
     <div ref={containerRef} className="w-full">
       {/* Main/Landing Section - Pass splashCompleted prop */}
       <section ref={mainRef} className="min-h-screen w-full" id="main-section">
-        <MainScreen splashCompleted={splashCompleted} startMainAnimation={startMainAnimation} />
+        <MainScreen
+          splashCompleted={splashCompleted}
+          startMainAnimation={startMainAnimation}
+        />
       </section>
 
       {/* Brands Section */}
-      <section ref={brandsRef} className="min-h-screen w-full" id="brands-section">
+      <section
+        ref={brandsRef}
+        className="min-h-screen w-full"
+        id="brands-section"
+      >
         <BrandsScreen />
       </section>
 
       {/* Student App Section */}
       <section ref={appRef} className="min-h-screen w-full" id="app-section">
         <StudentApp />
+      </section>
+
+      <section ref={opportunityRef} className="min-h-screen w-full" id="app-section">
         <StOpportunities />
       </section>
 
       {/* Events Section */}
-      <section ref={eventsRef} className="min-h-screen w-full" id="events-section">
+      <section
+        ref={eventsRef}
+        className="min-h-screen w-full"
+        id="events-section"
+      >
         <STEvents />
       </section>
 
       {/* Beast Section */}
-      <section ref={beastRef} className="min-h-screen w-full" id="beast-section">
+      <section
+        ref={beastRef}
+        className="min-h-screen w-full"
+        id="beast-section"
+      >
         <STbeast />
       </section>
 
@@ -118,7 +143,11 @@ const SinglePageLayout = ({ splashCompleted = false, startMainAnimation = false 
       </section>
 
       {/* About/Who We Are Section */}
-      <section ref={aboutRef} className="min-h-screen w-full" id="about-section">
+      <section
+        ref={aboutRef}
+        className="min-h-screen w-full"
+        id="about-section"
+      >
         <WhoweAre />
       </section>
     </div>

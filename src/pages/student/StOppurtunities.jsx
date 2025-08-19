@@ -4,7 +4,6 @@
 // import { gsap } from "gsap";
 // import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-
 // gsap.registerPlugin(ScrollTrigger);
 
 // const StOpportunities = () => {
@@ -305,22 +304,12 @@
 
 // export default StOpportunities;
 
-
-
-
-
-
-
-
-
-
-
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import stlogo from "../../assets/White logo.png";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
+import banner from "../../assets/stApp/banner.svg";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -330,11 +319,11 @@ const StOpportunities = () => {
   const [isVisible, setIsVisible] = useState(false);
   const hideButtonsTimeoutRef = useRef(null);
   const containerRef = useRef(null);
-  
+
   // Card refs for animation
   const cardRefs = useRef([]);
   const logoRef = useRef(null);
-  
+
   // Desktop specific refs for complex animation
   const centerImageRef = useRef(null);
   const leftImageRef = useRef(null);
@@ -347,10 +336,10 @@ const StOpportunities = () => {
   useEffect(() => {
     const runAnimation = () => {
       setIsVisible(true);
-      
+
       // Create GSAP timeline for desktop animation
       const tl = gsap.timeline();
-      
+
       // Animate logo first
       gsap.set(logoRef.current, { opacity: 0, y: -60 });
       gsap.to(logoRef.current, {
@@ -363,61 +352,79 @@ const StOpportunities = () => {
       // Check if we're on desktop (has the complex layout)
       if (window.innerWidth >= 1024) {
         // Desktop animation sequence
-        
+
         // Set initial states
-        gsap.set([centerImageRef.current, leftImageRef.current, rightImageRef.current], { 
-          opacity: 0, 
-          scale: 0.8 
-        });
-        gsap.set([leftTextRef.current, rightTextRef.current], { 
-          opacity: 0, 
+        gsap.set(
+          [centerImageRef.current, leftImageRef.current, rightImageRef.current],
+          {
+            opacity: 0,
+            scale: 0.8,
+          }
+        );
+        gsap.set([leftTextRef.current, rightTextRef.current], {
+          opacity: 0,
           scale: 0,
-          transformOrigin: "center center"
+          transformOrigin: "center center",
         });
-        
+
         // Initially set left and right image cards to span full height (same as center)
         gsap.set([leftImageRef.current, rightImageRef.current], {
           gridRow: "1 / span 2",
-          height: "100%"
+          height: "100%",
         });
-        
+
         // Step 1: Show center image first
-        tl.to(centerImageRef.current, {
-          opacity: 1,
-          scale: 1,
-          duration: 0.8,
-          ease: "back.out(1.7)",
-        }, 0.3)
-        
-        // Step 2: Show left and right image cards at same height as center (no space for text cards yet)
-        .to([leftImageRef.current, rightImageRef.current], {
-          opacity: 1,
-          scale: 1,
-          duration: 0.8,
-          ease: "back.out(1.7)",
-          stagger: 0.1,
-        }, 0.8)
-        
-        // Step 3: Shrink image cards to half height to make space for text cards
-        .to([leftImageRef.current, rightImageRef.current], {
-          duration: 0.6,
-          ease: "power2.out",
-          onComplete: function() {
-            // Reset grid properties to allow text cards to appear
-            gsap.set([leftImageRef.current, rightImageRef.current], {
-              gridRow: "1",
-              height: "auto"
-            });
-          }
-        }, 1.8)
-        .to([leftTextRef.current, rightTextRef.current], {
-          opacity: 1,
-          scale: 1,
-          duration: 0.6,
-          ease: "back.out(1.7)",
-          stagger: 0.1,
-        }, 2.0);
-        
+        tl.to(
+          centerImageRef.current,
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.8,
+            ease: "back.out(1.7)",
+          },
+          0.3
+        )
+
+          // Step 2: Show left and right image cards at same height as center (no space for text cards yet)
+          .to(
+            [leftImageRef.current, rightImageRef.current],
+            {
+              opacity: 1,
+              scale: 1,
+              duration: 0.8,
+              ease: "back.out(1.7)",
+              stagger: 0.1,
+            },
+            0.8
+          )
+
+          // Step 3: Shrink image cards to half height to make space for text cards
+          .to(
+            [leftImageRef.current, rightImageRef.current],
+            {
+              duration: 0.6,
+              ease: "power2.out",
+              onComplete: function () {
+                // Reset grid properties to allow text cards to appear
+                gsap.set([leftImageRef.current, rightImageRef.current], {
+                  gridRow: "1",
+                  height: "auto",
+                });
+              },
+            },
+            1.8
+          )
+          .to(
+            [leftTextRef.current, rightTextRef.current],
+            {
+              opacity: 1,
+              scale: 1,
+              duration: 0.6,
+              ease: "back.out(1.7)",
+              stagger: 0.1,
+            },
+            2.0
+          );
       } else {
         // Mobile animation (simpler)
         cardRefs.current.forEach((ref, i) => {
@@ -433,7 +440,6 @@ const StOpportunities = () => {
           }
         });
       }
-
     };
 
     if (containerRef.current) {
@@ -443,7 +449,7 @@ const StOpportunities = () => {
         onEnter: runAnimation,
         onEnterBack: runAnimation,
       });
-      
+
       // Manual trigger event support
       const handleAnimationTrigger = (event) => {
         if (event.detail?.sectionName === "opportunities") {
@@ -452,13 +458,19 @@ const StOpportunities = () => {
           }, 100);
         }
       };
-      
-      window.addEventListener("triggerSectionAnimation", handleAnimationTrigger);
+
+      window.addEventListener(
+        "triggerSectionAnimation",
+        handleAnimationTrigger
+      );
       ScrollTrigger.refresh();
-      
+
       return () => {
         ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-        window.removeEventListener("triggerSectionAnimation", handleAnimationTrigger);
+        window.removeEventListener(
+          "triggerSectionAnimation",
+          handleAnimationTrigger
+        );
       };
     }
   }, []);
@@ -484,25 +496,37 @@ const StOpportunities = () => {
 
   // MainScreen radial gradient background
   const gradientBg = (
-    <div className="mainscreen-gradient-bg" style={{
-      position: 'absolute',
-      inset: 0,
-      zIndex: 0,
-      width: '100vw',
-      height: '100vh',
-      pointerEvents: 'none',
-      background: 'radial-gradient(circle at center 10%, rgb(195,23,40) 0%, rgb(142,5,27) 20%, rgb(130,6,26) 40%, rgb(100,0,11) 60%, rgb(88,1,11) 85%)',
-    }} />
+    <div
+      className="mainscreen-gradient-bg"
+      style={{
+        position: "absolute",
+        inset: 0,
+        zIndex: 0,
+        width: "100vw",
+        height: "100vh",
+        pointerEvents: "none",
+        background:
+          "radial-gradient(circle at center 10%, rgb(195,23,40) 0%, rgb(142,5,27) 20%, rgb(130,6,26) 40%, rgb(100,0,11) 60%, rgb(88,1,11) 85%)",
+      }}
+    />
   );
   return (
     <div
       ref={containerRef}
       id="opportunities-section"
-      className="min-h-screen text-white relative overflow-hidden"
+      className="w-full h-screen text-white relative overflow-hidden"
     >
       {gradientBg}
-  {/* ST Logo at Top - hover to show buttons */}
-  <div className="absolute top-6 md:top-8 left-1/2 transform -translate-x-1/2 z-20">
+      /* Banner image top-right */
+      <img
+        src={banner}
+        alt="ST Beast Banner"
+        className="absolute top-0 right-8 md:top-0 md:right-8 lg:top-0 lg:right-4 w-[1px] md:w-[30px] lg:w-[50px] h-auto select-none pointer-events-none"
+        style={{ minWidth: "20px" }}
+        loading="eager"
+      />
+      {/* ST Logo at Top - hover to show buttons */}
+      <div className="absolute top-6 md:top-8 left-1/2 transform -translate-x-1/2 z-20">
         <div
           className="logo-container group inline-block cursor-pointer relative mb-8"
           onMouseEnter={handleLogoOrButtonsMouseEnter}
@@ -517,7 +541,9 @@ const StOpportunities = () => {
           {/* Buttons appear below logo on hover */}
           <div
             className={`absolute left-1/2 -translate-x-1/2 w-[400px] h-[50px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
-              showButtons ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+              showButtons
+                ? "opacity-100 pointer-events-auto"
+                : "opacity-0 pointer-events-none"
             }`}
             style={{
               top: "calc(100% + 8px)",
@@ -538,7 +564,6 @@ const StOpportunities = () => {
           </div>
         </div>
       </div>
-
       {/* Main Content Grid with shifting */}
       <div
         className="flex items-center justify-center min-h-screen px-4 md:px-8 transition-transform duration-500"
@@ -551,7 +576,10 @@ const StOpportunities = () => {
           {/* Mobile Grid - 2x2 */}
           <div className="grid grid-cols-1 gap-4 mb-6">
             {/* INTERNSHIPS Card */}
-            <div ref={el => cardRefs.current[0] = el} className="relative h-48 rounded-2xl overflow-hidden shadow-lg">
+            <div
+              ref={(el) => (cardRefs.current[0] = el)}
+              className="relative h-48 rounded-2xl overflow-hidden shadow-lg"
+            >
               <img
                 src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80"
                 alt="Internships"
@@ -564,7 +592,10 @@ const StOpportunities = () => {
             </div>
 
             {/* JOB OPENINGS Card */}
-            <div ref={el => cardRefs.current[1] = el} className="relative h-48 rounded-2xl overflow-hidden shadow-lg">
+            <div
+              ref={(el) => (cardRefs.current[1] = el)}
+              className="relative h-48 rounded-2xl overflow-hidden shadow-lg"
+            >
               <img
                 src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80"
                 alt="Job Openings"
@@ -577,7 +608,10 @@ const StOpportunities = () => {
             </div>
 
             {/* VOLUNTEER WORKS Card */}
-            <div ref={el => cardRefs.current[2] = el} className="relative h-48 rounded-2xl overflow-hidden shadow-lg">
+            <div
+              ref={(el) => (cardRefs.current[2] = el)}
+              className="relative h-48 rounded-2xl overflow-hidden shadow-lg"
+            >
               <img
                 src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=600&q=80"
                 alt="Volunteer Works"
@@ -592,7 +626,10 @@ const StOpportunities = () => {
             </div>
 
             {/* Testimonial Card */}
-            <div ref={el => cardRefs.current[3] = el} className="bg-gray-900/80 backdrop-blur-sm rounded-2xl p-6">
+            <div
+              ref={(el) => (cardRefs.current[3] = el)}
+              className="bg-gray-900/80 backdrop-blur-sm rounded-2xl p-6"
+            >
               <div className="flex items-center mb-4">
                 <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
                   <img
@@ -627,7 +664,7 @@ const StOpportunities = () => {
           {/* Left Column */}
           <div className="flex flex-col gap-6">
             {/* Top Left Card - INTERNSHIPS */}
-            <div 
+            <div
               ref={leftImageRef}
               className="relative flex-1 rounded-2xl overflow-hidden shadow-lg opacity-0"
             >
@@ -643,7 +680,7 @@ const StOpportunities = () => {
             </div>
 
             {/* Bottom Left Card - Description */}
-            <div 
+            <div
               ref={leftTextRef}
               className="flex-1 bg-gray-900/80 backdrop-blur-sm rounded-2xl p-6 flex items-center justify-center opacity-0"
             >
@@ -673,7 +710,7 @@ const StOpportunities = () => {
           {/* Right Column */}
           <div className="flex flex-col gap-6">
             {/* Top Right Card - Testimonial */}
-            <div 
+            <div
               ref={rightTextRef}
               className="flex-1 bg-gray-900/80 backdrop-blur-sm rounded-2xl p-6 flex flex-col justify-center opacity-0"
             >
@@ -702,7 +739,7 @@ const StOpportunities = () => {
             </div>
 
             {/* Bottom Right Card - VOLUNTEER WORKS */}
-            <div 
+            <div
               ref={rightImageRef}
               className="relative flex-1 rounded-2xl overflow-hidden shadow-lg opacity-0"
             >

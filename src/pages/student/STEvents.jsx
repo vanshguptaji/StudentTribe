@@ -168,7 +168,7 @@ export default function STEvents() {
       <img
         src={banner}
         alt="ST Beast Banner"
-        className="absolute top-0 right-4 md:top-0 md:right-8 lg:top-0 lg:right-12 w-[20px] md:w-[30px] lg:w-[56px] h-auto select-none pointer-events-none"
+        className="absolute top-0 right-4 md:top-0 md:right-4 lg:top-0 lg:right-4 w-[20px] md:w-[30px] lg:w-[56px] h-auto select-none pointer-events-none"
         style={{ minWidth: "20px" }}
         loading="eager"
         onError={(e) => {
@@ -242,7 +242,7 @@ export default function STEvents() {
         >
           {/* Main Heading */}
           <div ref={textContentRef} className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
+            <h1 className="text-4xl md:text-54xl font-bold text-gray-900 mb-8">
               Say Goodbye to FOMO. Step Into the Action.
             </h1>
             {/* Description Text */}
