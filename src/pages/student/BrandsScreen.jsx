@@ -9,7 +9,6 @@ import rightUpper1st from "../../assets/BrandsSection/rightUpper1st.jpg";
 import rightmost2nd from "../../assets/BrandsSection/right2nd.jpg";
 import leftLower from "../../assets/BrandsSection/leftLower1st.jpg";
 import meeting from "../../assets/BrandsSection/meeting.jpg";
-// import Footer from './components/Footer';
 
 export default function BrandsScreen() {
   const [isVisible, setIsVisible] = useState(false);
@@ -179,7 +178,7 @@ export default function BrandsScreen() {
             />
             {/* Buttons appear below logo on hover */}
             <div
-              className={`absolute left-1/2 -translate-x-1/2 w-[300px] md:w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
+              className={`absolute left-1/2 -translate-x-1/2 w-[400px] h-[50px] md:w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
                 showButtons ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
               }`}
               style={{

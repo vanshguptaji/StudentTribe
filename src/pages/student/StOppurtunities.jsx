@@ -482,16 +482,25 @@ const StOpportunities = () => {
     }
   };
 
+  // MainScreen radial gradient background
+  const gradientBg = (
+    <div className="mainscreen-gradient-bg" style={{
+      position: 'absolute',
+      inset: 0,
+      zIndex: 0,
+      width: '100vw',
+      height: '100vh',
+      pointerEvents: 'none',
+      background: 'radial-gradient(circle at center 10%, rgb(195,23,40) 0%, rgb(142,5,27) 20%, rgb(130,6,26) 40%, rgb(100,0,11) 60%, rgb(88,1,11) 85%)',
+    }} />
+  );
   return (
     <div
       ref={containerRef}
       id="opportunities-section"
       className="min-h-screen text-white relative overflow-hidden"
-      style={{
-        background:
-          "radial-gradient(circle at center 10%, #b8001f 0%, #8b0016 20%, #5e000f 40%, #310008 60%, #2d0a0e 85%)",
-      }}
     >
+      {gradientBg}
   {/* ST Logo at Top - hover to show buttons */}
   <div className="absolute top-6 md:top-8 left-1/2 transform -translate-x-1/2 z-20">
         <div
@@ -507,7 +516,7 @@ const StOpportunities = () => {
           />
           {/* Buttons appear below logo on hover */}
           <div
-            className={`absolute left-1/2 -translate-x-1/2 w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
+            className={`absolute left-1/2 -translate-x-1/2 w-[400px] h-[50px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
               showButtons ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
             }`}
             style={{

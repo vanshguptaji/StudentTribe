@@ -268,6 +268,19 @@ export default function StudentApp() {
     setShowButtons(true);
   };
 
+   // MainScreen radial gradient background
+  const gradientBg = (
+    <div className="mainscreen-gradient-bg" style={{
+      position: 'absolute',
+      inset: 0,
+      zIndex: 0,
+      width: '100vw',
+      height: '100vh',
+      pointerEvents: 'none',
+      background: 'radial-gradient(circle at center 10%, rgb(195,23,40) 0%, rgb(142,5,27) 20%, rgb(130,6,26) 40%, rgb(100,0,11) 60%, rgb(88,1,11) 85%)',
+    }} />
+  );
+
   const handleLogoOrButtonsMouseLeave = (e) => {
     // Check if the mouse is leaving to go to a related element within the same container
     const relatedTarget = e.relatedTarget;
@@ -295,7 +308,10 @@ export default function StudentApp() {
   return (
     <div
       ref={containerRef}
-      className="min-h-screen w-full bg-gradient-to-br from-[#b8001f] to-[#7a0015] overflow-hidden relative"
+      className="h-full w-full overflow-hidden relative"
+      style={{
+      background: 'radial-gradient(circle at center 10%, rgb(195,23,40) 0%, rgb(142,5,27) 20%, rgb(130,6,26) 40%, rgb(100,0,11) 60%, rgb(88,1,11) 85%)',
+    }} 
     >
       {/* Banner image top-right */}
       <img

@@ -56,12 +56,12 @@ const BottomNavbar = () => {
 
   // Navigation items matching your actual page structure
   const navItems = [
-    { id: 'ST School', label: 'st.school', sectionId: 'brands-section' },
-    { id: 'ST App', label: 'st.app', sectionId: 'app-section' },
-    { id: 'ST Opportunities', label: 'st.opportunities', sectionId: 'app-section' },
-    { id: 'ST Events', label: 'st.events', sectionId: 'events-section' },
-    { id: 'ST Beast', label: 'st.beast', sectionId: 'beast-section' },
-    { id: 'ST Care', label: 'st.care', sectionId: 'care-section' },
+    { id: 'ST School', label: 'St. School', sectionId: 'brands-section' },
+    { id: 'ST App', label: 'St. App', sectionId: 'app-section' },
+    { id: 'ST Opportunities', label: 'St. Opportunities', sectionId: 'app-section' },
+    { id: 'ST Events', label: 'St. Events', sectionId: 'events-section' },
+    { id: 'ST Beast', label: 'St. Beast', sectionId: 'beast-section' },
+    { id: 'ST Care', label: 'St. Care', sectionId: 'care-section' },
     { id: 'Who We Are', label: 'Who We Are', sectionId: 'about-section' }
   ];
 

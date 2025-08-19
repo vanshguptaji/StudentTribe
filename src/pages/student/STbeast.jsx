@@ -460,12 +460,25 @@ const StBeast = () => {
     setHoveredButton('students');
   };
 
+  // MainScreen radial gradient background
+  const gradientBg = (
+    <div className="mainscreen-gradient-bg" style={{
+      position: 'absolute',
+      inset: 0,
+      zIndex: 0,
+      width: '100vw',
+      height: '100vh',
+      pointerEvents: 'none',
+      background: 'radial-gradient(circle at center 10%, rgb(195,23,40) 0%, rgb(142,5,27) 20%, rgb(130,6,26) 40%, rgb(100,0,11) 60%, rgb(88,1,11) 85%)',
+    }} />
+  );
   return (
     <div
       ref={containerRef}
-      className="min-h-screen bg-[#b8001f] relative overflow-hidden"
+      className="min-h-screen relative overflow-hidden"
       id="beast-section"
     >
+      {gradientBg}
       {/* Responsive Banner Image Top Right */}
       <img
         src={banner}
@@ -529,7 +542,7 @@ const StBeast = () => {
             />
             {/* Buttons appear below logo on hover */}
             <div
-              className={`absolute left-1/2 -translate-x-1/2 w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
+              className={`absolute left-1/2 -translate-x-1/2 w-[400px] h-[50px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
                 showButtons
                   ? "opacity-100 pointer-events-auto"
                   : "opacity-0 pointer-events-none"
@@ -589,7 +602,7 @@ const StBeast = () => {
         {/* 3D Curved Carousel */}
         <div
           ref={carouselRef}
-          className="relative flex items-center justify-center min-h-[700px] px-8 pb-32"
+          className="relative flex items-center justify-center min-h-[900px] px-8 pb-32"
         >
           <CurvedCarousel products={products} />
         </div>

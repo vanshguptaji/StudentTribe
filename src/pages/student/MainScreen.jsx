@@ -232,7 +232,7 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
           rotateX: 0,
           duration: 0.4,
           ease: "back.out(1.7)",
-          stagger: 0.06, // Faster stagger
+          stagger: 0.02, // Faster stagger
         }, "+=0.1"); // Reduced delay
       }
 
@@ -355,6 +355,16 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
   return (
     <>
       <style>{`
+        /* MainScreen radial gradient background */
+        .mainscreen-gradient-bg {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+          width: 100vw;
+          height: 100vh;
+          pointer-events: none;
+          background: radial-gradient(circle at center 10%, rgb(195,23,40) 0%, rgb(142,5,27) 20%, rgb(130,6,26) 40%, rgb(100,0,11) 60%, rgb(88,1,11) 85%);
+        }
         /* Custom styles for 3-line layout */
         .three-line-layout {
           display: none;
@@ -467,9 +477,11 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
       
       <div
         ref={containerRef}
-        className="relative w-screen h-screen flex items-center justify-center bg-[#b8001f] overflow-hidden"
+        className="relative w-screen h-screen flex items-center justify-center overflow-hidden"
         id="main-section"
       >
+        {/* Radial gradient background */}
+        <div className="mainscreen-gradient-bg" />
         {/* Background images container */}
         <div
           ref={backgroundRef}
@@ -505,7 +517,7 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
               {/* Buttons appear below logo */}
               <div
                 ref={buttonsContainerRef}
-                className=" w-[400px] max-w-[90vw] mt-8 flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 mb-8"
+                className=" w-[400px] h-[50px] max-w-[90vw] mt-8 flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 mb-8"
                 style={{
                   top: "calc(100% + 8px)",
                 }}
@@ -537,7 +549,7 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
           </div>
           <div
             ref={descriptionRef}
-            className="description-container text-container text-white primary-text leading-relaxed font-extrabold text-center mt-32 drop-shadow-lg max-w-4xl px-4 transition-transform duration-500"
+            className="description-container text-container text-white primary-text leading-relaxed font-extrabold text-center mt-32 drop-shadow-lg max-w-4xl px-4 transition-transform duration-300"
             style={{
               transform: "translateY(80px)",
             }}
@@ -617,7 +629,7 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
           {/* Secondary description text */}
           <div
             ref={secondaryDescriptionRef}
-            className="text-white secondary-text text-center drop-shadow-lg max-w-3xl px-4 transition-transform duration-500 secondary-spacing"
+            className="text-white secondary-text text-center drop-shadow-lg max-w-3xl px-4 transition-transform duration-300 secondary-spacing"
             style={{
               transform: "translateY(80px)",
               letterSpacing: "0.08em",
