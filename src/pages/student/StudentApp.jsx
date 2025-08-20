@@ -15,12 +15,12 @@ export default function StudentApp() {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
-  const [hoveredButton, setHoveredButton] = useState('students');
-  
+  const [hoveredButton, setHoveredButton] = useState("students");
+
   // Carousel states
   const [quizIndex, setQuizIndex] = useState(0);
   const [gigsIndex, setGigsIndex] = useState(0);
-  
+
   const hideButtonsTimeoutRef = useRef(null);
   const containerRef = useRef(null);
   const phoneRef = useRef(null);
@@ -48,16 +48,16 @@ export default function StudentApp() {
   // Auto slider for quiz images
   useEffect(() => {
     const interval = setInterval(() => {
-      setQuizIndex(prev => (prev + 1) % quizImages.length);
+      setQuizIndex((prev) => (prev + 1) % quizImages.length);
     }, 2000);
 
     return () => clearInterval(interval);
   }, []);
 
-  // Auto slider for gigs images  
+  // Auto slider for gigs images
   useEffect(() => {
     const interval = setInterval(() => {
-      setGigsIndex(prev => (prev + 1) % gigsImages.length);
+      setGigsIndex((prev) => (prev + 1) % gigsImages.length);
     }, 2500);
 
     return () => clearInterval(interval);
@@ -66,7 +66,7 @@ export default function StudentApp() {
   // Simple Slider Component
   const AutoSlider = ({ images, currentIndex, className }) => (
     <div className={`relative overflow-hidden ${className}`}>
-      <div 
+      <div
         className="flex transition-transform duration-500 ease-in-out"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
@@ -85,6 +85,30 @@ export default function StudentApp() {
   useEffect(() => {
     const runAnimation = () => {
       setIsVisible(true);
+
+      // Check if all refs are available before running animations
+      const allRefs = [
+        phoneRef.current,
+        topLeftCardRef.current,
+        topRightCardRef.current,
+        bottomLeftCardRef.current,
+        bottomRightCardRef.current,
+        topLeftBgRef.current,
+        topRightBgRef.current,
+        bottomLeftBgRef.current,
+        bottomRightBgRef.current,
+        topLeftContentRef.current,
+        topRightContentRef.current,
+        bottomLeftContentRef.current,
+        bottomRightContentRef.current,
+      ];
+
+      // Only run animation if all required refs exist
+      const allRefsExist = allRefs.every((ref) => ref !== null);
+      if (!allRefsExist) {
+        console.warn("Some animation refs are null, skipping animation");
+        return;
+      }
 
       // Create GSAP timeline for simultaneous animations
       const tl = gsap.timeline();
@@ -179,49 +203,56 @@ export default function StudentApp() {
     };
 
     if (containerRef.current) {
-      // Set initial states
-      gsap.set([phoneRef.current], { opacity: 0, y: 200 });
-      gsap.set(
-        [
-          topLeftCardRef.current,
-          topRightCardRef.current,
-          bottomLeftCardRef.current,
-          bottomRightCardRef.current,
-        ],
-        { opacity: 0 }
-      );
-      gsap.set(
-        [
-          topLeftBgRef.current,
-          topRightBgRef.current,
-          bottomLeftBgRef.current,
-          bottomRightBgRef.current,
-        ],
-        { scale: 0 }
-      );
-      gsap.set(
-        [
-          topLeftContentRef.current,
-          topRightContentRef.current,
-          bottomLeftContentRef.current,
-          bottomRightContentRef.current,
-        ],
-        { opacity: 0 }
-      );
+      // Set initial states with null checks
+      if (phoneRef.current) {
+        gsap.set([phoneRef.current], { opacity: 0, y: 200 });
+      }
 
-      // Create scroll trigger for student app section - improved to work for both scroll directions
-      ScrollTrigger.create({
+      const cardRefs = [
+        topLeftCardRef.current,
+        topRightCardRef.current,
+        bottomLeftCardRef.current,
+        bottomRightCardRef.current,
+      ].filter((ref) => ref !== null);
+
+      if (cardRefs.length > 0) {
+        gsap.set(cardRefs, { opacity: 0 });
+      }
+
+      const bgRefs = [
+        topLeftBgRef.current,
+        topRightBgRef.current,
+        bottomLeftBgRef.current,
+        bottomRightBgRef.current,
+      ].filter((ref) => ref !== null);
+
+      if (bgRefs.length > 0) {
+        gsap.set(bgRefs, { scale: 0 });
+      }
+
+      const contentRefs = [
+        topLeftContentRef.current,
+        topRightContentRef.current,
+        bottomLeftContentRef.current,
+        bottomRightContentRef.current,
+      ].filter((ref) => ref !== null);
+
+      if (contentRefs.length > 0) {
+        gsap.set(contentRefs, { opacity: 0 });
+      }
+
+      // Create scroll trigger with improved handling
+      const scrollTrigger = ScrollTrigger.create({
         trigger: containerRef.current,
         start: "top 80%",
         end: "bottom 20%",
         onEnter: runAnimation,
-        onEnterBack: runAnimation, // Also trigger when scrolling back up to this section
+        onEnterBack: runAnimation,
       });
 
-      // Listen for manual animation triggers with improved handling
+      // Listen for manual animation triggers
       const handleAnimationTrigger = (event) => {
         if (event.detail?.sectionName === "app") {
-          // Small delay to ensure the section is visible before starting animation
           setTimeout(() => {
             runAnimation();
           }, 100);
@@ -233,10 +264,7 @@ export default function StudentApp() {
         handleAnimationTrigger
       );
 
-      // Refresh ScrollTrigger to ensure accurate calculations
-      ScrollTrigger.refresh();
-
-      // Handle window resize to recalculate ScrollTrigger positions
+      // Handle window resize
       const handleResize = () => {
         ScrollTrigger.refresh();
       };
@@ -244,13 +272,12 @@ export default function StudentApp() {
       window.addEventListener("resize", handleResize);
 
       return () => {
-        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+        scrollTrigger.kill();
         window.removeEventListener(
           "triggerSectionAnimation",
           handleAnimationTrigger
         );
         window.removeEventListener("resize", handleResize);
-        // Clean up timeout on unmount
         if (hideButtonsTimeoutRef.current) {
           clearTimeout(hideButtonsTimeoutRef.current);
         }
@@ -260,7 +287,6 @@ export default function StudentApp() {
 
   // Hover handlers for logo/buttons
   const handleLogoOrButtonsMouseEnter = () => {
-    // Clear any pending hide timeout
     if (hideButtonsTimeoutRef.current) {
       clearTimeout(hideButtonsTimeoutRef.current);
       hideButtonsTimeoutRef.current = null;
@@ -268,28 +294,11 @@ export default function StudentApp() {
     setShowButtons(true);
   };
 
-   // MainScreen radial gradient background
-  const gradientBg = (
-    <div className="mainscreen-gradient-bg" style={{
-      position: 'absolute',
-      inset: 0,
-      zIndex: 0,
-      width: '100vw',
-      height: '100vh',
-      pointerEvents: 'none',
-      background: 'radial-gradient(circle at center 10%, rgb(195,23,40) 0%, rgb(142,5,27) 20%, rgb(130,6,26) 40%, rgb(100,0,11) 60%, rgb(88,1,11) 85%)',
-    }} />
-  );
-
   const handleLogoOrButtonsMouseLeave = (e) => {
-    // Check if the mouse is leaving to go to a related element within the same container
     const relatedTarget = e.relatedTarget;
     const currentTarget = e.currentTarget;
 
-    // If there's no related target (mouse left the window) or the related target
-    // is not within our logo container, hide the buttons with a delay
     if (!relatedTarget || !currentTarget.contains(relatedTarget)) {
-      // Add a small delay before hiding to allow smooth movement to buttons
       hideButtonsTimeoutRef.current = setTimeout(() => {
         setShowButtons(false);
       }, 300);
@@ -302,386 +311,377 @@ export default function StudentApp() {
   };
 
   const handleButtonLeave = () => {
-    setHoveredButton('students');
+    setHoveredButton("students");
   };
 
   return (
     <div
       ref={containerRef}
-      className="h-[1500px] w-full overflow-hidden relative"
+      className="min-h-screen w-full overflow-hidden relative"
       style={{
-      background: 'radial-gradient(circle at center 10%, rgb(195,23,40) 0%, rgb(142,5,27) 20%, rgb(130,6,26) 40%, rgb(100,0,11) 60%, rgb(88,1,11) 85%)',
-    }} 
+        background:
+          "radial-gradient(circle at center 10%, rgb(195,23,40) 0%, rgb(142,5,27) 20%, rgb(130,6,26) 40%, rgb(100,0,11) 60%, rgb(88,1,11) 85%)",
+      }}
     >
-      {/* Banner image top-right */}
-      {/* <img
-        src={banner}
-        alt="ST Beast Banner"
-        className="absolute top-0 right-4 md:top-0 md:right-8 lg:top-0 lg:right-12 w-[20px] md:w-[30px] lg:w-[56px] h-auto select-none pointer-events-none"
-        style={{ minWidth: "20px" }}
-        loading="eager"
-      /> */}
       {/* Header */}
-      <div className="relative z-20 pt-16 text-center">
+      <div className="relative z-20 pt-8 md:pt-16 text-center">
         <div
           className="logo-container group inline-block cursor-pointer relative"
           onMouseEnter={handleLogoOrButtonsMouseEnter}
           onMouseLeave={handleLogoOrButtonsMouseLeave}
         >
-          {/* Replace manual logo with image logo */}
           <img
             src={stlogo}
             alt="Student Tribe Logo"
-            className="h-8 md:h-12 lg:h-16 w-auto drop-shadow-lg mb-4"
+            className="h-6 md:h-8 lg:h-12 xl:h-16 w-auto drop-shadow-lg mb-4"
           />
           {/* Buttons appear below logo on hover */}
-           <div
-              className={`absolute left-1/2 -translate-x-1/2 w-[400px] h-[50px] md:w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
-                showButtons ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          <div
+            className={`absolute left-1/2 -translate-x-1/2 w-[300px] sm:w-[400px] max-w-[90vw] flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 ${
+              showButtons
+                ? "opacity-100 pointer-events-auto"
+                : "opacity-0 pointer-events-none"
+            }`}
+            style={{
+              top: "calc(100% + 8px)",
+            }}
+          >
+            <button
+              className={`flex-1 text-center rounded-full transition-all duration-300 border-none cursor-pointer text-sm sm:text-lg hover:scale-105 py-2 px-4 ${
+                hoveredButton === "students"
+                  ? "bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white"
+                  : "bg-transparent text-gray-300 hover:text-white"
               }`}
-              style={{
-                top: 'calc(100% + 8px)',
-              }}
-              onMouseEnter={handleLogoOrButtonsMouseEnter}
-              onMouseLeave={handleLogoOrButtonsMouseLeave}
+              onClick={() => navigate("/")}
+              onMouseEnter={() => handleButtonHover("students")}
+              onMouseLeave={handleButtonLeave}
             >
-              <button
-                className={`flex-1 text-center rounded-full transition-all duration-300 border-none cursor-pointer text-sm md:text-lg hover:scale-105 ${
-                  hoveredButton === 'students'
-                    ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white'
-                    : 'bg-transparent text-gray-300 hover:text-white'
-                }`}
-                onClick={() => scrollToSection('main-section')}
-                onMouseEnter={() => handleButtonHover('students')}
-                onMouseLeave={handleButtonLeave}
-              >
-                Students
-              </button>
-              <button
-                className={`flex-1 text-center rounded-full transition-all duration-300 border-none cursor-pointer text-sm md:text-lg hover:scale-105 ${
-                  hoveredButton === 'brands'
-                    ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white'
-                    : 'bg-transparent text-gray-300 hover:text-white'
-                }`}
-                onClick={() => scrollToSection('brands-section')}
-                onMouseEnter={() => handleButtonHover('brands')}
-                onMouseLeave={handleButtonLeave}
-              >
-                Brands
-              </button>
-            </div>
+              Students
+            </button>
+            <button
+              className={`flex-1 text-center rounded-full transition-all duration-300 border-none cursor-pointer text-sm sm:text-lg hover:scale-105 py-2 px-4 ${
+                hoveredButton === "brands"
+                  ? "bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white"
+                  : "bg-transparent text-gray-300 hover:text-white"
+              }`}
+              onClick={() => navigate("/brands")}
+              onMouseEnter={() => handleButtonHover("brands")}
+              onMouseLeave={handleButtonLeave}
+            >
+              Brands
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Main Content */}
       <div
-        className="relative z-20 px-8 transition-transform duration-500"
+        className="relative z-20 px-4 sm:px-6 md:px-8 transition-transform duration-500"
         style={{
-          transform: showButtons ? "translateY(80px)" : "translateY(0)",
+          transform: showButtons ? "translateY(60px)" : "translateY(0)",
         }}
       >
         {/* Title */}
-        <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight">
+        <div className="text-center mb-8 md:mb-12">
+          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold text-white mb-6 leading-tight px-4">
             Where Fun Meets Learning and New
-            <br />
-            Connections
+            <br className="hidden sm:block" />
+            <span className="sm:hidden"> </span>Connections
           </h1>
         </div>
 
-        {/* Mobile Grid Layout - 2x2 cards */}
-        <div className="lg:hidden max-w-md mx-auto grid grid-cols-2 gap-4 mb-8">
-          {/* Communities & Daily Quizzes */}
-          <div className="">
-            <div
-              className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-4 h-full flex flex-col border-2 border-white/40 shadow-lg min-h-[280px]"
-              style={{
-                borderRadius: "16px",
-                border: "2px solid rgba(255,255,255,0.34)",
-                boxShadow:
-                  "0 2px 16px 2px rgba(255,255,255,0.45), 0 4px 24px 0 rgba(0,0,0,0.2)",
-                background: "rgba(44,27,27,0.92)",
-              }}
-            >
-              <div>
-                <h3 className="text-white text-sm font-extrabold mb-3 text-center">
-                  Communities & Daily Quizzes
-                </h3>
-                <div className="w-full mb-3">
-                  <AutoSlider
-                    images={quizImages}
-                    currentIndex={quizIndex}
-                    className="w-full h-20 rounded-xl shadow-lg"
-                  />
+        {/* Mobile Layout - Two columns side by side */}
+        <div className="lg:hidden max-w-sm sm:max-w-md mx-auto mb-8">
+          <div className="flex gap-1 sm:gap-6">
+            {/* Left Column */}
+            <div className="flex-1 space-y-2">
+              {/* Communities & Daily Quizzes */}
+              <div className="w-full">
+                <div
+                  className="bg-[#2C1B1B]/80 backdrop-blur-lg h-[300px] rounded-2xl p-3 sm:p-4  flex flex-col border-2 border-white/40 shadow-lg min-h-[240px] sm:min-h-[280px]"
+                  style={{
+                    borderRadius: "16px",
+                    border: "2px solid rgba(255,255,255,0.34)",
+                    boxShadow:
+                      "0 2px 16px 2px rgba(255,255,255,0.45), 0 4px 24px 0 rgba(0,0,0,0.2)",
+                    background: "rgba(44,27,27,0.92)",
+                  }}
+                >
+                  <div>
+                    <h3 className="text-white text-xs sm:text-sm font-extrabold mb-2 sm:mb-3 text-center">
+                      Communities & Daily Quizzes
+                    </h3>
+                    <div className="w-full mb-2 sm:mb-3">
+                      <AutoSlider
+                        images={quizImages}
+                        currentIndex={quizIndex}
+                        className="w-full h-32 sm:h-48 rounded-xl shadow-lg"
+                      />
+                    </div>
+                    <p className="text-white/90 text-xs text-center leading-relaxed">
+                      Be part of active student communities across India.
+                    </p>
+                  </div>
                 </div>
-                <p className="text-white/90 text-xs text-center leading-relaxed">
-                  Be part of active student communities across India.
-                </p>
               </div>
-            </div>
-          </div>
 
-          {/* ST PRO Membership */}
-          <div className="">
-            <div
-              className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-4 h-full flex flex-col border-2 border-white/40 shadow-lg items-center justify-center min-h-[280px]"
-              style={{
-                borderRadius: "16px",
-                border: "2px solid rgba(255,255,255,0.34)",
-                boxShadow:
-                  "0 2px 16px 2px rgba(255,255,255,0.45), 0 4px 24px 0 rgba(0,0,0,0.2)",
-                background: "rgba(44,27,27,0.92)",
-              }}
-            >
-              <div>
-                <h3 className="text-white text-sm font-extrabold mb-3 text-center">
-                  ST PRO Membership
-                </h3>
-                <p className="text-white/90 text-xs text-center leading-relaxed">
-                  Exclusive opportunities, career events & priority invites –
-                  all for just{" "}
-                  <span className="font-extrabold">₹299/month</span>.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Your Dost AI */}
-          <div className="">
-            <div
-              className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-4 h-full flex flex-col border-2 border-white/40 shadow-lg min-h-[280px]"
-              style={{
-                borderRadius: "16px",
-                border: "2px solid rgba(255,255,255,0.34)",
-                boxShadow:
-                  "0 2px 16px 2px rgba(255,255,255,0.45), 0 4px 24px 0 rgba(0,0,0,0.2)",
-                background: "rgba(44,27,27,0.92)",
-              }}
-            >
-              <div className="flex flex-col items-center justify-center h-full text-center">
-                <div className="mb-3">
-                  <img
-                    src={robot}
-                    alt="Your Dost AI"
-                    className="w-16 h-16 object-contain mx-auto"
-                  />
-                </div>
-                <div>
-                  <h3 className="text-white text-sm font-extrabold mb-2">
-                    Your Dost AI
-                  </h3>
-                  <p className="text-white/90 text-xs leading-relaxed">
-                    Your <span className="font-bold">AI buddy</span> for
-                    everything – from silly questions to serious career advice.
-                  </p>
+              {/* Your Dost AI */}
+              <div className="w-full">
+                <div
+                  className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-3 sm:p-4 h-[150px] flex flex-col border-2 border-white/40 shadow-lg "
+                  style={{
+                    borderRadius: "16px",
+                    border: "2px solid rgba(255,255,255,0.34)",
+                    boxShadow:
+                      "0 2px 16px 2px rgba(255,255,255,0.45), 0 4px 24px 0 rgba(0,0,0,0.2)",
+                    background: "rgba(44,27,27,0.92)",
+                  }}
+                >
+                  <div className="flex flex-col items-center justify-center h-full text-center">
+                    <div className="mb-2 sm:mb-3">
+                      <img
+                        src={robot}
+                        alt="Your Dost AI"
+                        className="w-12 sm:w-16 h-12 sm:h-16 object-contain mx-auto"
+                      />
+                    </div>
+                    <div>
+                      <h3 className="text-white text-[11px] sm:text-sm font-extrabold mb-1 sm:mb-2">
+                        Your Dost AI
+                      </h3>
+                      <p className="text-white/90 text-[10px] sm:text-sm leading-relaxed">
+                        Your <span className="font-bold">AI buddy</span> for
+                        everything – from silly questions to serious career
+                        advice.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Gigs & Star Connects */}
-          <div className="">
-            <div
-              className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-4 h-full flex flex-col border-2 border-white/40 shadow-lg min-h-[280px]"
-              style={{
-                borderRadius: "16px",
-                border: "2px solid rgba(255,255,255,0.34)",
-                boxShadow:
-                  "0 2px 16px 2px rgba(255,255,255,0.45), 0 4px 24px 0 rgba(0,0,0,0.2)",
-                background: "rgba(44,27,27,0.92)",
-              }}
-            >
-              <div>
-                <h3 className="text-white text-sm font-extrabold mb-3 text-center">
-                  Gigs & Star Connects
-                </h3>
-                <div className="w-full mb-3">
-                  <AutoSlider
-                    images={gigsImages}
-                    currentIndex={gigsIndex}
-                    className="w-full h-20 rounded-xl shadow-lg"
-                  />
+            {/* Right Column */}
+            <div className="flex-1 space-y-2">
+              {/* ST PRO Membership */}
+              <div className="w-full">
+                <div
+                  className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-3 sm:p-4 h-[150px] flex flex-col border-2 border-white/40 shadow-lg items-center justify-center "
+                  style={{
+                    borderRadius: "16px",
+                    border: "2px solid rgba(255,255,255,0.34)",
+                    boxShadow:
+                      "0 2px 16px 2px rgba(255,255,255,0.45), 0 4px 24px 0 rgba(0,0,0,0.2)",
+                    background: "rgba(44,27,27,0.92)",
+                  }}
+                >
+                  <div>
+                    <h3 className="text-white text-[11px] sm:text-sm font-extrabold mb-2 sm:mb-3 text-center">
+                      ST PRO Membership
+                    </h3>
+                    <p className="text-white/90 text-[10px] sm:text-sm text-center leading-relaxed">
+                      Exclusive opportunities, career events & priority invites
+                      – all for just{" "}
+                      <span className="font-extrabold">₹299/month</span>.
+                    </p>
+                  </div>
                 </div>
-                <p className="text-white/90 text-xs text-center leading-relaxed">
-                  Chill gigs, fun open mics, and star connects – vibe, showcase
-                  your talent.
-                </p>
+              </div>
+
+              {/* Gigs & Star Connects */}
+              <div className="w-full">
+                <div
+                  className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-3 sm:p-4 h-[300px] flex flex-col border-2 border-white/40 shadow-lg min-h-[240px] sm:min-h-[280px]"
+                  style={{
+                    borderRadius: "16px",
+                    border: "2px solid rgba(255,255,255,0.34)",
+                    boxShadow:
+                      "0 2px 16px 2px rgba(255,255,255,0.45), 0 4px 24px 0 rgba(0,0,0,0.2)",
+                    background: "rgba(44,27,27,0.92)",
+                  }}
+                >
+                  <div>
+                    <div className="w-full mb-2 sm:mb-3">
+                      <AutoSlider
+                        images={gigsImages}
+                        currentIndex={gigsIndex}
+                        className="w-full h-32 sm:h-20 rounded-xl shadow-lg"
+                      />
+                    </div>
+                    <h3 className="text-white text-xs sm:text-sm font-extrabold mb-2 sm:mb-3 text-center">
+                      Gigs & Star Connects
+                    </h3>
+                    <p className="text-white/90 text-xs text-center leading-relaxed">
+                      Chill gigs, fun open mics, and star connects – vibe,
+                      showcase your talent.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Phone Mockup - Mobile After Cards */}
-        <div className="lg:hidden mb-16">
+        <div className="lg:hidden mb-12 md:mb-16">
           <div className="flex justify-center">
             <img
               src={iphone}
               alt="iPhone Mockup"
-              className="w-[280px] h-auto drop-shadow-2xl"
+              className="w-[200px] sm:w-[250px] md:w-[280px] h-auto drop-shadow-2xl"
             />
           </div>
         </div>
 
-        {/* Desktop Grid Layout - 2 rows, 3 columns, phone spans 2 rows */}
-        <div className="hidden lg:grid max-w-7xl mx-auto grid-cols-3 grid-rows-2 gap-8 mb-16">
-          {/* Communities & Daily Quizzes */}
-          <div
-            ref={topLeftCardRef}
-            className="opacity-0 lg:opacity-0"
-            style={{ gridRow: "1", gridColumn: "1" }}
-          >
-            <div
-              ref={topLeftBgRef}
-              className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-6 h-full flex flex-col border-2 border-white/40 shadow-lg"
-              style={{
-                borderRadius: "16px",
-                border: "2px solid rgba(255,255,255,0.34)",
-                boxShadow:
-                  "0 2px 16px 2px rgba(255,255,255,0.45), 0 4px 24px 0 rgba(0,0,0,0.2)",
-                background: "rgba(44,27,27,0.92)",
-              }}
-            >
-              <div ref={topLeftContentRef}>
-                <h3 className="text-white text-2xl font-extrabold mb-4 text-center">
-                  Communities & Daily Quizzes
-                </h3>
-                <div className="w-full mb-6">
-                  <AutoSlider
-                    images={quizImages}
-                    currentIndex={quizIndex}
-                    className="w-full h-48 rounded-2xl shadow-lg"
-                  />
+        {/* Desktop Layout - 3 columns with items stacked vertically */}
+        <div className="hidden lg:block max-w-7xl mx-auto mb-16">
+          <div className="grid grid-cols-3 gap-6 xl:gap-8">
+            {/* Column 1 */}
+            <div className="flex flex-col gap-6 xl:gap-8 max-w-[400px]">
+              {/* Communities & Daily Quizzes */}
+              <div ref={topLeftCardRef} className="opacity-0 lg:opacity-0">
+                <div
+                  ref={topLeftBgRef}
+                  className="bg-[#2C1B1B]/80 backdrop-blur-lg h-[450px] xl:h-[500px] rounded-2xl p-4 xl:p-6 flex flex-col border-2 border-white/40 shadow-lg"
+                  style={{
+                    borderRadius: "16px",
+                    border: "2px solid rgba(255,255,255,0.34)",
+                    boxShadow:
+                      "0 2px 16px 2px rgba(255,255,255,0.45), 0 4px 24px 0 rgba(0,0,0,0.2)",
+                    background: "rgba(44,27,27,0.92)",
+                  }}
+                >
+                  <div ref={topLeftContentRef}>
+                    <h3 className="text-white text-xl xl:text-2xl font-extrabold mb-3 xl:mb-4 text-center">
+                      Communities & Daily Quizzes
+                    </h3>
+                    <div className="w-full mb-4 xl:mb-6">
+                      <AutoSlider
+                        images={quizImages}
+                        currentIndex={quizIndex}
+                        className="w-full h-60 xl:h-72 rounded-2xl shadow-lg"
+                      />
+                    </div>
+                    <p className="text-white/90 text-base xl:text-lg text-center leading-relaxed">
+                      Be part of active student communities across India. Learn,
+                      laugh, and level up together.
+                    </p>
+                  </div>
                 </div>
-                <p className="text-white/90 text-lg text-center leading-relaxed">
-                  Be part of active student communities across India. Learn,
-                  laugh, and level up together.
-                </p>
+              </div>
+
+              {/* Your Dost AI */}
+              <div ref={bottomLeftCardRef} className="opacity-0 lg:opacity-0">
+                <div
+                  ref={bottomLeftBgRef}
+                  className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-4 xl:p-6 flex flex-col border-2 border-white/40 shadow-lg"
+                  style={{
+                    borderRadius: "16px",
+                    border: "2px solid rgba(255,255,255,0.34)",
+                    boxShadow:
+                      "0 2px 16px 2px rgba(255,255,255,0.45), 0 4px 24px 0 rgba(0,0,0,0.2)",
+                    background: "rgba(44,27,27,0.92)",
+                  }}
+                >
+                  <div
+                    ref={bottomLeftContentRef}
+                    className="flex flex-row items-center gap-4 xl:gap-6"
+                  >
+                    <div className="flex-shrink-0 flex items-center justify-center">
+                      <img
+                        src={robot}
+                        alt="Your Dost AI"
+                        className="w-32 xl:w-40 h-32 xl:h-40 object-contain"
+                      />
+                    </div>
+                    <div className="flex flex-col justify-center">
+                      <h3 className="text-white text-xl xl:text-2xl font-extrabold mb-3 xl:mb-4">
+                        Your Dost AI
+                      </h3>
+                      <p className="text-white/90 text-base xl:text-lg leading-relaxed">
+                        Your <span className="font-bold">AI buddy</span> for
+                        everything – from silly questions to serious career
+                        advice, smarter than your group chat
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Phone Mockup - spans 2 rows */}
-          <div
-            ref={phoneRef}
-            className="opacity-0"
-            style={{ gridRow: "1 / span 2", gridColumn: "2" }}
-          >
-            <div className="relative flex flex-col items-center justify-center h-full">
-              <img
-                src={iphone}
-                alt="iPhone Mockup"
-                className="w-[320px] md:w-[370px] lg:w-[420px] h-auto drop-shadow-2xl z-10"
-              />
-              <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex gap-4 z-20"></div>
-            </div>
-          </div>
-
-          {/* ST PRO Membership */}
-          <div
-            ref={topRightCardRef}
-            className="opacity-0 lg:opacity-0"
-            style={{ gridRow: "1", gridColumn: "3" }}
-          >
-            <div
-              ref={topRightBgRef}
-              className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-6 h-full flex flex-col border-2 border-white/40 shadow-lg items-center justify-center"
-              style={{
-                borderRadius: "16px",
-                border: "2px solid rgba(255,255,255,0.34)",
-                boxShadow:
-                  "0 2px 16px 2px rgba(255,255,255,0.45), 0 4px 24px 0 rgba(0,0,0,0.2)",
-                background: "rgba(44,27,27,0.92)",
-              }}
-            >
-              <div ref={topRightContentRef}>
-                <h3 className="text-white text-2xl font-extrabold mb-6 text-center">
-                  ST PRO Membership
-                </h3>
-                <p className="text-white/90 text-lg text-center leading-relaxed mb-2">
-                  Exclusive opportunities, career events, expert sessions
-                  <br />
-                  &amp; priority invites – all for just{" "}
-                  <span className="font-extrabold">₹299/month</span>.<br />
-                  Totally worth it, 1000% yes!
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Your Dost AI */}
-          <div
-            ref={bottomLeftCardRef}
-            className="opacity-0 lg:opacity-0"
-            style={{ gridRow: "2", gridColumn: "1" }}
-          >
-            <div
-              ref={bottomLeftBgRef}
-              className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-6 h-full flex flex-col border-2 border-white/40 shadow-lg"
-              style={{
-                borderRadius: "16px",
-                border: "2px solid rgba(255,255,255,0.34)",
-                boxShadow:
-                  "0 2px 16px 2px rgba(255,255,255,0.45), 0 4px 24px 0 rgba(0,0,0,0.2)",
-                background: "rgba(44,27,27,0.92)",
-              }}
-            >
-              <div
-                ref={bottomLeftContentRef}
-                className="flex flex-row items-center h-full gap-6"
-              >
-                <div className="flex-shrink-0 flex items-center justify-center h-full">
+            {/* Column 2 - Phone Mockup */}
+            <div className="flex flex-col justify-center">
+              <div ref={phoneRef} className="opacity-0">
+                <div className="relative flex flex-col items-center justify-center">
                   <img
-                    src={robot}
-                    alt="Your Dost AI"
-                    className="w-40 h-40 object-contain"
+                    src={iphone}
+                    alt="iPhone Mockup"
+                    className="w-[280px] xl:w-[320px] 2xl:w-[420px] h-auto drop-shadow-2xl z-10"
                   />
-                </div>
-                <div className="flex flex-col justify-center h-full">
-                  <h3 className="text-white text-2xl font-extrabold mb-4">
-                    Your Dost AI
-                  </h3>
-                  <p className="text-white/90 text-lg leading-relaxed">
-                    Your <span className="font-bold">AI buddy</span> for
-                    everything – from silly questions to serious career advice,
-                    smarter than your group chat
-                  </p>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Gigs & Star Connects */}
-          <div
-            ref={bottomRightCardRef}
-            className="opacity-0 lg:opacity-0"
-            style={{ gridRow: "2", gridColumn: "3" }}
-          >
-            <div
-              ref={bottomRightBgRef}
-              className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-6 h-full flex flex-col border-2 border-white/40 shadow-lg"
-              style={{
-                borderRadius: "16px",
-                border: "2px solid rgba(255,255,255,0.34)",
-                boxShadow:
-                  "0 2px 16px 2px rgba(255,255,255,0.45), 0 4px 24px 0 rgba(0,0,0,0.2)",
-                background: "rgba(44,27,27,0.92)",
-              }}
-            >
-              <div ref={bottomRightContentRef}>
-                <h3 className="text-white text-2xl font-extrabold mb-4 text-center">
-                  Gigs & Star Connects
-                </h3>
-                <div className="w-full mb-6">
-                  <AutoSlider
-                    images={gigsImages}
-                    currentIndex={gigsIndex}
-                    className="w-full h-48 rounded-2xl shadow-lg"
-                  />
+            {/* Column 3 */}
+            <div className="flex flex-col gap-6 xl:gap-8">
+              {/* ST PRO Membership */}
+              <div ref={topRightCardRef} className="opacity-0 lg:opacity-0">
+                <div
+                  ref={topRightBgRef}
+                  className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-4 xl:p-6 flex flex-col border-2 border-white/40 shadow-lg items-center justify-center"
+                  style={{
+                    borderRadius: "16px",
+                    border: "2px solid rgba(255,255,255,0.34)",
+                    boxShadow:
+                      "0 2px 16px 2px rgba(255,255,255,0.45), 0 4px 24px 0 rgba(0,0,0,0.2)",
+                    background: "rgba(44,27,27,0.92)",
+                  }}
+                >
+                  <div ref={topRightContentRef}>
+                    <h3 className="text-white text-xl xl:text-2xl font-extrabold mb-4 xl:mb-6 text-center">
+                      ST PRO Membership
+                    </h3>
+                    <p className="text-white/90 text-base xl:text-lg text-center leading-relaxed mb-2">
+                      Exclusive opportunities, career events, expert sessions
+                      <br />
+                      &amp; priority invites – all for just{" "}
+                      <span className="font-extrabold">₹299/month</span>.<br />
+                      Totally worth it, 1000% yes!
+                    </p>
+                  </div>
                 </div>
-                <p className="text-white/90 text-lg text-center leading-relaxed">
-                  Chill gigs, fun open mics, and star connects – vibe, showcase
-                  your talent, and learn directly from the pros who inspire.
-                </p>
+              </div>
+
+              {/* Gigs & Star Connects */}
+              <div ref={bottomRightCardRef} className="opacity-0 lg:opacity-0">
+                <div
+                  ref={bottomRightBgRef}
+                  className="bg-[#2C1B1B]/80 backdrop-blur-lg h-[500px] xl:h-[550px] rounded-2xl p-4 xl:p-6 flex flex-col border-2 border-white/40 shadow-lg"
+                  style={{
+                    borderRadius: "16px",
+                    border: "2px solid rgba(255,255,255,0.34)",
+                    boxShadow:
+                      "0 2px 16px 2px rgba(255,255,255,0.45), 0 4px 24px 0 rgba(0,0,0,0.2)",
+                    background: "rgba(44,27,27,0.92)",
+                  }}
+                >
+                  <div ref={bottomRightContentRef}>
+                    <div className="w-full mb-4 xl:mb-6">
+                      <AutoSlider
+                        images={gigsImages}
+                        currentIndex={gigsIndex}
+                        className="w-full h-72 xl:h-80 rounded-2xl shadow-lg"
+                      />
+                    </div>
+                    <h3 className="text-white text-xl xl:text-2xl font-extrabold mb-3 xl:mb-4 text-center">
+                      Gigs & Star Connects
+                    </h3>
+                    <p className="text-white/90 text-base xl:text-lg text-center leading-relaxed">
+                      Chill gigs, fun open mics, and star connects – vibe,
+                      showcase your talent, and learn directly from the pros who
+                      inspire.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
