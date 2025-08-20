@@ -218,85 +218,52 @@ export default function StudentApp() {
     const runAnimation = () => {
       setIsVisible(true);
 
-      // Check if all refs are available before running animations
-      const allRefs = [
-        phoneRef.current,
+      // Build arrays of elements that actually exist (desktop vs mobile)
+      const cardElems = [
         topLeftCardRef.current,
         topRightCardRef.current,
         bottomLeftCardRef.current,
         bottomRightCardRef.current,
+      ].filter(Boolean);
+
+      const bgElems = [
         topLeftBgRef.current,
         topRightBgRef.current,
         bottomLeftBgRef.current,
         bottomRightBgRef.current,
+      ].filter(Boolean);
+
+      const contentElems = [
         topLeftContentRef.current,
         topRightContentRef.current,
         bottomLeftContentRef.current,
         bottomRightContentRef.current,
-      ];
+      ].filter(Boolean);
 
-      // Only run animation if all required refs exist
-      const allRefsExist = allRefs.every((ref) => ref !== null);
-      if (!allRefsExist) {
-        console.warn("Some animation refs are null, skipping animation");
+      const phoneElem = phoneRef.current || null;
+
+      // If nothing to animate, bail
+      if (!phoneElem && cardElems.length === 0 && bgElems.length === 0 && contentElems.length === 0) {
+        console.warn("No animation targets found for StudentApp");
         return;
       }
 
-      // Create GSAP timeline for simultaneous animations
       const tl = gsap.timeline();
 
-      // Set initial states
-      gsap.set([phoneRef.current], { opacity: 0, y: 200 });
-      gsap.set(
-        [
-          topLeftCardRef.current,
-          topRightCardRef.current,
-          bottomLeftCardRef.current,
-          bottomRightCardRef.current,
-        ],
-        { opacity: 0 }
-      );
+      // Safe initial states
+      if (phoneElem) gsap.set([phoneElem], { opacity: 0, y: 200 });
+      if (cardElems.length) gsap.set(cardElems, { opacity: 0 });
+      if (bgElems.length) gsap.set(bgElems, { scale: 0, transformOrigin: "center center" });
+      if (contentElems.length) gsap.set(contentElems, { opacity: 0 });
 
-      // Set initial scale for card backgrounds
-      gsap.set(
-        [
-          topLeftBgRef.current,
-          topRightBgRef.current,
-          bottomLeftBgRef.current,
-          bottomRightBgRef.current,
-        ],
-        {
-          scale: 0,
-          transformOrigin: "center center",
-        }
-      );
+      // Animate available targets only
+      if (cardElems.length) {
+        tl.to(cardElems, { opacity: 1, duration: 0.1 });
+      }
 
-      // Set initial positions for card content
-      gsap.set(topLeftContentRef.current, { x: -200, y: -100, opacity: 0 });
-      gsap.set(topRightContentRef.current, { x: 200, y: -100, opacity: 0 });
-      gsap.set(bottomLeftContentRef.current, { x: -200, y: 100, opacity: 0 });
-      gsap.set(bottomRightContentRef.current, { x: 200, y: 100, opacity: 0 });
-
-      // Start animations simultaneously
-      tl.to(
-        [
-          topLeftCardRef.current,
-          topRightCardRef.current,
-          bottomLeftCardRef.current,
-          bottomRightCardRef.current,
-        ],
-        {
-          opacity: 1,
-          duration: 0.1,
-        }
-      )
-        .to(
-          [
-            topLeftBgRef.current,
-            topRightBgRef.current,
-            bottomLeftBgRef.current,
-            bottomRightBgRef.current,
-          ],
+      if (bgElems.length) {
+        tl.to(
+          bgElems,
           {
             scale: 1,
             duration: 0.8,
@@ -304,9 +271,12 @@ export default function StudentApp() {
             stagger: 0.1,
           },
           0
-        )
-        .to(
-          phoneRef.current,
+        );
+      }
+
+      if (phoneElem) {
+        tl.to(
+          phoneElem,
           {
             opacity: 1,
             y: 0,
@@ -314,14 +284,12 @@ export default function StudentApp() {
             ease: "power3.out",
           },
           0.2
-        )
-        .to(
-          [
-            topLeftContentRef.current,
-            topRightContentRef.current,
-            bottomLeftContentRef.current,
-            bottomRightContentRef.current,
-          ],
+        );
+      }
+
+      if (contentElems.length) {
+        tl.to(
+          contentElems,
           {
             opacity: 1,
             x: 0,
@@ -332,6 +300,7 @@ export default function StudentApp() {
           },
           0.3
         );
+      }
     };
 
     if (containerRef.current) {
