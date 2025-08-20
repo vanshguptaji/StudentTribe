@@ -518,13 +518,13 @@ const StOpportunities = () => {
     >
       {gradientBg}
       /* Banner image top-right */
-      <img
+      {/* <img
         src={banner}
         alt="ST Beast Banner"
         className="absolute top-0 right-8 md:top-0 md:right-8 lg:top-0 lg:right-4 w-[1px] md:w-[30px] lg:w-[50px] h-auto select-none pointer-events-none"
         style={{ minWidth: "20px" }}
         loading="eager"
-      />
+      /> */}
       {/* ST Logo at Top - hover to show buttons */}
       <div className="absolute top-6 md:top-8 left-1/2 transform -translate-x-1/2 z-20">
         <div

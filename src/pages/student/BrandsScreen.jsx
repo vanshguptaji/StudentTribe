@@ -154,13 +154,13 @@ export default function BrandsScreen() {
   return (
     <div ref={containerRef} className="relative w-screen min-h-screen flex flex-col items-center justify-start bg-gradient-to-br from-[#fff6f6] to-[#FFF8F8] overflow-hidden"
          id="brands-section">
-          <img
+          {/* <img
                   src={banner}
                   alt="ST Care Banner"
                   className="absolute top-0 right-4 md:top-0 md:right-8 lg:top-0 lg:right-2 w-[20px] md:w-[30px] lg:w-[56px] h-auto select-none pointer-events-none"
                   style={{ minWidth: "20px" }}
                   loading="eager"
-                />
+                /> */}
       {/* Main content */}
       <div className="relative z-10 flex flex-col items-center w-full px-4 pt-4">
         <div className="mb-6 md:mb-8 text-center">

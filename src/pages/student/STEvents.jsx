@@ -165,7 +165,7 @@ export default function STEvents() {
       id="events-section"
     >
       {/* Banner image top-right */}
-      <img
+      {/* <img
         src={banner}
         alt="ST Beast Banner"
         className="absolute top-0 right-4 md:top-0 md:right-4 lg:top-0 lg:right-4 w-[20px] md:w-[30px] lg:w-[56px] h-auto select-none pointer-events-none"
@@ -174,7 +174,7 @@ export default function STEvents() {
         onError={(e) => {
           e.target.style.display = 'none';
         }}
-      />
+      /> */}
 
   {/* Main Content Container */}
   <div className="w-full px-0 py-8">
