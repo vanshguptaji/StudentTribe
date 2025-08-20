@@ -659,7 +659,7 @@ export default function StudentApp() {
             <img
               src={iphone}
               alt="iPhone Mockup"
-              className="w-[200px] sm:w-[250px] md:w-[280px] h-auto drop-shadow-2xl"
+              className="w-[300px] sm:w-[420px] md:w-[420px] h-auto drop-shadow-2xl"
             />
           </div>
         </div>
@@ -747,7 +747,7 @@ export default function StudentApp() {
                   <img
                     src={iphone}
                     alt="iPhone Mockup"
-                    className="w-[280px] xl:w-[320px] 2xl:w-[420px] h-auto drop-shadow-2xl z-10"
+                    className="w-[420px] xl:w-[420px] 2xl:w-[420px] h-auto drop-shadow-2xl z-10"
                   />
                 </div>
               </div>
