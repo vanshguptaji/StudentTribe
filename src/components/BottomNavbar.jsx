@@ -247,10 +247,6 @@ const BottomNavbar = () => {
     return () => document.removeEventListener('click', handleClickOutside);
   }, [isOpen]);
 
-  // Debug log to see what's happening (remove in production)
-  useEffect(() => {
-    console.log('Active tab changed to:', activeTab);
-  }, [activeTab]);
 
   if (footerVisible || splashActive) return null;
 
