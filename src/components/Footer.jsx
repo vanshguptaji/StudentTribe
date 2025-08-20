@@ -45,7 +45,7 @@ export default function Footer() {
           }}>
           {/* Left: Join Community */}
           <div className="mb-6 sm:mb-8 lg:mb-0 lg:w-1/3 flex flex-col justify-center">
-            <h2 className="text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold mb-3 sm:mb-4 md:mb-6 leading-tight">
+            <h2 className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-extrabold mb-3 sm:mb-4 md:mb-6 leading-tight">
               <span className="whitespace-nowrap">Want to join our</span>
               <br />
               <span className="whitespace-nowrap">community?</span>

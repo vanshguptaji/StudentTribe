@@ -651,11 +651,11 @@ export default function STEvents() {
             ref={buttonsRef}
             className="flex justify-center space-x-4 sm:space-x-6"
           >
-            <button className="bg-gradient-to-r from-[#b8001f] to-[#7a0015] hover:from-[#a0001b] hover:to-[#600012] text-white px-4 py-2 sm:px-8 sm:py-4 rounded-full font-medium transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl text-sm sm:text-base hover:scale-105">
+            <button className="bg-gradient-to-r from-[#b8001f] to-[#7a0015] hover:bg-red-700 text-white px-4 py-2 sm:px-8 sm:py-4 rounded-full font-medium transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl text-sm sm:text-base">
               <span>Register now</span>
               <ChevronRight className="w-5 h-5" />
             </button>
-            <button className="bg-gradient-to-r from-[#b8001f] to-[#7a0015] hover:from-[#a0001b] hover:to-[#600012] text-white px-4 py-2 sm:px-8 sm:py-4 rounded-full font-medium transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl text-sm sm:text-base hover:scale-105">
+            <button className="bg-gradient-to-r from-[#b8001f] to-[#7a0015] hover:bg-red-700 text-white px-4 py-2 sm:px-8 sm:py-4 rounded-full font-medium transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl text-sm sm:text-base">
               <span>Host an Event</span>
               <ChevronRight className="w-5 h-5" />
             </button>
