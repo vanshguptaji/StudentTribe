@@ -326,23 +326,6 @@ export default function STEvents() {
             </div>
           </div>
         </div>
-
-        {/* Slide Indicators */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
-          {sliderImages.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentSlide(index + sliderImages.length)}
-              className={`w-4 h-4 sm:w-3 sm:h-3 rounded-full border-2 border-white focus:outline-none transition-all duration-300 shadow-md ${
-                currentSlide % sliderImages.length === index
-                  ? "bg-red-600 scale-110"
-                  : "bg-gray-400 hover:bg-gray-600"
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-              tabIndex={0}
-            />
-          ))}
-        </div>
       </div>
     </div>
   );
