@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+// Import your assets here
 import banner from "../../assets/stApp/banner.svg";
 import stlogo from "../../assets/White logo.png";
 import { gsap } from "gsap";
@@ -7,19 +8,179 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import robot from "../../assets/BrandsSection/image 269.svg";
 import iphone from "../../assets/BrandsSection/iPhone.svg";
 import quizImg from "../../assets/BrandsSection/center.svg";
+import quizImg2 from "../../assets/stApp/image 271.svg";
+import quizImg3 from "../../assets/stApp/image 272.svg";
+import quizImg4 from "../../assets/stApp/image 274.svg";
+import gigsImg from "../../assets/stApp/image 273.svg"
+import gigsImg2 from "../../assets/stApp/image 2712.svg"
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
+
+// Card Slider Component
+const CardSlider = ({ cards, className, autoSlideInterval = 3000 }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
+  const containerRef = useRef(null);
+  const autoSlideRef = useRef(null);
+
+  // Auto-slide functionality
+  useEffect(() => {
+    const startAutoSlide = () => {
+      autoSlideRef.current = setInterval(() => {
+        if (!isDragging && !isAnimating) {
+          setCurrentIndex(prev => (prev + 1) % cards.length);
+        }
+      }, autoSlideInterval);
+    };
+
+    startAutoSlide();
+    return () => clearInterval(autoSlideRef.current);
+  }, [isDragging, isAnimating, cards.length, autoSlideInterval]);
+
+  // Handle animation state
+  useEffect(() => {
+    if (isAnimating) {
+      const timer = setTimeout(() => setIsAnimating(false), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isAnimating]);
+
+  const handleDragStart = (clientX) => {
+    if (isAnimating) return;
+    setIsDragging(true);
+    setDragStart(clientX);
+    setDragOffset(0);
+  };
+
+  const handleDragMove = (clientX) => {
+    if (!isDragging || !containerRef.current) return;
+    
+    const diff = clientX - dragStart;
+    const containerWidth = containerRef.current.offsetWidth;
+    const offset = Math.max(-100, Math.min(100, (diff / containerWidth) * 100));
+    setDragOffset(offset);
+  };
+
+  const handleDragEnd = () => {
+    if (!isDragging || !containerRef.current) return;
+    
+    setIsDragging(false);
+    const threshold = 20;
+    
+    if (dragOffset < -threshold) {
+      nextSlide();
+    } else if (dragOffset > threshold) {
+      prevSlide();
+    }
+    
+    setDragOffset(0);
+  };
+
+  const nextSlide = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setCurrentIndex(prev => (prev + 1) % cards.length);
+  };
+
+  const prevSlide = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setCurrentIndex(prev => (prev - 1 + cards.length) % cards.length);
+  };
+
+  const goToSlide = (index) => {
+    if (isAnimating || index === currentIndex) return;
+    setIsAnimating(true);
+    setCurrentIndex(index);
+  };
+
+  const getCardTransform = (index) => {
+    if (isDragging && index === currentIndex) {
+      return `translateX(${dragOffset}%)`;
+    }
+    
+    if (index === currentIndex) {
+      return 'translateX(0%)';
+    } else if (index > currentIndex) {
+      return 'translateX(100%)';
+    } else {
+      return 'translateX(-100%)';
+    }
+  };
+
+  return (
+    <div 
+      ref={containerRef}
+      className={`relative overflow-hidden cursor-grab active:cursor-grabbing select-none ${className}`}
+      onMouseDown={(e) => handleDragStart(e.clientX)}
+      onMouseMove={(e) => handleDragMove(e.clientX)}
+      onMouseUp={handleDragEnd}
+      onMouseLeave={handleDragEnd}
+      onTouchStart={(e) => handleDragStart(e.touches[0].clientX)}
+      onTouchMove={(e) => {
+        e.preventDefault();
+        handleDragMove(e.touches[0].clientX);
+      }}
+      onTouchEnd={handleDragEnd}
+    >
+      {/* Cards */}
+      {cards.map((card, index) => (
+        <div
+          key={index}
+          className="absolute inset-0 transition-transform duration-500 ease-out"
+          style={{
+            transform: getCardTransform(index),
+            zIndex: index === currentIndex ? 2 : 1
+          }}
+        >
+          {typeof card === 'string' ? (
+            <img
+              src={card}
+              alt={`Slide ${index}`}
+              className="w-full h-full object-cover rounded-xl"
+            />
+          ) : (
+            card
+          )}
+        </div>
+      ))}
+
+      {/* Navigation Dots */}
+      {/* {cards.length > 1 && (
+        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+          {cards.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                index === currentIndex
+                  ? 'bg-white scale-125'
+                  : 'bg-white/30 hover:bg-white/50'
+              }`}
+            />
+          ))}
+        </div>
+      )} */}
+
+      {/* Swipe Hint */}
+      {cards.length > 1 && (
+        <div className="absolute top-2 right-2 text-white/50 text-xs pointer-events-none">
+          ← →
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default function StudentApp() {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
   const [hoveredButton, setHoveredButton] = useState("students");
-
-  // Carousel states
-  const [quizIndex, setQuizIndex] = useState(0);
-  const [gigsIndex, setGigsIndex] = useState(0);
 
   const hideButtonsTimeoutRef = useRef(null);
   const containerRef = useRef(null);
@@ -35,52 +196,23 @@ export default function StudentApp() {
   const bottomLeftBgRef = useRef(null);
   const bottomRightBgRef = useRef(null);
 
-  // Refs for card content
   const topLeftContentRef = useRef(null);
   const topRightContentRef = useRef(null);
   const bottomLeftContentRef = useRef(null);
   const bottomRightContentRef = useRef(null);
 
-  // Image arrays
-  const quizImages = [quizImg, robot, quizImg, robot];
-  const gigsImages = [robot, quizImg, robot, quizImg];
-
-  // Auto slider for quiz images
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setQuizIndex((prev) => (prev + 1) % quizImages.length);
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Auto slider for gigs images
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setGigsIndex((prev) => (prev + 1) % gigsImages.length);
-    }, 2500);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Simple Slider Component
-  const AutoSlider = ({ images, currentIndex, className }) => (
-    <div className={`relative overflow-hidden ${className}`}>
-      <div
-        className="flex transition-transform duration-500 ease-in-out"
-        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-      >
-        {images.map((img, index) => (
-          <img
-            key={index}
-            src={img}
-            alt={`Slide ${index}`}
-            className="min-w-full h-full object-cover flex-shrink-0"
-          />
-        ))}
-      </div>
-    </div>
-  );
+  // Image arrays for sliders
+  const quizImages = [
+    quizImg2,
+    quizImg3,
+    quizImg4
+  ];
+  
+  const gigsImages = [
+    gigsImg,
+    quizImg4,
+    gigsImg2
+  ];
 
   useEffect(() => {
     const runAnimation = () => {
@@ -398,7 +530,7 @@ export default function StudentApp() {
               {/* Communities & Daily Quizzes */}
               <div className="w-full">
                 <div
-                  className="bg-[#2C1B1B]/80 backdrop-blur-lg h-[300px] rounded-2xl p-3 sm:p-4  flex flex-col border-2 border-white/40 shadow-lg min-h-[240px] sm:min-h-[280px]"
+                  className="bg-[#2C1B1B]/80 backdrop-blur-lg h-[300px] rounded-2xl p-3 sm:p-4 flex flex-col border-2 border-white/40 shadow-lg min-h-[240px] sm:min-h-[280px]"
                   style={{
                     borderRadius: "16px",
                     border: "2px solid rgba(255,255,255,0.34)",
@@ -412,10 +544,10 @@ export default function StudentApp() {
                       Communities & Daily Quizzes
                     </h3>
                     <div className="w-full mb-2 sm:mb-3">
-                      <AutoSlider
-                        images={quizImages}
-                        currentIndex={quizIndex}
+                      <CardSlider
+                        cards={quizImages}
                         className="w-full h-32 sm:h-48 rounded-xl shadow-lg"
+                        autoSlideInterval={2000}
                       />
                     </div>
                     <p className="text-white/90 text-xs text-center leading-relaxed">
@@ -428,7 +560,7 @@ export default function StudentApp() {
               {/* Your Dost AI */}
               <div className="w-full">
                 <div
-                  className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-3 sm:p-4 h-[150px] flex flex-col border-2 border-white/40 shadow-lg "
+                  className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-3 sm:p-4 h-[150px] flex flex-col border-2 border-white/40 shadow-lg"
                   style={{
                     borderRadius: "16px",
                     border: "2px solid rgba(255,255,255,0.34)",
@@ -465,7 +597,7 @@ export default function StudentApp() {
               {/* ST PRO Membership */}
               <div className="w-full">
                 <div
-                  className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-3 sm:p-4 h-[150px] flex flex-col border-2 border-white/40 shadow-lg items-center justify-center "
+                  className="bg-[#2C1B1B]/80 backdrop-blur-lg rounded-2xl p-3 sm:p-4 h-[150px] flex flex-col border-2 border-white/40 shadow-lg items-center justify-center"
                   style={{
                     borderRadius: "16px",
                     border: "2px solid rgba(255,255,255,0.34)",
@@ -501,10 +633,10 @@ export default function StudentApp() {
                 >
                   <div>
                     <div className="w-full mb-2 sm:mb-3">
-                      <AutoSlider
-                        images={gigsImages}
-                        currentIndex={gigsIndex}
+                      <CardSlider
+                        cards={gigsImages}
                         className="w-full h-32 sm:h-20 rounded-xl shadow-lg"
+                        autoSlideInterval={2500}
                       />
                     </div>
                     <h3 className="text-white text-xs sm:text-sm font-extrabold mb-2 sm:mb-3 text-center">
@@ -555,10 +687,10 @@ export default function StudentApp() {
                       Communities & Daily Quizzes
                     </h3>
                     <div className="w-full mb-4 xl:mb-6">
-                      <AutoSlider
-                        images={quizImages}
-                        currentIndex={quizIndex}
+                      <CardSlider
+                        cards={quizImages}
                         className="w-full h-60 xl:h-72 rounded-2xl shadow-lg"
+                        autoSlideInterval={2000}
                       />
                     </div>
                     <p className="text-white/90 text-base xl:text-lg text-center leading-relaxed">
@@ -666,10 +798,10 @@ export default function StudentApp() {
                 >
                   <div ref={bottomRightContentRef}>
                     <div className="w-full mb-4 xl:mb-6">
-                      <AutoSlider
-                        images={gigsImages}
-                        currentIndex={gigsIndex}
+                      <CardSlider
+                        cards={gigsImages}
                         className="w-full h-72 xl:h-80 rounded-2xl shadow-lg"
+                        autoSlideInterval={2500}
                       />
                     </div>
                     <h3 className="text-white text-xl xl:text-2xl font-extrabold mb-3 xl:mb-4 text-center">
