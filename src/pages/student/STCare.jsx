@@ -403,7 +403,7 @@ const STCare = () => {
                   </div>
                   <button
                     ref={buttonRef}
-                    className="lg:flex hidden bg-red-800 text-white px-4 py-3 sm:px-2 sm:py-4 rounded-full font-bold items-center gap-0 hover:bg-red-700 transition-all duration-300 text-sm sm:text-base shadow-xl w-full justify-center opacity-0 min-h-[30px]"
+                    className="lg:flex hidden bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white px-4 py-3 sm:px-2 sm:py-4 rounded-full font-bold items-center gap-0 hover:bg-red-700 transition-all duration-300 text-sm sm:text-base shadow-xl w-full justify-center opacity-0 min-h-[30px]"
                     style={{ boxShadow: "0 4px 24px rgba(184,0,31,0.15)" }}
                   >
                     <span className="text-center flex-1">
@@ -473,13 +473,6 @@ const STCare = () => {
               />
             </svg>
           </button>
-
-          <div ref={bottomTextRef} className="text-center mt-8 opacity-0">
-            <p className="text-gray-700 text-lg max-w-2xl mx-auto">
-              From oversized fits that scream confidence to punchlines that rep
-              your vibe — this drop is all about you.
-            </p>
-          </div>
         </div>
 
         {/* Bottom curved element */}
