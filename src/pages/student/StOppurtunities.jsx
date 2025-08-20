@@ -550,13 +550,13 @@ const StOpportunities = () => {
             }}
           >
             <button
-              className="flex-1 py-3 md:py-4 text-center rounded-full transition-all duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white border-none cursor-pointer text-base md:text-lg hover:scale-105"
+              className="flex-1 text-center rounded-full transition-all duration-300 bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white border-none cursor-pointer text-base md:text-lg hover:scale-105"
               onClick={() => navigate("/")}
             >
               Students
             </button>
             <button
-              className="flex-1 py-3 md:py-4 text-center rounded-full transition-all duration-300 bg-transparent text-gray-300 border-none cursor-pointer text-base md:text-lg hover:bg-[#b8001f] hover:text-white hover:scale-105"
+              className="flex-1 text-center rounded-full transition-all duration-300 bg-transparent text-gray-300 border-none cursor-pointer text-base md:text-lg hover:bg-[#b8001f] hover:text-white hover:scale-105"
               onClick={() => navigate("/brands")}
             >
               Brands

@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
-  // Navigation items matching BottomNavbar
   const navItems = [
     { id: "ST School", label: "ST SCHOOL", sectionId: "main-section" },
     { id: "ST App", label: "ST APP", sectionId: "app-section" },

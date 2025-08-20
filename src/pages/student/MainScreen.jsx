@@ -69,7 +69,11 @@ function getFixedStyle(index) {
   };
 }
 
-const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAnimation = false }) => {
+const MainScreen = ({
+  onNavigateToSection,
+  splashCompleted = false,
+  startMainAnimation = false,
+}) => {
   const navigate = useNavigate();
   const logoRef = useRef(null);
   const backgroundRef = useRef(null);
@@ -81,9 +85,9 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
   const containerRef = useRef(null);
   const logoContainerRef = useRef(null);
   const buttonsContainerRef = useRef(null);
-  
+
   // State for tracking which button is being hovered and animation status
-  const [hoveredButton, setHoveredButton] = useState('students');
+  const [hoveredButton, setHoveredButton] = useState("students");
   const [animationStarted, setAnimationStarted] = useState(false);
 
   // Check if we should start animation (either when splash starts fading or completes)
@@ -99,11 +103,11 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
 
   // Always scroll to main-section on mount (reload)
   useEffect(() => {
-    const el = document.getElementById('main-section');
+    const el = document.getElementById("main-section");
     if (el) {
-      el.scrollIntoView({ behavior: 'auto' });
+      el.scrollIntoView({ behavior: "auto" });
     } else {
-      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     }
   }, []);
 
@@ -123,13 +127,17 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
     setHoveredButton(buttonType);
   };
 
-
-
   // Main animation function
   const runAnimation = () => {
-    if (logoRef.current && containerRef.current && buttonsContainerRef.current) {
+    if (
+      logoRef.current &&
+      containerRef.current &&
+      buttonsContainerRef.current
+    ) {
       // Set the main content container to be visible
-      const mainContentContainer = document.querySelector('.main-screen-content');
+      const mainContentContainer = document.querySelector(
+        ".main-screen-content"
+      );
       if (mainContentContainer) {
         gsap.set(mainContentContainer, { opacity: 1 });
       }
@@ -140,8 +148,12 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
       });
 
       // Filter out null refs and set initial state for text animations
-      const validDescriptionRefs = descriptionWordsRef.current.filter(ref => ref !== null && ref !== undefined);
-      const validSecondaryRefs = secondaryDescriptionWordsRef.current.filter(ref => ref !== null && ref !== undefined);
+      const validDescriptionRefs = descriptionWordsRef.current.filter(
+        (ref) => ref !== null && ref !== undefined
+      );
+      const validSecondaryRefs = secondaryDescriptionWordsRef.current.filter(
+        (ref) => ref !== null && ref !== undefined
+      );
 
       if (validDescriptionRefs.length > 0) {
         gsap.set(validDescriptionRefs, {
@@ -217,23 +229,31 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
 
       // Add text animations if refs are available - start sooner
       if (validDescriptionRefs.length > 0) {
-        tl.to(validDescriptionRefs, {
-          opacity: 1,
-          rotateX: 0,
-          duration: 0.5,
-          ease: "back.out(1.7)",
-          stagger: 0.1, // Slightly faster stagger
-        }, "+=0.1"); // Reduced delay
+        tl.to(
+          validDescriptionRefs,
+          {
+            opacity: 1,
+            rotateX: 0,
+            duration: 0.5,
+            ease: "back.out(1.7)",
+            stagger: 0.1, // Slightly faster stagger
+          },
+          "+=0.1"
+        ); // Reduced delay
       }
 
       if (validSecondaryRefs.length > 0) {
-        tl.to(validSecondaryRefs, {
-          opacity: 1,
-          rotateX: 0,
-          duration: 0.4,
-          ease: "back.out(1.7)",
-          stagger: 0.02, // Faster stagger
-        }, "+=0.1"); // Reduced delay
+        tl.to(
+          validSecondaryRefs,
+          {
+            opacity: 1,
+            rotateX: 0,
+            duration: 0.4,
+            ease: "back.out(1.7)",
+            stagger: 0.02, // Faster stagger
+          },
+          "+=0.1"
+        ); // Reduced delay
       }
 
       // Animate background images similar to motivational words
@@ -271,20 +291,27 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
   useEffect(() => {
     // Initially hide all elements immediately when component mounts
     const setInitialState = () => {
-      if (logoRef.current && containerRef.current && buttonsContainerRef.current) {
+      if (
+        logoRef.current &&
+        containerRef.current &&
+        buttonsContainerRef.current
+      ) {
         // Hide all main elements initially
-        gsap.set([
-          logoRef.current,
-          backgroundRef.current,
-          buttonsContainerRef.current
-        ], {
-          opacity: 0,
-        });
+        gsap.set(
+          [logoRef.current, backgroundRef.current, buttonsContainerRef.current],
+          {
+            opacity: 0,
+          }
+        );
 
         // Hide all text elements initially
         const allDescriptionRefs = [
-          ...descriptionWordsRef.current.filter(ref => ref !== null && ref !== undefined),
-          ...secondaryDescriptionWordsRef.current.filter(ref => ref !== null && ref !== undefined)
+          ...descriptionWordsRef.current.filter(
+            (ref) => ref !== null && ref !== undefined
+          ),
+          ...secondaryDescriptionWordsRef.current.filter(
+            (ref) => ref !== null && ref !== undefined
+          ),
         ];
 
         if (allDescriptionRefs.length > 0) {
@@ -315,7 +342,11 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
 
     // Add a small delay to ensure all refs are populated
     const timer = setTimeout(() => {
-      if (logoRef.current && containerRef.current && buttonsContainerRef.current) {
+      if (
+        logoRef.current &&
+        containerRef.current &&
+        buttonsContainerRef.current
+      ) {
         // Create scroll trigger for main screen animation
         ScrollTrigger.create({
           trigger: containerRef.current,
@@ -474,7 +505,7 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
           opacity: 0;
         }
       `}</style>
-      
+
       <div
         ref={containerRef}
         className="relative w-screen h-screen flex items-center justify-center overflow-hidden"
@@ -518,29 +549,26 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
               <div
                 ref={buttonsContainerRef}
                 className=" w-[400px] h-[50px] max-w-[90vw] mt-8 flex bg-[#2d000a] rounded-full shadow-2xl font-bold z-20 transition-all duration-300 mb-8"
-                style={{
-                  top: "calc(100% + 8px)",
-                }}
               >
                 <button
-                  className={`flex-1 py-4 text-center rounded-full transition-all duration-300 border-none cursor-pointer text-lg hover:scale-105 ${
-                    hoveredButton === 'students'
-                      ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white'
-                      : 'bg-transparent text-gray-300 hover:text-white'
+                  className={`flex-1 text-center rounded-full transition-all duration-300 border-none cursor-pointer text-lg hover:scale-105 ${
+                    hoveredButton === "students"
+                      ? "bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white"
+                      : "bg-transparent text-gray-300 hover:text-white"
                   }`}
                   onClick={() => scrollToSection("main-section")}
-                  onMouseEnter={() => handleButtonHover('students')}
+                  onMouseEnter={() => handleButtonHover("students")}
                 >
                   Students
                 </button>
                 <button
-                  className={`flex-1 py-4 text-center rounded-full transition-all duration-300 border-none cursor-pointer text-lg hover:scale-105 ${
-                    hoveredButton === 'brands'
-                      ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white'
-                      : 'bg-transparent text-gray-300 hover:text-white'
+                  className={`flex-1 text-center rounded-full transition-all duration-300 border-none cursor-pointer text-lg hover:scale-105 ${
+                    hoveredButton === "brands"
+                      ? "bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white"
+                      : "bg-transparent text-gray-300 hover:text-white"
                   }`}
                   onClick={() => navigate("/brands")}
-                  onMouseEnter={() => handleButtonHover('brands')}
+                  onMouseEnter={() => handleButtonHover("brands")}
                 >
                   Brands
                 </button>
@@ -650,7 +678,9 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
                       {words.slice(0, 6).map((word, i) => (
                         <span
                           key={`sec1-${i}`}
-                          ref={(el) => (secondaryDescriptionWordsRef.current[i] = el)}
+                          ref={(el) =>
+                            (secondaryDescriptionWordsRef.current[i] = el)
+                          }
                           style={{ display: "inline-block", whiteSpace: "pre" }}
                         >
                           {word + " "}
@@ -662,7 +692,9 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
                       {words.slice(6).map((word, i) => (
                         <span
                           key={`sec2-${i}`}
-                          ref={(el) => (secondaryDescriptionWordsRef.current[i + 6] = el)}
+                          ref={(el) =>
+                            (secondaryDescriptionWordsRef.current[i + 6] = el)
+                          }
                           style={{ display: "inline-block", whiteSpace: "pre" }}
                         >
                           {word + (i < words.slice(6).length - 1 ? " " : "")}
@@ -677,7 +709,8 @@ const MainScreen = ({ onNavigateToSection, splashCompleted = false, startMainAni
                         key={`secn-${i}`}
                         ref={(el) => {
                           // Use different indices to avoid conflicts with the two-line layout
-                          if (el) secondaryDescriptionWordsRef.current[i + 100] = el;
+                          if (el)
+                            secondaryDescriptionWordsRef.current[i + 100] = el;
                         }}
                         style={{ display: "inline-block", whiteSpace: "pre" }}
                       >

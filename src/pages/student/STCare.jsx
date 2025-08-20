@@ -305,7 +305,7 @@ const STCare = () => {
               }}
             >
               <button
-                className={`flex-1 py-4 text-center rounded-full transition-all duration-300 border-none cursor-pointer text-lg hover:scale-105 ${
+                className={`flex-1 text-center rounded-full transition-all duration-300 border-none cursor-pointer text-lg hover:scale-105 ${
                   hoveredButton === 'students'
                     ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white'
                     : 'bg-transparent text-gray-300 hover:text-white'
@@ -317,7 +317,7 @@ const STCare = () => {
                 Students
               </button>
               <button
-                className={`flex-1 py-4 text-center rounded-full transition-all duration-300 border-none cursor-pointer text-lg hover:scale-105 ${
+                className={`flex-1 text-center rounded-full transition-all duration-300 border-none cursor-pointer text-lg hover:scale-105 ${
                   hoveredButton === 'brands'
                     ? 'bg-gradient-to-r from-[#b8001f] to-[#7a0015] text-white'
                     : 'bg-transparent text-gray-300 hover:text-white'
