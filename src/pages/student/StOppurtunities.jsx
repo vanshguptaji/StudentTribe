@@ -513,7 +513,6 @@ const StOpportunities = () => {
   return (
     <div
       ref={containerRef}
-      id="opportunities-section"
       className="w-full h-screen text-white relative overflow-hidden"
     >
       {gradientBg}

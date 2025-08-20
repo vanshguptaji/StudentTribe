@@ -54,7 +54,7 @@ const SinglePageLayout = ({
             case "app-section":
               triggerSectionAnimation(appRef, "app");
               break;
-            case "opportunity-section":
+            case "opportunities-section":
               triggerSectionAnimation(opportunityRef, "opportunities");
               break;
             case "events-section":
@@ -115,7 +115,7 @@ const SinglePageLayout = ({
         <StudentApp />
       </section>
 
-      <section ref={opportunityRef} className="min-h-screen w-full" id="app-section">
+      <section ref={opportunityRef} className="min-h-screen w-full" id="opportunities-section">
         <StOpportunities />
       </section>
 
