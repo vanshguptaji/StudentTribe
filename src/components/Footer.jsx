@@ -168,7 +168,7 @@ export default function Footer() {
 
           {/* Large Student Tribe watermark - responsive sizing */}
           <div className="absolute inset-0 w-full h-full flex items-end justify-center pointer-events-none select-none z-0">
-            <span className="absolute -bottom-2 sm:-bottom-2 md:-bottom-2 lg:-bottom-6 w-full text-center text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] font-black text-[#840000] leading-none whitespace-nowrap tracking-[0.05em] sm:tracking-[0.08em] md:tracking-[0.12em]">
+            <span className="absolute -bottom-2 sm:-bottom-2 md:-bottom-2 lg:-bottom-6 w-full text-center text-4xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] font-black text-[#840000] leading-none whitespace-nowrap tracking-[0.05em] sm:tracking-[0.08em] md:tracking-[0.09em] px-4">
               Student Tribe
             </span>
           </div>
