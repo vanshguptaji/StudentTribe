@@ -252,7 +252,7 @@ const MainScreen = ({
             ease: "back.out(1.7)",
             stagger: 0.02, // Faster stagger
           },
-          "+=0.1"
+          "-=1.2"
         ); // Reduced delay
       }
 
