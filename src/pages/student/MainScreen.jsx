@@ -1131,6 +1131,11 @@ const MainScreen = ({
           pointer-events: none;
           background: radial-gradient(circle at center 10%, rgb(195,23,40) 0%, rgb(142,5,27) 20%, rgb(130,6,26) 40%, rgb(100,0,11) 60%, rgb(88,1,11) 85%);
         }
+
+        /* Responsive negative margin-top for description container */
+        .description-container {
+          margin-top: clamp(-16rem, -28vh, -8rem) !important;
+        }
         
         /* Ensure the main container allows scrolling */
         .main-container {
@@ -1339,7 +1344,7 @@ const MainScreen = ({
           
           <div
             ref={descriptionRef}
-            className="description-container text-container text-white primary-text leading-relaxed font-extrabold text-center -mt-40  drop-shadow-lg max-w-4xl px-4 transition-transform duration-300"
+            className="description-container text-container text-white primary-text leading-relaxed font-extrabold text-center drop-shadow-lg max-w-4xl px-4 transition-transform duration-300"
             style={{
               transform: "translateY(80px)",
             }}
